@@ -1,8 +1,7 @@
 !.env.dist
 !tests
-!vendor/
 !vendor/autoload.php
-!vendor/composer
+
 .DS_Store
 .env
 .env.*
@@ -23,6 +22,6 @@ schema.graphql
 tests/*.suite.yml
 Thumbs.db
 vendor/*
-vendor/composer/*/
-vendor/composer/installed.json
+!vendor/composer/*
+!vendor/autoload.php
 wp-cli.local.yml
