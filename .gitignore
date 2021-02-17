@@ -1,3 +1,4 @@
+
 !.env.dist
 !tests
 !vendor/autoload.php
