@@ -175,6 +175,7 @@ final class WPGraphQLGravityForms {
 		$this->instances['root_query_forms_connection']   = new Connections\RootQueryFormsConnection();
 
 		// Enums.
+		$this->instances['create_entry_type_enum']            = new Enum\EntryTypeEnum();
 		$this->instances['form_status_enum']                  = new Enum\FormStatusEnum();
 		$this->instances['field_filters_operator_input_enum'] = new Enum\FieldFiltersOperatorInputEnum();
 
@@ -182,7 +183,9 @@ final class WPGraphQLGravityForms {
 		$this->instances['field_error'] = new FieldError();
 
 		// Mutations.
+		$this->instances['create_entry']                                  = new Mutations\CreateEntry();
 		$this->instances['delete_entry']                                  = new Mutations\DeleteEntry();
+		$this->instances['submit_entry']                                  = new Mutations\SubmitEntry( $this->instances['entry_data_manipulator'] );
 		$this->instances['create_draft_entry']                            = new Mutations\CreateDraftEntry();
 		$this->instances['delete_draft_entry']                            = new Mutations\DeleteDraftEntry();
 		$this->instances['submit_draft_entry']                            = new Mutations\SubmitDraftEntry( $this->instances['entry_data_manipulator'] );
