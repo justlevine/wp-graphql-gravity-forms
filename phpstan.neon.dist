@@ -1,0 +1,9 @@
+parameters:
+    level: 8
+    inferPrivatePropertyTypeFromConstructor: true
+    checkMissingIterableValueType: false
+    bootstrapFiles:
+        - wp-graphql-gravity-forms.php
+    paths:
+        - wp-graphql-gravity-forms.php
+        - src/
