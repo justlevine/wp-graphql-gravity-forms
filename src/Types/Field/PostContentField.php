@@ -12,6 +12,7 @@
 namespace WPGraphQLGravityForms\Types\Field;
 
 use WPGraphQLGravityForms\Types\Field\FieldProperty;
+use WPGraphQLGravityForms\Types\GraphQLInterface\FieldInterface;
 
 /**
  * Class - PostContentField
@@ -43,6 +44,7 @@ class PostContentField extends Field {
 			self::TYPE,
 			[
 				'description' => __( 'Gravity Forms Post Content field.', 'wp-graphql-gravity-forms' ),
+				'interfaces'  => [ FieldInterface::TYPE ],
 				'fields'      => array_merge(
 					$this->get_global_properties(),
 					$this->get_custom_properties(),

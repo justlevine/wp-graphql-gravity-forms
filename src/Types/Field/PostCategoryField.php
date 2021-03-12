@@ -12,6 +12,7 @@
 namespace WPGraphQLGravityForms\Types\Field;
 
 use WPGraphQLGravityForms\Types\Field\FieldProperty;
+use WPGraphQLGravityForms\Types\GraphQLInterface\FieldInterface;
 
 /**
  * Class - PostCategoryField
@@ -42,6 +43,7 @@ class PostCategoryField extends Field {
 			self::TYPE,
 			[
 				'description' => __( 'Gravity Forms Post Category field.', 'wp-graphql-gravity-forms' ),
+				'interfaces'  => [ FieldInterface::TYPE ],
 				'fields'      => array_merge(
 					$this->get_global_properties(),
 					$this->get_custom_properties(),
@@ -62,7 +64,7 @@ class PostCategoryField extends Field {
 					[
 						'displayAllCategories' => [
 							'type'        => 'Boolean',
-							'description' => __( 'Determines if all categories should be displayed on the Post Category drop down. 1 to display all categories, 0 otherwise. If this property is set to 1 (display all categories), the Post Category drop down will display the categories hierarchically.', 'wp-graphql-gravity-forms' ),
+							'description' => __( 'Determines if all categories should be displayed on the Post Category drop down. If this property is true (display all categories), the Post Category drop down will display the categories hierarchically.', 'wp-graphql-gravity-forms' ),
 						],
 					]
 				),

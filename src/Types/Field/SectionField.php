@@ -12,6 +12,7 @@
 namespace WPGraphQLGravityForms\Types\Field;
 
 use WPGraphQLGravityForms\Types\Field\FieldProperty;
+use WPGraphQLGravityForms\Types\GraphQLInterface\FieldInterface;
 use WPGraphQLGravityForms\Utils\Utils;
 /**
  * Class - SectionField
@@ -42,6 +43,7 @@ class SectionField extends Field {
 			self::TYPE,
 			[
 				'description' => __( 'Gravity Forms Section field.', 'wp-graphql-gravity-forms' ),
+				'interfaces'  => [ FieldInterface::TYPE ],
 				'fields'      => array_merge(
 					$this->get_global_properties(),
 					$this->get_custom_properties(),
