@@ -149,7 +149,7 @@ install_db() {
 configure_wordpress() {
     cd $WP_CORE_DIR
     wp config create --dbname="$DB_NAME" --dbuser="$DB_USER" --dbpass="$DB_PASS" --dbhost="$DB_HOST" --skip-check --force=true
-    wp core install --url=wp.test --title="WPGraphQL for Gravity Forms Tests" --admin_user=admin --admin_password=password --admin_email=admin@wp.test
+    wp core install --url=$WP_DOMAIN --title=GFTests --admin_user=$ADMIN_USERNAME --admin_password=$ADMIN_PASSWORD --admin_email=$ADMIN_EMAIL
     wp rewrite structure '/%year%/%monthnum%/%postname%/'
 }
 
@@ -193,7 +193,7 @@ setup_plugin() {
   wp plugin install wp-graphql
 
 	# Activate WPGraphQL
-   wp plugin activate wp-graphql
+	wp plugin activate wp-graphql
 
 	# activate the plugin
 	wp plugin activate wp-graphql-gravity-forms

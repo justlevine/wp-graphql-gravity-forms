@@ -8,6 +8,7 @@ params:
     - env
     - .env
 actor_suffix: Tester
+bootstrap: bootstrap.php
 settings:
     colors: true
     memory_limit: 1024M
@@ -40,7 +41,7 @@ modules:
             password: '%TEST_DB_PASSWORD%'
             populator: 'mysql -u $user -p$password -h $host $dbname < $dump'
             dump: 'tests/_data/dump.sql'
-            populate: false
+            populate: true
             cleanup: true
             waitlock: 0
             url: '%WP_URL%'
@@ -63,7 +64,7 @@ modules:
             themes: '/wp-content/themes'
             uploads: '/wp-content/uploads'
         WPLoader:
-            wpRootFolder: '%TEST_WP_ROOT_FOLDER%'
+            wpRootFolder: '%WP_ROOT_FOLDER%'
             dbName: '%TEST_DB_NAME%'
             dbHost: '%TEST_DB_HOST%'
             dbUser: '%TEST_DB_USER%'
@@ -73,13 +74,11 @@ modules:
             adminEmail: '%ADMIN_EMAIL%'
             title: 'Test'
             plugins:
-                - wp-graphql-gravity-forms/tests/_bootstrap/bootstrap.php
                 - wp-graphql/wp-graphql.php
                 - gravityforms/gravityforms.php
                 - gravityformssignature/signature.php
                 - wp-graphql-gravity-forms/wp-graphql-gravity-forms.php
             activatePlugins:
-                - wp-graphql-gravity-forms/tests/_bootstrap/bootstrap.php
                 - wp-graphql/wp-graphql.php
                 - gravityforms/gravityforms.php
                 - gravityformssignature/signature.php
