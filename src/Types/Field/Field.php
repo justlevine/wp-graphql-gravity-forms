@@ -14,8 +14,7 @@ namespace WPGraphQLGravityForms\Types\Field;
 
 use WPGraphQLGravityForms\Interfaces\Hookable;
 use WPGraphQLGravityForms\Interfaces\Type;
-use WPGraphQLGravityForms\Types\ConditionalLogic\ConditionalLogic;
-
+use WPGraphQLGravityForms\Types\GraphQLInterface\FieldInterface;
 /**
  * Class - Field
  */
@@ -26,32 +25,7 @@ abstract class Field implements Hookable, Type {
 	 * @return array
 	 */
 	protected function get_global_properties() : array {
-		return [
-			'conditionalLogic' => [
-				'type'        => ConditionalLogic::TYPE,
-				'description' => __( 'Controls the visibility of the field based on values selected by the user.', 'wp-graphql-gravity-forms' ),
-			],
-			'cssClass'         => [
-				'type'        => 'String',
-				'description' => __( 'String containing the custom CSS classes to be added to the <li> tag that contains the field. Useful for applying custom formatting to specific fields.', 'wp-graphql-gravity-forms' ),
-			],
-			'cssClassList'     => [
-				'type'        => [ 'list_of' => 'String' ],
-				'description' => __( 'Array of the custom CSS classes to be added to the <li> tag that contains the field. Useful for applying custom formatting to specific fields.', 'wp-graphql-gravity-forms' ),
-			],
-			'formId'           => [
-				'type'        => 'Integer',
-				'description' => __( 'The ID of the form this field belongs to.', 'wp-graphql-gravity-forms' ),
-			],
-			'id'               => [
-				'type'        => 'Integer',
-				'description' => __( 'Field ID.', 'wp-graphql-gravity-forms' ),
-			],
-			'type'             => [
-				'type'        => 'String',
-				'description' => __( 'The type of field to be displayed.', 'wp-graphql-gravity-forms' ),
-			],
-		];
+		return FieldInterface::get_properties();
 	}
 
 	/**

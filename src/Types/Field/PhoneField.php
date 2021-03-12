@@ -12,6 +12,7 @@
 namespace WPGraphQLGravityForms\Types\Field;
 
 use WPGraphQLGravityForms\Types\Field\FieldProperty;
+use WPGraphQLGravityForms\Types\GraphQLInterface\FieldInterface;
 
 /**
  * Class - PhoneField
@@ -42,6 +43,7 @@ class PhoneField extends Field {
 			self::TYPE,
 			[
 				'description' => __( 'Gravity Forms Phone field.', 'wp-graphql-gravity-forms' ),
+				'interfaces'  => [ FieldInterface::TYPE ],
 				'fields'      => array_merge(
 					$this->get_global_properties(),
 					$this->get_custom_properties(),
@@ -60,12 +62,9 @@ class PhoneField extends Field {
 					FieldProperty\SizeProperty::get(),
 					FieldProperty\VisibilityProperty::get(),
 					[
-						/**
-						 * Possible values: standard, international
-						 */
 						'phoneFormat' => [
 							'type'        => 'String',
-							'description' => __( 'Determines the allowed format for phones. If the phone value does not conform with the specified format, the field will fail validation.', 'wp-graphql-gravity-forms' ),
+							'description' => __( 'Determines the allowed format for phones. If the phone value does not conform with the specified format, the field will fail validation. Possible values: standard, international.', 'wp-graphql-gravity-forms' ),
 						],
 					]
 				),

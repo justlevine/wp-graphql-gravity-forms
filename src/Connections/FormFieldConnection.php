@@ -15,23 +15,17 @@ use GraphQL\Type\Definition\ResolveInfo;
 use GraphQLRelay\Relay;
 use WPGraphQL\AppContext;
 use WPGraphQLGravityForms\DataManipulators\EntryDataManipulator;
-use WPGraphQLGravityForms\Interfaces\Hookable;
-use WPGraphQLGravityForms\Interfaces\Connection;
-use WPGraphQLGravityForms\Types\Form\Form;
-use WPGraphQLGravityForms\Types\Entry\Entry;
-use WPGraphQLGravityForms\Types\Field\Field;
-use WPGraphQLGravityForms\Types\Union\ObjectFieldUnion;
 use WPGraphQLGravityForms\DataManipulators\FieldsDataManipulator;
+use WPGraphQLGravityForms\Interfaces\Connection;
+use WPGraphQLGravityForms\Interfaces\Hookable;
+use WPGraphQLGravityForms\Types\Entry\Entry;
+use WPGraphQLGravityForms\Types\Form\Form;
+use WPGraphQLGravityForms\Types\GraphQLInterface\FieldInterface;
 
 /**
  * Class - FormFieldConnection
  */
 class FormFieldConnection implements Hookable, Connection {
-	/**
-	 * The from field name.
-	 */
-	const FROM_FIELD = 'fields';
-
 	/**
 	 * Register hooks to WordPress.
 	 */
@@ -43,22 +37,23 @@ class FormFieldConnection implements Hookable, Connection {
 	 * Register connection from GravityFormsForm type to other types.
 	 */
 	public function register_connection() {
+		// From GravityFormsForm to Field.
 		register_graphql_connection(
 			[
 				'fromType'      => Form::TYPE,
-				'toType'        => ObjectFieldUnion::TYPE,
-				'fromFieldName' => self::FROM_FIELD,
-				'resolve'       => function( array $root, array $args, AppContext $context, ResolveInfo $info ) : array {
-					$fields              = ( new FieldsDataManipulator() )->manipulate( $root['fields'] );
-					$connection          = Relay::connectionFromArray( $fields, $args );
-					$nodes               = array_map( fn( $edge ) => $edge['node'] ?? null, $connection['edges'] );
-					$connection['nodes'] = $nodes ?: null;
-
-					return $connection;
+				'toType'        => FieldInterface::TYPE,
+				'fromFieldName' => 'fields',
+				'resolve'       => function( array $root, array $args, AppContext $context, ResolveInfo $info ) {
+						$fields              = ( new FieldsDataManipulator() )->manipulate( $root['fields'] );
+						$connection          = Relay::connectionFromArray( $fields, $args );
+						$nodes               = array_map( fn( $edge ) => $edge['node'] ?? null, $connection['edges'] );
+						$connection['nodes'] = $nodes ?: null;
+						return $connection;
 				},
 			]
 		);
 
+		// From GravityFormsForm to GravityFormsEntry.
 		register_graphql_connection(
 			[
 				'fromType'      => Form::TYPE,

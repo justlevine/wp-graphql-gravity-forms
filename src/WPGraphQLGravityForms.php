@@ -22,11 +22,12 @@ use WPGraphQLGravityForms\Types\FieldError\FieldError;
 use WPGraphQLGravityForms\Types\Union;
 use WPGraphQLGravityForms\Types\Entry;
 use WPGraphQLGravityForms\Types\Input;
-
+use WPGraphQLGravityForms\Types\GraphQLInterface;
 /**
  * Main plugin class.
  */
 final class WPGraphQLGravityForms {
+
 	/**
 	 * Class instances.
 	 *
@@ -73,40 +74,6 @@ final class WPGraphQLGravityForms {
 		$this->instances['form_pagination']           = new Form\FormPagination();
 		$this->instances['form']                      = new Form\Form( $this->instances['form_data_manipulator'] );
 
-		// Fields.
-		$this->instances['address_field']        = new Field\AddressField();
-		$this->instances['captcha_field']        = new Field\CaptchaField();
-		$this->instances['chained_select_field'] = new Field\ChainedSelectField();
-		$this->instances['checkbox_field']       = new Field\CheckboxField();
-		$this->instances['consent_field']        = new Field\ConsentField();
-		$this->instances['date_field']           = new Field\DateField();
-		$this->instances['email_field']          = new Field\EmailField();
-		$this->instances['file_upload_field']    = new Field\FileUploadField();
-		$this->instances['hidden_field']         = new Field\HiddenField();
-		$this->instances['html_field']           = new Field\HtmlField();
-		$this->instances['list_field']           = new Field\ListField();
-		$this->instances['multi_select_field']   = new Field\MultiSelectField();
-		$this->instances['name_field']           = new Field\NameField();
-		$this->instances['number_field']         = new Field\NumberField();
-		$this->instances['page_field']           = new Field\PageField();
-		$this->instances['password_field']       = new Field\PasswordField();
-		$this->instances['phone_field']          = new Field\PhoneField();
-		$this->instances['post_category_field']  = new Field\PostCategoryField();
-		$this->instances['post_content_field']   = new Field\PostContentField();
-		$this->instances['post_custom_field']    = new Field\PostCustomField();
-		$this->instances['post_excerpt_field']   = new Field\PostExcerptField();
-		$this->instances['post_image_field']     = new Field\PostImageField();
-		$this->instances['post_tags_field']      = new Field\PostTagsField();
-		$this->instances['post_title_field']     = new Field\PostTitleField();
-		$this->instances['radio_field']          = new Field\RadioField();
-		$this->instances['section_field']        = new Field\SectionField();
-		$this->instances['signature_field']      = new Field\SignatureField();
-		$this->instances['select_field']         = new Field\SelectField();
-		$this->instances['text_area_field']      = new Field\TextAreaField();
-		$this->instances['text_field']           = new Field\TextField();
-		$this->instances['time_field']           = new Field\TimeField();
-		$this->instances['website_field']        = new Field\WebsiteField();
-
 		// Field Properties.
 		$this->instances['address_input_property']         = new FieldProperty\AddressInputProperty();
 		$this->instances['chained_select_choice_property'] = new FieldProperty\ChainedSelectChoiceProperty();
@@ -118,6 +85,16 @@ final class WPGraphQLGravityForms {
 		$this->instances['name_input_property']            = new FieldProperty\NameInputProperty();
 		$this->instances['password_input_property']        = new FieldProperty\PasswordInputProperty();
 		$this->instances['radio_choice_property']          = new FieldProperty\RadioChoiceProperty();
+
+		// Interfaces.
+		$this->instances['field_interface'] = new GraphQLInterface\FieldInterface();
+
+		// Fields.
+		$enabled_field_types = self::get_enabled_field_types();
+		foreach ( $enabled_field_types as $gf_type => $type ) {
+			$field_class_name                       = 'WPGraphQLGravityForms\\Types\\Field\\' . $type;
+			$this->instances[ $gf_type . '_field' ] = new $field_class_name();
+		}
 
 		// Field Values.
 		$this->instances['address_field_value']        = new FieldValue\AddressFieldValue();
@@ -165,7 +142,6 @@ final class WPGraphQLGravityForms {
 		$this->instances['entries_sorting_input']      = new Input\EntriesSortingInput();
 
 		// Unions.
-		$this->instances['object_field_union']       = new Union\ObjectFieldUnion( $this->instances );
 		$this->instances['object_field_value_union'] = new Union\ObjectFieldValueUnion( $this->instances );
 
 		// Connections.
@@ -216,6 +192,54 @@ final class WPGraphQLGravityForms {
 		$this->instances['update_draft_entry_website_field_value']        = new Mutations\UpdateDraftEntryWebsiteFieldValue( $this->instances['draft_entry_data_manipulator'] );
 	}
 
+
+	/**
+	 * Returns Gravity Forms Field types to be exposed to the GraphQL schema.
+	 */
+	public static function get_enabled_field_types() {
+		$fields = [
+			Field\AddressField::GF_TYPE       => Field\AddressField::TYPE,
+			Field\CaptchaField::GF_TYPE       => Field\CaptchaField::TYPE,
+			Field\ChainedSelectField::GF_TYPE => Field\ChainedSelectField::TYPE,
+			Field\CheckboxField::GF_TYPE      => Field\CheckboxField::TYPE,
+			Field\ConsentField::GF_TYPE       => Field\ConsentField::TYPE,
+			Field\DateField::GF_TYPE          => Field\DateField::TYPE,
+			Field\EmailField::GF_TYPE         => Field\EmailField::TYPE,
+			Field\FileUploadField::GF_TYPE    => Field\FileUploadField::TYPE,
+			Field\HiddenField::GF_TYPE        => Field\HiddenField::TYPE,
+			Field\HtmlField::GF_TYPE          => Field\HtmlField::TYPE,
+			Field\ListField::GF_TYPE          => Field\ListField::TYPE,
+			Field\MultiSelectField::GF_TYPE   => Field\MultiSelectField::TYPE,
+			Field\NameField::GF_TYPE          => Field\NameField::TYPE,
+			Field\NumberField::GF_TYPE        => Field\NumberField::TYPE,
+			Field\PageField::GF_TYPE          => Field\PageField::TYPE,
+			Field\PasswordField::GF_TYPE      => Field\PasswordField::TYPE,
+			Field\PhoneField::GF_TYPE         => Field\PhoneField::TYPE,
+			Field\PostCategoryField::GF_TYPE  => Field\PostCategoryField::TYPE,
+			Field\PostContentField::GF_TYPE   => Field\PostContentField::TYPE,
+			Field\PostCustomField::GF_TYPE    => Field\PostCustomField::TYPE,
+			Field\PostExcerptField::GF_TYPE   => Field\PostExcerptField::TYPE,
+			Field\PostImageField::GF_TYPE     => Field\PostImageField::TYPE,
+			Field\PostTagsField::GF_TYPE      => Field\PostTagsField::TYPE,
+			Field\PostTitleField::GF_TYPE     => Field\PostTitleField::TYPE,
+			Field\RadioField::GF_TYPE         => Field\RadioField::TYPE,
+			Field\SectionField::GF_TYPE       => Field\SectionField::TYPE,
+			Field\SelectField::GF_TYPE        => Field\SelectField::TYPE,
+			Field\SignatureField::GF_TYPE     => Field\SignatureField::TYPE,
+			Field\TextAreaField::GF_TYPE      => Field\TextAreaField::TYPE,
+			Field\TextField::GF_TYPE          => Field\TextField::TYPE,
+			Field\TimeField::GF_TYPE          => Field\TimeField::TYPE,
+			Field\WebsiteField::GF_TYPE       => Field\WebsiteField::TYPE,
+		];
+
+		/**
+		 * Filter to add custom Gravity Forms field types to the GraphQL schema.
+		 *
+		 * @param array The field types.
+		 */
+		return apply_filters( 'wp_graphql_gf_field_types', $fields );
+	}
+
 	/**
 	 * Register all hooks to WordPress.
 	 */
@@ -231,6 +255,9 @@ final class WPGraphQLGravityForms {
 	 * @return array
 	 */
 	private function get_hookable_instances() {
-		return array_filter( $this->instances, fn( $instance ) => $instance instanceof Hookable );
+		return array_filter(
+			$this->instances,
+			fn ( $instance) => $instance instanceof Hookable
+		);
 	}
 }
