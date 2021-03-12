@@ -12,6 +12,7 @@
 namespace WPGraphQLGravityForms\Types\Field;
 
 use WPGraphQLGravityForms\Types\Field\FieldProperty;
+use WPGraphQLGravityForms\Types\GraphQLInterface\FieldInterface;
 
 /**
  * Class - DateField
@@ -42,6 +43,7 @@ class DateField extends Field {
 			self::TYPE,
 			[
 				'description' => __( 'Gravity Forms Date field.', 'wp-graphql-gravity-forms' ),
+				'interfaces'  => [ FieldInterface::TYPE ],
 				'fields'      => array_merge(
 					$this->get_global_properties(),
 					$this->get_custom_properties(),
@@ -62,27 +64,21 @@ class DateField extends Field {
 					FieldProperty\SubLabelPlacementProperty::get(),
 					FieldProperty\VisibilityProperty::get(),
 					[
-						/**
-						 * Possible values: Possible values: calendar, custom, none
-						 */
 						'calendarIconType' => [
 							'type'        => 'String',
-							'description' => __( 'Determines how the date field displays it’s calendar icon.', 'wp-graphql-gravity-forms' ),
+							'description' => __( 'Determines how the date field displays it’s calendar icon. Possible values: calendar, custom, none.', 'wp-graphql-gravity-forms' ),
 						],
 						'calendarIconUrl'  => [
 							'type'        => 'String',
 							'description' => __( 'Contains the URL to the custom calendar icon. Only applicable when calendarIconType is set to custom.', 'wp-graphql-gravity-forms' ),
 						],
-						/**
-						 * Possible values: mdy, dmy
-						 */
 						'dateFormat'       => [
 							'type'        => 'String',
-							'description' => __( 'Determines how the date is displayed.', 'wp-graphql-gravity-forms' ),
+							'description' => __( 'Determines how the date is displayed. Possible values: mdy, dmy.', 'wp-graphql-gravity-forms' ),
 						],
 						'dateType'         => [
 							'type'        => 'String',
-							'description' => __( 'The type of date field to display, from a simple date field, to a drop down, to a calendar picker. Values are “datefield”, “datedropdown”, “datepicker”.', 'wp-graphql-gravity-forms' ),
+							'description' => __( 'The type of date field to display, from a simple date field, to a drop down, to a calendar picker. Possible Values: datefield, datedropdown, datepicker.', 'wp-graphql-gravity-forms' ),
 						],
 					]
 				),

@@ -25,16 +25,12 @@ use WPGraphQLGravityForms\Types\Union\ObjectFieldUnion;
 use WPGraphQLGravityForms\Types\Union\ObjectFieldValueUnion;
 use WPGraphQLGravityForms\Types\FieldError\FieldError;
 use WPGraphQLGravityForms\DataManipulators\FieldsDataManipulator;
+use WPGraphQLGravityForms\Types\GraphQLInterface\FieldInterface;
 
 /**
  * Class - EntryFieldConnection.
  */
 class EntryFieldConnection implements Hookable, Connection {
-	/**
-	 * The from field name.
-	 */
-	const FROM_FIELD = 'fields';
-
 	/**
 	 * WPGraphQL for Gravity Forms plugin's class instances.
 	 *
@@ -65,8 +61,8 @@ class EntryFieldConnection implements Hookable, Connection {
 		register_graphql_connection(
 			[
 				'fromType'      => Entry::TYPE,
-				'toType'        => ObjectFieldUnion::TYPE,
-				'fromFieldName' => self::FROM_FIELD,
+				'toType'        => FieldInterface::TYPE,
+				'fromFieldName' => 'fields',
 				'edgeFields'    => [
 					'fieldValue' => [
 						'type'        => ObjectFieldValueUnion::TYPE,
