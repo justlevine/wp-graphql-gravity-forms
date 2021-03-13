@@ -39,12 +39,8 @@ class RootQueryFormsConnectionResolver {
 		$status = $this->get_form_status( $args );
 		$forms  = GFAPI::get_forms( $status['active'], $status['trashed'] );
 
-		if ( is_wp_error( $forms ) ) {
+		if ( empty( $forms ) ) {
 			throw new UserError( __( 'An error occurred while trying to get Gravity Forms forms.', 'wp-graphql-gravity-forms' ) );
-		}
-
-		if ( ! $forms ) {
-			return null;
 		}
 
 		$form_data_manipulator = new FormDataManipulator( new FieldsDataManipulator() );

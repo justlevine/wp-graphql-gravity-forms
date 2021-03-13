@@ -37,7 +37,7 @@ class FieldInterface implements Hookable, Type {
 	/**
 	 * Register hooks to WordPress.
 	 */
-	public function register_hooks() {
+	public function register_hooks() : void {
 		add_action( 'graphql_register_types', [ $this, 'register_type' ] );
 	}
 
@@ -46,7 +46,7 @@ class FieldInterface implements Hookable, Type {
 	 *
 	 * @param \WPGraphQL\Registry\TypeRegistry $type_registry  Instance of the WPGraphQL TypeRegistry.
 	 */
-	public function register_type( TypeRegistry $type_registry ) {
+	public function register_type( TypeRegistry $type_registry ) : void {
 		register_graphql_interface_type(
 			self::TYPE,
 			[

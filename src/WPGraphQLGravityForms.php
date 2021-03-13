@@ -38,7 +38,7 @@ final class WPGraphQLGravityForms {
 	/**
 	 * Main method for running the plugin.
 	 */
-	public function run() {
+	public function run() : void {
 		$this->create_instances();
 		$this->register_hooks();
 	}
@@ -46,7 +46,7 @@ final class WPGraphQLGravityForms {
 	/**
 	 * Create instances.
 	 */
-	private function create_instances() {
+	private function create_instances() : void {
 		// Settings.
 		$this->instances['wpgraphql_settings'] = new Settings\WPGraphQLSettings();
 
@@ -195,8 +195,10 @@ final class WPGraphQLGravityForms {
 
 	/**
 	 * Returns Gravity Forms Field types to be exposed to the GraphQL schema.
+	 *
+	 * @return array field types.
 	 */
-	public static function get_enabled_field_types() {
+	public static function get_enabled_field_types() : array {
 		$fields = [
 			Field\AddressField::GF_TYPE       => Field\AddressField::TYPE,
 			Field\CaptchaField::GF_TYPE       => Field\CaptchaField::TYPE,
@@ -243,7 +245,7 @@ final class WPGraphQLGravityForms {
 	/**
 	 * Register all hooks to WordPress.
 	 */
-	private function register_hooks() {
+	private function register_hooks() : void {
 		foreach ( $this->get_hookable_instances() as $instance ) {
 			$instance->register_hooks();
 		}
@@ -254,7 +256,7 @@ final class WPGraphQLGravityForms {
 	 *
 	 * @return array
 	 */
-	private function get_hookable_instances() {
+	private function get_hookable_instances() : array {
 		return array_filter(
 			$this->instances,
 			fn ( $instance) => $instance instanceof Hookable

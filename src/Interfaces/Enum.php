@@ -14,8 +14,6 @@ namespace WPGraphQLGravityForms\Interfaces;
 interface Enum {
 	/**
 	 * Register a WPGraphQL Enum.
-	 *
-	 * @return void
 	 */
-	public function register();
+	public function register() : void;
 }

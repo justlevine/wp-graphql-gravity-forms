@@ -21,8 +21,6 @@ use WPGraphQLGravityForms\Interfaces\Type;
 use WPGraphQLGravityForms\Interfaces\Field;
 use WPGraphQLGravityForms\DataManipulators\EntryDataManipulator;
 use WPGraphQLGravityForms\DataManipulators\DraftEntryDataManipulator;
-use WPGraphQLGravityForms\Types\Union\ObjectFieldUnion;
-use WPGraphQLGravityForms\Types\Form\Form;
 
 /**
  * Class - Entry
@@ -69,7 +67,7 @@ class Entry implements Hookable, Type, Field {
 	/**
 	 * Register hooks to WordPress.
 	 */
-	public function register_hooks() {
+	public function register_hooks() : void {
 		add_action( 'graphql_register_types', [ $this, 'register_type' ] );
 		add_action( 'graphql_register_types', [ $this, 'register_field' ] );
 	}
@@ -77,7 +75,7 @@ class Entry implements Hookable, Type, Field {
 	/**
 	 * Register Object type to GraphQL schema.
 	 */
-	public function register_type() {
+	public function register_type() : void {
 		register_graphql_object_type(
 			self::TYPE,
 			[
@@ -162,7 +160,7 @@ class Entry implements Hookable, Type, Field {
 	/**
 	 * Register entry query.
 	 */
-	public function register_field() {
+	public function register_field() : void {
 		register_graphql_field(
 			'RootQuery',
 			self::FIELD,
@@ -186,7 +184,7 @@ class Entry implements Hookable, Type, Field {
 						throw new UserError( __( 'A valid global ID must be provided.', 'wp-graphql-gravity-forms' ) );
 					}
 
-					$id    = sanitize_text_field( $id_parts['id'] );
+					$id    = (int) sanitize_text_field( $id_parts['id'] );
 					$entry = GFAPI::get_entry( $id );
 
 					if ( ! is_wp_error( $entry ) ) {
@@ -205,7 +203,8 @@ class Entry implements Hookable, Type, Field {
 						throw new UserError( __( 'The submission data for this draft entry could not be read.', 'wp-graphql-gravity-forms' ) );
 					}
 
-					return $this->draft_entry_data_manipulator->manipulate( $submission['partial_entry'], $id );
+					// @TODO: Evaluate if resume_token is actually needed.
+					return $this->draft_entry_data_manipulator->manipulate( $submission['partial_entry'], (string) $id );
 				},
 			]
 		);

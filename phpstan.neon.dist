@@ -1,9 +1,27 @@
 parameters:
-    level: 8
-    inferPrivatePropertyTypeFromConstructor: true
-    checkMissingIterableValueType: false
-    bootstrapFiles:
-        - wp-graphql-gravity-forms.php
-    paths:
-        - wp-graphql-gravity-forms.php
-        - src/
+		level: 8
+		inferPrivatePropertyTypeFromConstructor: true
+		checkMissingIterableValueType: false
+		bootstrapFiles:
+			- wp-graphql-gravity-forms.php
+		paths:
+			- wp-graphql-gravity-forms.php
+			- src/
+		scanDirectories:
+			- ../wp-graphql/
+			- ../gravityforms/
+			- ../gravityformssignature/
+			- ../gravityformschainedselects/
+		ignoreErrors:
+			- '#^Function apply_filters(_ref_array)? invoked with ([1-9]|1[0-2]) parameters, 2 required\.$#'
+			- '#^Function gf_apply_filters(_ref_array)? invoked with ([1-9]|1[0-2]) parameters, 2 required\.$#'
+			- '#Cannot access property \$is_active on true.#'
+			- '#Cannot access property \$is_trash on true.#'
+			- "#^Access to undefined constant WPGraphQLGravityForms\\\\Types\\\\Field\\\\Field\\:\\:GF_TYPE\\.$#"
+			- "#^Access to undefined constant WPGraphQLGravityForms\\\\Interfaces\\\\FieldValue\\:\\:TYPE\\.$#"
+			- "#^Access to undefined constant WPGraphQLGravityForms\\\\Types\\\\Field\\\\Field\\:\\:TYPE\\.$#"
+			- "#^Access to undefined constant WPGraphQLGravityForms\\\\Mutations\\\\DraftEntryUpdater\\:\\:NAME\\.$#"
+			-
+				message: "#^Call to an undefined method WPGraphQLGravityForms\\\\Mutations\\\\DraftEntryUpdater\\:\\:prepare_field_value\\(\\)\\.$#"
+				count: 1
+				path: src/Mutations/DraftEntryUpdater.php

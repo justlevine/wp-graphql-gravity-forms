@@ -21,9 +21,7 @@ use WPGraphQLGravityForms\Interfaces\FieldValue as FieldValueInterface;
 use WPGraphQLGravityForms\Types\Entry\Entry;
 use WPGraphQLGravityForms\Types\Field\Field;
 use WPGraphQLGravityForms\Types\Field\FieldValue;
-use WPGraphQLGravityForms\Types\Union\ObjectFieldUnion;
 use WPGraphQLGravityForms\Types\Union\ObjectFieldValueUnion;
-use WPGraphQLGravityForms\Types\FieldError\FieldError;
 use WPGraphQLGravityForms\DataManipulators\FieldsDataManipulator;
 use WPGraphQLGravityForms\Types\GraphQLInterface\FieldInterface;
 
@@ -50,14 +48,14 @@ class EntryFieldConnection implements Hookable, Connection {
 	/**
 	 * Register hooks to WordPress.
 	 */
-	public function register_hooks() {
+	public function register_hooks() : void {
 		add_action( 'init', [ $this, 'register_connection' ] );
 	}
 
 	/**
 	 * Register connection from GravityFormsEntry type to other types.
 	 */
-	public function register_connection() {
+	public function register_connection() : void {
 		register_graphql_connection(
 			[
 				'fromType'      => Entry::TYPE,
@@ -152,7 +150,7 @@ class EntryFieldConnection implements Hookable, Connection {
 	 *
 	 * @param  Field $field The field class.
 	 *
-	 * @return FieldValue|null The field value class or null if not found.
+	 * @return string|FieldValueInterface|null The field value class or null if not found.
 	 */
 	private function get_field_value_class( Field $field ) {
 		$field_values = array_filter( $this->instances, fn( $instance ) => $instance instanceof FieldValueInterface );
