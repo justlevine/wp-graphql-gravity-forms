@@ -11,7 +11,6 @@
 
 namespace WPGraphQLGravityForms\Types\GraphQLInterface;
 
-use GF_Field;
 use GraphQL\Error\UserError;
 use WPGraphQL\Registry\TypeRegistry;
 use WPGraphQLGravityForms\WPGraphQLGravityForms;
@@ -26,13 +25,6 @@ class FieldInterface implements Hookable, Type {
 	 * Type registered in WPGraphQL.
 	 */
 	const TYPE = 'Field';
-
-	/**
-	 * WPGraphQL for Gravity Forms plugin's class instances.
-	 *
-	 * @var array
-	 */
-	private $instances;
 
 	/**
 	 * Register hooks to WordPress.
