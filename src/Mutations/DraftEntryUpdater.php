@@ -65,14 +65,14 @@ abstract class DraftEntryUpdater implements Hookable, Mutation {
 	/**
 	 * Register hooks to WordPress.
 	 */
-	public function register_hooks() {
+	public function register_hooks() : void {
 		add_action( 'graphql_register_types', [ $this, 'register_mutation' ] );
 	}
 
 	/**
 	 * Registers mutation.
 	 */
-	public function register_mutation() {
+	public function register_mutation() : void {
 		register_graphql_mutation(
 			static::NAME,
 			[
@@ -278,7 +278,7 @@ abstract class DraftEntryUpdater implements Hookable, Mutation {
 			throw new UserError( __( 'An error occurred while trying to update the draft entry.', 'wp-graphql-gravity-forms' ) );
 		}
 
-		return $new_resume_token;
+		return $resume_token ? (string) $resume_token : '';
 	}
 
 	/**

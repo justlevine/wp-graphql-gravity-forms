@@ -34,7 +34,7 @@ class EntryUser implements Hookable, Type, Field {
 	/**
 	 * Register hooks to WordPress.
 	 */
-	public function register_hooks() {
+	public function register_hooks() : void {
 		add_action( 'graphql_register_types', [ $this, 'register_type' ] );
 		add_action( 'graphql_register_types', [ $this, 'register_field' ] );
 	}
@@ -42,7 +42,7 @@ class EntryUser implements Hookable, Type, Field {
 	/**
 	 * Register new edge type.
 	 */
-	public function register_type() {
+	public function register_type() : void {
 		register_graphql_type(
 			self::TYPE,
 			[
@@ -60,7 +60,7 @@ class EntryUser implements Hookable, Type, Field {
 	/**
 	 * Register EntryUser query.
 	 */
-	public function register_field() {
+	public function register_field() : void {
 		register_graphql_field(
 			Entry::TYPE,
 			self::FIELD,

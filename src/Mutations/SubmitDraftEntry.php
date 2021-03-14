@@ -12,7 +12,7 @@
 namespace WPGraphQLGravityForms\Mutations;
 
 use GFAPI;
-use GFCOMMON;
+use GFCommon;
 use GF_Field;
 use GFFormDisplay;
 use GFFormsModel;
@@ -52,7 +52,7 @@ class SubmitDraftEntry implements Hookable, Mutation {
 	/**
 	 * Register hooks to WordPress.
 	 */
-	public function register_hooks() {
+	public function register_hooks() : void {
 		add_action( 'graphql_register_types', [ $this, 'register_mutation' ] );
 		add_action( 'graphql_before_resolve_field', [ $this, 'ensure_required_fields_are_set' ], 10, 7 );
 	}
@@ -60,7 +60,7 @@ class SubmitDraftEntry implements Hookable, Mutation {
 	/**
 	 * Registers mutation.
 	 */
-	public function register_mutation() {
+	public function register_mutation() : void {
 		register_graphql_mutation(
 			self::NAME,
 			[
@@ -100,7 +100,12 @@ class SubmitDraftEntry implements Hookable, Mutation {
 				'type'        => Entry::TYPE,
 				'description' => __( 'The entry that was created.', 'wp-graphql-gravity-forms' ),
 				'resolve'     => function( array $payload ) : array {
-					return $this->entry_data_manipulator->manipulate( GFAPI::get_entry( $payload['entryId'] ) );
+					$entry = GFAPI::get_entry( $payload['entryId'] );
+					if ( is_wp_error( $entry ) ) {
+						throw new UserError( __( 'Error retrieving the output fields. Entry was not resolved.', 'wp-graphql-gravity-forms' ) );
+					}
+
+					return $this->entry_data_manipulator->manipulate( $entry );
 				},
 			],
 		];
@@ -163,7 +168,7 @@ class SubmitDraftEntry implements Hookable, Mutation {
 	 * @param integer $form_id .
 	 * @throws UserError .
 	 */
-	private function validate_form_id( int $form_id ) {
+	private function validate_form_id( int $form_id ) : void {
 		$form_info = GFFormsModel::get_form( $form_id, true );
 
 		if ( ! $form_info || ! $form_info->is_active || $form_info->is_trash ) {
@@ -196,7 +201,7 @@ class SubmitDraftEntry implements Hookable, Mutation {
 	 * @param integer $entry_id .
 	 * @throws UserError .
 	 */
-	private function create_post( int $form_id, int $entry_id ) {
+	private function create_post( int $form_id, int $entry_id ) : void {
 		$form  = GFAPI::get_form( $form_id );
 		$entry = GFAPI::get_entry( $entry_id );
 
@@ -204,7 +209,7 @@ class SubmitDraftEntry implements Hookable, Mutation {
 			throw new UserError( __( 'An error occured while trying to create a post from the form submission. Form or entry not found', 'wp-graphql-gravity-forms' ) );
 		}
 
-		GFCOMMON::create_post( $form, $entry );
+		GFCommon::create_post( $form, $entry );
 	}
 
 	/**
@@ -214,11 +219,11 @@ class SubmitDraftEntry implements Hookable, Mutation {
 	 * @param integer $entry_id .
 	 * @throws UserError .
 	 */
-	private function send_notifications( int $form_id, int $entry_id ) {
+	private function send_notifications( int $form_id, int $entry_id ) : void {
 		$form  = GFAPI::get_form( $form_id );
 		$entry = GFAPI::get_entry( $entry_id );
 
-		if ( ! $form || ! $entry ) {
+		if ( ! $form || ! $entry || is_wp_error( $entry ) ) {
 			throw new UserError( __( 'An error occurred while trying to send notifications, form or entry not found.', 'wp-graphql-gravity-forms' ) );
 		}
 
@@ -316,8 +321,8 @@ class SubmitDraftEntry implements Hookable, Mutation {
 	 *
 	 * @param integer $form_id .
 	 */
-	private function set_form_page_to_last( int $form_id ) {
-		require_once GFCOMMON::get_base_path() . '/form_display.php';
+	private function set_form_page_to_last( int $form_id ) : void {
+		require_once GFCommon::get_base_path() . '/form_display.php';
 
 		$form = GFAPI::get_form( $form_id );
 

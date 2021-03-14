@@ -12,8 +12,6 @@ namespace WPGraphQLGravityForms\Connections;
 
 use GFAPI;
 use GraphQL\Error\UserError;
-use GraphQLRelay\Connection\ArrayConnection;
-use WPGraphQLGravityForms\DataManipulators\EntryDataManipulator;
 use WPGraphQL\Data\Connection\AbstractConnectionResolver;
 use WPGraphQLGravityForms\Data\Loader\EntriesLoader;
 use WPGraphQLGravityForms\Types\Enum\FieldFiltersOperatorInputEnum;

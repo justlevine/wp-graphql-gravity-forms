@@ -11,6 +11,7 @@
 namespace WPGraphQLGravityForms\Connections;
 
 use GFAPI;
+use GraphQL\Error\UserError;
 use GraphQL\Type\Definition\ResolveInfo;
 use GraphQLRelay\Relay;
 use WPGraphQL\AppContext;
@@ -29,14 +30,14 @@ class FormFieldConnection implements Hookable, Connection {
 	/**
 	 * Register hooks to WordPress.
 	 */
-	public function register_hooks() {
+	public function register_hooks() : void {
 			add_action( 'init', [ $this, 'register_connection' ] );
 	}
 
 	/**
 	 * Register connection from GravityFormsForm type to other types.
 	 */
-	public function register_connection() {
+	public function register_connection() : void {
 		// From GravityFormsForm to Field.
 		register_graphql_connection(
 			[
@@ -60,7 +61,11 @@ class FormFieldConnection implements Hookable, Connection {
 				'toType'        => Entry::TYPE,
 				'fromFieldName' => 'entries',
 				'resolve'       => function( array $root, array $args, AppContext $context, ResolveInfo $info ) : array {
-					$form_entries           = GFAPI::get_entries( $root['formId'] );
+					$form_entries = GFAPI::get_entries( $root['formId'] );
+					if ( is_wp_error( $form_entries ) ) {
+						throw new UserError( __( 'Error retrieving the form entries.', 'wp-graphql-gravity-forms' ) );
+					}
+
 					$entry_data_manipulator = new EntryDataManipulator();
 					$entries                = array_map( fn( array $entry ) => $entry_data_manipulator->manipulate( $entry ), $form_entries );
 					$connection             = Relay::connectionFromArray( $entries, $args );

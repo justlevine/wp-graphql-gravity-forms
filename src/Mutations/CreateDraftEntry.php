@@ -30,14 +30,14 @@ class CreateDraftEntry implements Hookable, Mutation {
 	/**
 	 * Register hooks to WordPress.
 	 */
-	public function register_hooks() {
+	public function register_hooks() : void {
 		add_action( 'graphql_register_types', [ $this, 'register_mutation' ] );
 	}
 
 	/**
 	 * Registers mutation.
 	 */
-	public function register_mutation() {
+	public function register_mutation() : void {
 		register_graphql_mutation(
 			self::NAME,
 			[
@@ -67,10 +67,7 @@ class CreateDraftEntry implements Hookable, Mutation {
 				'type'        => 'String',
 				'description' => __( 'Optional. The IP address of the user who submitted the draft entry. Default is an empty string.', 'wp-graphql-gravity-forms' ),
 			],
-			// 'files' => [
-			// 'type'        => '',
-			// 'description' => __( '', 'wp-graphql-gravity-forms' ),
-			// ],
+			// @TODO: Files.
 		];
 	}
 
@@ -110,7 +107,11 @@ class CreateDraftEntry implements Hookable, Mutation {
 				throw new UserError( __( 'The ID for a valid, active form must be provided.', 'wp-graphql-gravity-forms' ) );
 			}
 
-			$form         = GFFormsModel::get_form_meta( $form_id );
+			$form = GFFormsModel::get_form_meta( $form_id );
+			if ( ! $form ) {
+				throw new UserError( __( 'An error occurred while trying to create the draft entry.', 'wp-graphql-gravity-forms' ) );
+			}
+
 			$source_url   = esc_url_raw( $this->truncate( $_SERVER['HTTP_REFERER'] ?? '', 250 ) );
 			$resume_token = $this->save_draft_submission( $input, $form, $source_url );
 
@@ -154,7 +155,7 @@ class CreateDraftEntry implements Hookable, Mutation {
 			''
 		);
 
-		return $resume_token ?: '';
+		return $resume_token ? (string) $resume_token : '';
 	}
 
 	/**
@@ -215,13 +216,13 @@ class CreateDraftEntry implements Hookable, Mutation {
 	/**
 	 * Get the draft resume URL.
 	 *
-	 * @param string $source_url   Source URL.
-	 * @param string $resume_token Resume token.
-	 * @param array  $form         Form object.
+	 * @param string     $source_url   Source URL.
+	 * @param string     $resume_token Resume token.
+	 * @param array|null $form         Form object.
 	 *
 	 * @return string Resume URL, or empty string if no source URL was provided.
 	 */
-	private function get_resume_url( string $source_url, string $resume_token, array $form ) : string {
+	private function get_resume_url( string $source_url, string $resume_token, $form = [] ) : string {
 		if ( ! $source_url ) {
 			return '';
 		}
