@@ -20,7 +20,7 @@ use WPGraphQLGravityForms\Types\GraphQLInterface\FieldInterface;
 /**
  * Class - DateField
  */
-class DateField extends Field {
+class DateField extends AbstractField {
 	/**
 	 * Type registered in WPGraphQL.
 	 */

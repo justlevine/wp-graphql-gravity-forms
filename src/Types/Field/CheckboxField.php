@@ -18,7 +18,7 @@ use WPGraphQLGravityForms\Types\GraphQLInterface\FieldInterface;
 /**
  * Class - CheckboxField
  */
-class CheckboxField extends Field {
+class CheckboxField extends AbstractField {
 	/**
 	 * Type registered in WPGraphQL.
 	 */

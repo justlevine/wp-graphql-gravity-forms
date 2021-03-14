@@ -18,7 +18,7 @@ use WPGraphQLGravityForms\Utils\Utils;
 /**
  * Class - NameField
  */
-class NameField extends Field {
+class NameField extends AbstractField {
 	/**
 	 * Type registered in WPGraphQL.
 	 */

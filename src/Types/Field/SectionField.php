@@ -17,7 +17,7 @@ use WPGraphQLGravityForms\Utils\Utils;
 /**
  * Class - SectionField
  */
-class SectionField extends Field {
+class SectionField extends AbstractField {
 	/**
 	 * Type registered in WPGraphQL.
 	 */

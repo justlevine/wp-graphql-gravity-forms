@@ -18,7 +18,7 @@ use WPGraphQLGravityForms\Types\GraphQLInterface\FieldInterface;
 /**
  * Class - FileUploadField
  */
-class FileUploadField extends Field {
+class FileUploadField extends AbstractField {
 	/**
 	 * Type registered in WPGraphQL.
 	 */

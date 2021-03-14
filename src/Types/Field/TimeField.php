@@ -18,7 +18,7 @@ use WPGraphQLGravityForms\Types\GraphQLInterface\FieldInterface;
 /**
  * Class - TimeField
  */
-class TimeField extends Field {
+class TimeField extends AbstractField {
 	/**
 	 * Type registered in WPGraphQL.
 	 */

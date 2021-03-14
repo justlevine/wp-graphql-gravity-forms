@@ -18,7 +18,7 @@ use WPGraphQLGravityForms\Types\GraphQLInterface\FieldInterface;
 /**
  * Class - PhoneField
  */
-class PhoneField extends Field {
+class PhoneField extends AbstractField {
 	/**
 	 * Type registered in WPGraphQL.
 	 */

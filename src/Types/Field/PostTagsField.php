@@ -17,7 +17,7 @@ use WPGraphQLGravityForms\Types\GraphQLInterface\FieldInterface;
 /**
  * Class - PostTagsField
  */
-class PostTagsField extends Field {
+class PostTagsField extends AbstractField {
 	/**
 	 * Type registered in WPGraphQL.
 	 */

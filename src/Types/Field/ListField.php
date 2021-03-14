@@ -17,7 +17,7 @@ use WPGraphQLGravityForms\Types\GraphQLInterface\FieldInterface;
 /**
  * Class - ListField
  */
-class ListField extends Field {
+class ListField extends AbstractField {
 	/**
 	 * Type registered in WPGraphQL.
 	 */
