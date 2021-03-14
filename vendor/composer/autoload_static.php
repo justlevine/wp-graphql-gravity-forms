@@ -102,6 +102,7 @@ class ComposerStaticInit42bbb390e930de9c48f43248c4deccf1
         'WPGraphQLGravityForms\\Types\\Enum\\FormLimitEntriesPeriodEnum' => __DIR__ . '/../..' . '/src/Types/Enum/FormLimitEntriesPeriodEnum.php',
         'WPGraphQLGravityForms\\Types\\Enum\\FormStatusEnum' => __DIR__ . '/../..' . '/src/Types/Enum/FormStatusEnum.php',
         'WPGraphQLGravityForms\\Types\\Enum\\FormSubLabelPlacementEnum' => __DIR__ . '/../..' . '/src/Types/Enum/FormSubLabelPlacementEnum.php',
+        'WPGraphQLGravityForms\\Types\\Enum\\IdTypeEnum' => __DIR__ . '/../..' . '/src/Types/Enum/IdTypeEnum.php',
         'WPGraphQLGravityForms\\Types\\Enum\\LabelPlacementPropertyEnum' => __DIR__ . '/../..' . '/src/Types/Enum/LabelPlacementPropertyEnum.php',
         'WPGraphQLGravityForms\\Types\\Enum\\MinPasswordStrengthEnum' => __DIR__ . '/../..' . '/src/Types/Enum/MinPasswordStrengthEnum.php',
         'WPGraphQLGravityForms\\Types\\Enum\\NotificationToTypeEnum' => __DIR__ . '/../..' . '/src/Types/Enum/NotificationToTypeEnum.php',

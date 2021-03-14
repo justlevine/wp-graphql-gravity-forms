@@ -87,6 +87,7 @@ return array(
     'WPGraphQLGravityForms\\Types\\Enum\\FormLimitEntriesPeriodEnum' => $baseDir . '/src/Types/Enum/FormLimitEntriesPeriodEnum.php',
     'WPGraphQLGravityForms\\Types\\Enum\\FormStatusEnum' => $baseDir . '/src/Types/Enum/FormStatusEnum.php',
     'WPGraphQLGravityForms\\Types\\Enum\\FormSubLabelPlacementEnum' => $baseDir . '/src/Types/Enum/FormSubLabelPlacementEnum.php',
+    'WPGraphQLGravityForms\\Types\\Enum\\IdTypeEnum' => $baseDir . '/src/Types/Enum/IdTypeEnum.php',
     'WPGraphQLGravityForms\\Types\\Enum\\LabelPlacementPropertyEnum' => $baseDir . '/src/Types/Enum/LabelPlacementPropertyEnum.php',
     'WPGraphQLGravityForms\\Types\\Enum\\MinPasswordStrengthEnum' => $baseDir . '/src/Types/Enum/MinPasswordStrengthEnum.php',
     'WPGraphQLGravityForms\\Types\\Enum\\NotificationToTypeEnum' => $baseDir . '/src/Types/Enum/NotificationToTypeEnum.php',

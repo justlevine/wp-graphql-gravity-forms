@@ -22,6 +22,7 @@ use WPGraphQLGravityForms\Types\Enum\FormDescriptionPlacementEnum;
 use WPGraphQLGravityForms\Types\Enum\FormLabelPlacementEnum;
 use WPGraphQLGravityForms\Types\Enum\FormLimitEntriesPeriodEnum;
 use WPGraphQLGravityForms\Types\Enum\FormSubLabelPlacementEnum;
+use WPGraphQLGravityForms\Types\Enum\IdTypeEnum;
 
 /**
  * Class - Form
@@ -278,19 +279,33 @@ class Form implements Hookable, Type, Field {
 				'description' => __( 'Get a Gravity Forms form.', 'wp-graphql-gravity-forms' ),
 				'type'        => self::TYPE,
 				'args'        => [
-					'id' => [
+					'id'     => [
 						'type'        => [ 'non_null' => 'ID' ],
-						'description' => __( "Unique global ID for the object. Base-64 encode a string like this, where '123' is the form ID: '{self::TYPE}:123'.", 'wp-graphql-gravity-forms' ),
+						'description' => __( 'Unique identifier for the object.', 'wp-graphql-gravity-forms' ),
+					],
+					'idType' => [
+						'type'        => IdTypeEnum::ENUM_NAME,
+						'description' => __( 'Type of unique identifier to fetch a content node by. Default is Global ID', 'wp-graphql-gravity-forms' ),
 					],
 				],
 				'resolve'     => function( $root, array $args ) : array {
-					$id_parts = Relay::fromGlobalId( $args['id'] );
+					$idType = $args['idType'] ?? 'global_id';
 
-					if ( ! is_array( $id_parts ) || empty( $id_parts['id'] ) || empty( $id_parts['type'] ) ) {
-						throw new UserError( __( 'A valid global ID must be provided.', 'wp-graphql-gravity-forms' ) );
+					/**
+					 * If global id is used, get the (int) id.
+					 */
+					if ( 'global_id' === $idType ) {
+						$id_parts = Relay::fromGlobalId( $args['id'] );
+
+						if ( ! is_array( $id_parts ) || empty( $id_parts['id'] ) || empty( $id_parts['type'] ) ) {
+							throw new UserError( __( 'A valid global ID must be provided.', 'wp-graphql-gravity-forms' ) );
+						}
+						$id = (int) sanitize_text_field( $id_parts['id'] );
+					} else {
+						$id = (int) sanitize_text_field( $args['id'] );
 					}
 
-					$form_raw = GFAPI::get_form( $id_parts['id'] );
+					$form_raw = GFAPI::get_form( $id );
 
 					if ( ! $form_raw ) {
 						throw new UserError( __( 'A valid form ID must be provided.', 'wp-graphql-gravity-forms' ) );
