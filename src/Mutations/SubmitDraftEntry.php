@@ -78,9 +78,21 @@ class SubmitDraftEntry implements Hookable, Mutation {
 	 */
 	public static function get_input_fields() : array {
 		return [
-			'resumeToken' => [
+			'forceCreate'          => [
+				'type'        => 'Boolean',
+				'description' => __( 'Optional. If `true`, a new entry will be created even if the draft entry was created from an existing one. Defaults to `false`.', 'wp-graphql-gravity-forms' ),
+			],
+			'resumeToken'          => [
 				'type'        => 'String',
 				'description' => __( 'Draft resume token.', 'wp-graphql-gravity-forms' ),
+			],
+			'triggerNotifications' => [
+				'type'        => 'Boolean',
+				'description' => __( 'Whether GravityForms notifications should be sent. Defaults to `true`.', 'wp-graphql-gravity-forms' ),
+			],
+			'triggerPostCreation'  => [
+				'type'        => 'Boolean',
+				'description' => __( 'Optional. Whether a new post should be created.', 'wp-graphql-gravity-forms' ),
 			],
 		];
 	}
@@ -131,11 +143,23 @@ class SubmitDraftEntry implements Hookable, Mutation {
 
 			$this->validate_form_id( $form_id );
 
-			$entry_id = $this->create_entry( $draft_entry );
+			// Force creates new entry if `$input['createNewEntry']` is true.
+			$submission = $this->get_draft_submission( $draft_entry );
+			$entry_id   = $input['createNewEntry'] ?? false ? $this->create_entry( $submission['partial_entry'] ) : $this->maybe_update_entry( $submission['partial_entry'] );
 
-			$this->create_post( $form_id, $entry_id );
+			/**
+			 * Create a new post if Post Creation fields are in use.
+			 *
+			 * @TODO: Check how GF handles post creation when entries are updated.
+			 */
+			if ( ! isset( $input['triggerPostCreation'] ) || $input['triggerPostCreation'] ) {
+				$this->create_post( $form_id, $entry_id );
+			}
 
-			$this->send_notifications( $form_id, $entry_id );
+			// Send notifications.
+			if ( ! isset( $input['triggerNotifications'] ) || $input['triggerNotifications'] ) {
+				$this->send_notifications( $form_id, $entry_id );
+			}
 
 			GFFormsModel::delete_draft_submission( $resume_token );
 			GFFormsModel::purge_expired_draft_submissions();
@@ -177,21 +201,50 @@ class SubmitDraftEntry implements Hookable, Mutation {
 	}
 
 	/**
+	 * Updates existing Gravity Forms entry if it exists. Otherwise, creates new entry.
+	 *
+	 * @param array $partial_entry .
+	 * @return integer
+	 */
+	private function maybe_update_entry( array $partial_entry ) : int {
+		if ( $partial_entry['id'] ) {
+			return $this->update_entry( $partial_entry );
+		}
+		return $this->create_entry( $partial_entry );
+	}
+
+	/**
 	 * Creates Gravity Forms entry from draft entry.
 	 *
-	 * @param array $draft_entry .
+	 * @param array $partial_entry .
 	 * @return integer
 	 * @throws UserError .
 	 */
-	private function create_entry( array $draft_entry ) : int {
-		$submission = $this->get_draft_submission( $draft_entry );
-		$entry_id   = GFAPI::add_entry( $submission['partial_entry'] );
+	private function create_entry( array $partial_entry ) : int {
+		$entry_id = GFAPI::add_entry( $partial_entry );
 
 		if ( is_wp_error( $entry_id ) ) {
 			throw new UserError( __( 'An error occurred while trying to submit the draft entry.', 'wp-graphql-gravity-forms' ) . ' ' . $entry_id->get_error_message() );
 		}
 
 		return $entry_id;
+	}
+
+	/**
+	 * Updates the existing Gravity Forms entry from the current draft entry.
+	 *
+	 * @param array $partial_entry .
+	 * @return integer
+	 * @throws UserError .
+	 */
+	private function update_entry( array $partial_entry ) : int {
+		$is_entry_updated = GFAPI::update_entry( $partial_entry );
+
+		if ( is_wp_error( ( $is_entry_updated ) ) ) {
+			throw new UserError( __( 'An error occured while trying to update the entry.', 'wp-graphql-gravity-forms' ) . ' ' . $is_entry_updated->get_error_message() );
+		}
+
+		return $partial_entry['id'];
 	}
 
 	/**
