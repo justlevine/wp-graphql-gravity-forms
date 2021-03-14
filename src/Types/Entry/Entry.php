@@ -21,6 +21,7 @@ use WPGraphQLGravityForms\Interfaces\Type;
 use WPGraphQLGravityForms\Interfaces\Field;
 use WPGraphQLGravityForms\DataManipulators\EntryDataManipulator;
 use WPGraphQLGravityForms\DataManipulators\DraftEntryDataManipulator;
+use WPGraphQLGravityForms\Types\Enum\EntryStatusEnum;
 
 /**
  * Class - Entry
@@ -134,10 +135,9 @@ class Entry implements Hookable, Type, Field {
 						'type'        => 'Integer',
 						'description' => __( 'ID of the user that submitted of the form if a logged in user submitted the form.', 'wp-graphql-gravity-forms' ),
 					],
-					// @TODO: Convert to an enum.
 					'status'      => [
-						'type'        => 'String',
-						'description' => __( 'The current status of the entry; "active", "spam", or "trash".', 'wp-graphql-gravity-forms' ),
+						'type'        => EntryStatusEnum::ENUM_NAME,
+						'description' => __( 'The current status of the entry.', 'wp-graphql-gravity-forms' ),
 					],
 					'isDraft'     => [
 						'type'        => 'Boolean',
