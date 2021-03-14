@@ -29,14 +29,14 @@ class SignatureFieldValue implements Hookable, Type, FieldValue {
 	/**
 	 * Register hooks to WordPress.
 	 */
-	public function register_hooks() {
+	public function register_hooks() : void {
 		add_action( 'graphql_register_types', [ $this, 'register_type' ] );
 	}
 
 	/**
 	 * Register Object type to GraphQL schema.
 	 */
-	public function register_type() {
+	public function register_type() : void {
 		register_graphql_object_type(
 			self::TYPE,
 			[
@@ -60,7 +60,7 @@ class SignatureFieldValue implements Hookable, Type, FieldValue {
 	 * @return array Entry field value.
 	 */
 	public static function get( array $entry, GF_Field $field ) : array {
-		if ( ! class_exists( 'GF_Field_Signature' ) || ! array_key_exists( $field['id'], $entry ) ) {
+		if ( ! class_exists( 'GF_Field_Signature' ) || ! $field instanceof GF_Field_Signature || ! array_key_exists( $field['id'], $entry ) ) {
 			return [ 'url' => null ];
 		}
 

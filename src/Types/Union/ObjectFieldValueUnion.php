@@ -45,7 +45,7 @@ class ObjectFieldValueUnion implements Hookable, Type {
 	/**
 	 * Register hooks to WordPress.
 	 */
-	public function register_hooks() {
+	public function register_hooks() : void {
 		add_action( 'graphql_register_types', [ $this, 'register_type' ], 11 );
 	}
 
@@ -54,7 +54,7 @@ class ObjectFieldValueUnion implements Hookable, Type {
 	 *
 	 * @param TypeRegistry $type_registry .
 	 */
-	public function register_type( TypeRegistry $type_registry ) {
+	public function register_type( TypeRegistry $type_registry ) : void {
 		register_graphql_union_type(
 			self::TYPE,
 			[

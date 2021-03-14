@@ -56,7 +56,7 @@ class UpdateDraftEntrySignatureFieldValue extends DraftEntryUpdater {
 	 *
 	 * @throws UserError .
 	 */
-	private function ensure_signature_plugin_is_active() {
+	private function ensure_signature_plugin_is_active() : void {
 		if ( ! class_exists( 'GFSignature' ) ) {
 			throw new UserError( __( 'The Gravity Forms Signature Add-On plugin must be active for signature field values to be saved.', 'wp-graphql-gravity-forms' ) );
 		}
@@ -67,7 +67,7 @@ class UpdateDraftEntrySignatureFieldValue extends DraftEntryUpdater {
 	 *
 	 * @throws UserError .
 	 */
-	private function ensure_signatures_folder_exists() {
+	private function ensure_signatures_folder_exists() : void {
 		$folder = GFSignature::get_signatures_folder();
 		$exists = wp_mkdir_p( $folder );
 
@@ -82,7 +82,7 @@ class UpdateDraftEntrySignatureFieldValue extends DraftEntryUpdater {
 	/**
 	 * Deletes previous signature image.
 	 */
-	private function delete_previous_signature_image() {
+	private function delete_previous_signature_image() : void {
 		$prev_filename = $this->submission['partial_entry'][ $this->field['id'] ] ?? '';
 
 		if ( ! $prev_filename ) {

@@ -27,14 +27,14 @@ class FieldFiltersOperatorInputEnum implements Hookable, Enum {
 	/**
 	 * Register hooks to WordPress.
 	 */
-	public function register_hooks() {
+	public function register_hooks() : void {
 		add_action( 'graphql_register_types', [ $this, 'register' ] );
 	}
 
 	/**
 	 * Registers Enum type.
 	 */
-	public function register() {
+	public function register() : void {
 		register_graphql_enum_type(
 			self::TYPE,
 			[
