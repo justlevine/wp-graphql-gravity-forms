@@ -11,6 +11,9 @@
 
 namespace WPGraphQLGravityForms\Types\Field;
 
+use WPGraphQLGravityForms\Types\Enum\CaptchaThemeEnum;
+use WPGraphQLGravityForms\Types\Enum\CaptchaTypeEnum;
+use WPGraphQLGravityForms\Types\Enum\SizePropertyEnum;
 use WPGraphQLGravityForms\Types\Field\FieldProperty;
 use WPGraphQLGravityForms\Types\GraphQLInterface\FieldInterface;
 use WPGraphQLGravityForms\Utils\Utils;
@@ -60,16 +63,16 @@ class CaptchaField extends Field {
 							'description' => __( 'The language used when the captcha is displayed. This property is available when the captchaType is “captcha”, the default. The possible values are the language codes used by WordPress.', 'wp-graphql-gravity-forms' ),
 						],
 						'captchaTheme'                 => [
-							'type'        => 'String',
-							'description' => __( 'Determines the theme to be used for the reCAPTCHA field. Only applicable to the recaptcha captcha type. Possible values: red, white, blackglass, clean.', 'wp-graphql-gravity-forms' ),
+							'type'        => CaptchaThemeEnum::ENUM_NAME,
+							'description' => __( 'Determines the theme to be used for the reCAPTCHA field. Only applicable to the recaptcha captcha type.', 'wp-graphql-gravity-forms' ),
 						],
 						'captchaType'                  => [
-							'type'        => 'String',
-							'description' => __( 'Determines the type of CAPTCHA field to be used. Possible values: recaptcha, simple_captcha, math.', 'wp-graphql-gravity-forms' ),
+							'type'        => CaptchaTypeEnum::ENUM_NAME,
+							'description' => __( 'Determines the type of CAPTCHA field to be used.', 'wp-graphql-gravity-forms' ),
 						],
 						'simpleCaptchaSize'            => [
-							'type'        => 'String',
-							'description' => __( 'Determines the CAPTCHA image size. Only applicable to simple_captcha and math captcha types. Possible values: small, medium, large.', 'wp-graphql-gravity-forms' ),
+							'type'        => SizePropertyEnum::ENUM_NAME,
+							'description' => __( 'Determines the CAPTCHA image size. Only applicable to simple_captcha and math captcha types.', 'wp-graphql-gravity-forms' ),
 						],
 						'simpleCaptchaFontColor'       => [
 							'type'        => 'String',

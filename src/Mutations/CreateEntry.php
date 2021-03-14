@@ -62,7 +62,7 @@ class CreateEntry implements Hookable, Mutation {
 				'description' => __( 'The form ID.', 'wp-graphql-gravity-forms' ),
 			],
 			'entryType'  => [
-				'type'        => EntryTypeEnum::TYPE,
+				'type'        => EntryTypeEnum::ENUM_NAME,
 				'description' => __( 'Whether the user is creating a new entry or updating an existing one.', 'wp-graphql-gravity-forms' ),
 			],
 			'entryId'    => [

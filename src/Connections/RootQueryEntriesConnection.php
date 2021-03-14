@@ -17,6 +17,8 @@ use WPGraphQL\AppContext;
 use WPGraphQLGravityForms\Interfaces\Hookable;
 use WPGraphQLGravityForms\Interfaces\Connection;
 use WPGraphQLGravityForms\Types\Entry\Entry;
+use WPGraphQLGravityForms\Types\Enum\EntryStatusEnum;
+use WPGraphQLGravityForms\Types\Enum\FieldFiltersModeEnum;
 use WPGraphQLGravityForms\Types\Input\EntriesDateFiltersInput;
 use WPGraphQLGravityForms\Types\Input\EntriesFieldFiltersInput;
 use WPGraphQLGravityForms\Types\Input\EntriesSortingInput;
@@ -51,10 +53,9 @@ class RootQueryEntriesConnection implements Hookable, Connection {
 						'type'        => [ 'list_of' => 'ID' ],
 						'description' => __( 'Array of form IDs to limit the entries to. Exclude this argument to query all forms.', 'wp-graphql-gravity-forms' ),
 					],
-					// @TODO: Convert to an enum.
 					'status'           => [
-						'type'        => 'String',
-						'description' => __( 'Entry status. Possible values: "active" (default), "spam", "trash" or "all".', 'wp-graphql-gravity-forms' ),
+						'type'        => EntryStatusEnum::ENUM_NAME,
+						'description' => __( 'Entry status. Default is "ACTIVE".', 'wp-graphql-gravity-forms' ),
 					],
 					'dateFilters'      => [
 						'type'        => EntriesDateFiltersInput::TYPE,
@@ -64,10 +65,9 @@ class RootQueryEntriesConnection implements Hookable, Connection {
 						'type'        => [ 'list_of' => EntriesFieldFiltersInput::TYPE ],
 						'description' => __( 'Field-specific filters to apply.', 'wp-graphql-gravity-forms' ),
 					],
-					// @TODO: Convert to an enum.
 					'fieldFiltersMode' => [
-						'type'        => 'String',
-						'description' => __( 'Whether to filter by ALL or ANY of the field filters. Possible values: "all" (default) or "any".', 'wp-graphql-gravity-forms' ),
+						'type'        => FieldFiltersModeEnum::ENUM_NAME,
+						'description' => __( 'Whether to filter by ALL or ANY of the field filters. Default is ALL.', 'wp-graphql-gravity-forms' ),
 					],
 					'sort'             => [
 						'type'        => EntriesSortingInput::TYPE,

@@ -11,6 +11,7 @@
 
 namespace WPGraphQLGravityForms\Types\Field;
 
+use WPGraphQLGravityForms\Types\Enum\TimeFieldFormatEnum;
 use WPGraphQLGravityForms\Types\Field\FieldProperty;
 use WPGraphQLGravityForms\Types\GraphQLInterface\FieldInterface;
 
@@ -63,8 +64,8 @@ class TimeField extends Field {
 					FieldProperty\VisibilityProperty::get(),
 					[
 						'timeFormat' => [
-							'type'        => 'String',
-							'description' => __( 'Determines how the time is displayed. Possible values: "12", "24"', 'wp-graphql-gravity-forms' ),
+							'type'        => TimeFieldFormatEnum::ENUM_NAME,
+							'description' => __( 'Determines how the time is displayed.', 'wp-graphql-gravity-forms' ),
 						],
 					]
 				),
