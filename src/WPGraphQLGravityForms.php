@@ -171,6 +171,7 @@ final class WPGraphQLGravityForms {
 		$this->instances['form_limit_entries_period_enum']      = new Enum\FormLimitEntriesPeriodEnum();
 		$this->instances['form_status_enum']                    = new Enum\FormStatusEnum();
 		$this->instances['form_sub_label_placement_enum']       = new Enum\FormSubLabelPlacementEnum();
+		$this->instances['id_type_enum']                        = new Enum\IdTypeEnum();
 		$this->instances['label_placement_property_enum']       = new Enum\LabelPlacementPropertyEnum();
 		$this->instances['min_password_strength_enum']          = new Enum\MinPasswordStrengthEnum();
 		$this->instances['notification_to_type_enum']           = new Enum\NotificationToTypeEnum();

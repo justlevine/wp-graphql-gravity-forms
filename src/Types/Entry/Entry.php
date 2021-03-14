@@ -22,6 +22,7 @@ use WPGraphQLGravityForms\Interfaces\Field;
 use WPGraphQLGravityForms\Interfaces\Hookable;
 use WPGraphQLGravityForms\Interfaces\Type;
 use WPGraphQLGravityForms\Types\Enum\EntryStatusEnum;
+use WPGraphQLGravityForms\Types\Enum\IdTypeEnum;
 
 /**
  * Class - Entry
@@ -169,9 +170,13 @@ class Entry implements Hookable, Type, Field {
 				'description' => __( 'Get a Gravity Forms entry.', 'wp-graphql-gravity-forms' ),
 				'type'        => self::TYPE,
 				'args'        => [
-					'id' => [
+					'id'     => [
 						'type'        => [ 'non_null' => 'ID' ],
-						'description' => __( "Unique global ID for the object. Base-64 encode a string like this, where '123' is the entry ID (or the resume token for a draft entry): '{self::TYPE}:123'.", 'wp-graphql-gravity-forms' ),
+						'description' => __( 'Unique identifier for the object.', 'wp-graphql-gravity-forms' ),
+					],
+					'idType' => [
+						'type'        => IdTypeEnum::ENUM_NAME,
+						'description' => __( 'Type of unique identifier to fetch a content node by. Default is Global ID', 'wp-graphql-gravity-forms' ),
 					],
 				],
 				'resolve'     => function( $root, array $args, AppContext $context, ResolveInfo $info ) {
@@ -179,13 +184,21 @@ class Entry implements Hookable, Type, Field {
 						throw new UserError( __( 'Sorry, you are not allowed to view Gravity Forms entries.', 'wp-graphql-gravity-forms' ) );
 					}
 
-					$id_parts = Relay::fromGlobalId( $args['id'] );
+					$idType = $args['idType'] ?? 'global_id';
+					/**
+					 * If global id is used, get the (int) id.
+					 */
+					if ( 'global_id' === $idType ) {
+						$id_parts = Relay::fromGlobalId( $args['id'] );
 
-					if ( ! is_array( $id_parts ) || empty( $id_parts['id'] ) || empty( $id_parts['type'] ) ) {
-						throw new UserError( __( 'A valid global ID must be provided.', 'wp-graphql-gravity-forms' ) );
+						if ( ! is_array( $id_parts ) || empty( $id_parts['id'] ) || empty( $id_parts['type'] ) ) {
+							throw new UserError( __( 'A valid global ID must be provided.', 'wp-graphql-gravity-forms' ) );
+						}
+						$id = (int) sanitize_text_field( $id_parts['id'] );
+					} else {
+						$id = (int) sanitize_text_field( $args['id'] );
 					}
 
-					$id    = (int) sanitize_text_field( $id_parts['id'] );
 					$entry = GFAPI::get_entry( $id );
 
 					if ( ! is_wp_error( $entry ) ) {
