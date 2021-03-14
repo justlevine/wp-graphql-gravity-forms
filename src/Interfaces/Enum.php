@@ -16,4 +16,19 @@ interface Enum {
 	 * Register a WPGraphQL Enum.
 	 */
 	public function register() : void;
+
+	/**
+	 * Sets the Enum type description.
+	 *
+	 * @return string Enum type description.
+	 */
+	public function set_type_description() : string;
+
+	/**
+	 * Sets the Enum type values.
+	 *
+	 * @return array
+	 */
+	public function set_values() : array;
+
 }
