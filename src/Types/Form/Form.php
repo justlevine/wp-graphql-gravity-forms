@@ -17,8 +17,11 @@ use WPGraphQLGravityForms\Interfaces\Hookable;
 use WPGraphQLGravityForms\Interfaces\Type;
 use WPGraphQLGravityForms\Interfaces\Field;
 use WPGraphQLGravityForms\DataManipulators\FormDataManipulator;
-use WPGraphQLGravityForms\Types\Union\ObjectFieldUnion;
 use WPGraphQLGravityForms\Types\Button\Button;
+use WPGraphQLGravityForms\Types\Enum\FormDescriptionPlacementEnum;
+use WPGraphQLGravityForms\Types\Enum\FormLabelPlacementEnum;
+use WPGraphQLGravityForms\Types\Enum\FormLimitEntriesPeriodEnum;
+use WPGraphQLGravityForms\Types\Enum\FormSubLabelPlacementEnum;
 
 /**
  * Class - Form
@@ -83,14 +86,12 @@ class Form implements Hookable, Type, Field {
 						'type'        => 'String',
 						'description' => __( 'Form description.', 'wp-graphql-gravity-forms' ),
 					],
-					// @TODO - Convert to enum. Possible values: top_label, left_label, right_label
 					'labelPlacement'             => [
-						'type'        => 'String',
-						'description' => __( 'Determines if the field labels are displayed on top of the fields (top_label), beside the fields and aligned to the left (left_label) or beside the fields and aligned to the right (right_label).', 'wp-graphql-gravity-forms' ),
+						'type'        => FormLabelPlacementEnum::ENUM_NAME,
+						'description' => __( 'Determines where the field labels should be placed in relation to the field.', 'wp-graphql-gravity-forms' ),
 					],
-					// @TODO - Convert to enum. Possible values: above, below
 					'descriptionPlacement'       => [
-						'type'        => 'String',
+						'type'        => FormDescriptionPlacementEnum::ENUM_NAME,
 						'description' => __( 'Determines if the field description is displayed above the field input (i.e. immediately after the field label) or below the field input.', 'wp-graphql-gravity-forms' ),
 					],
 					'button'                     => [
@@ -145,9 +146,8 @@ class Form implements Hookable, Type, Field {
 						'type'        => 'String',
 						'description' => __( 'For forms with Post fields, determines the status that the Post should be created with.', 'wp-graphql-gravity-forms' ),
 					],
-					// @TODO: Convert to an enum. https://docs.gravityforms.com/gf_field_name/
 					'subLabelPlacement'          => [
-						'type'        => 'String',
+						'type'        => FormSubLabelPlacementEnum::ENUM_NAME,
 						'description' => __( 'How sub-labels are aligned.', 'wp-graphql-gravity-forms' ),
 					],
 					'cssClass'                   => [
@@ -178,10 +178,9 @@ class Form implements Hookable, Type, Field {
 						'type'        => 'Int',
 						'description' => __( 'When limitEntries is set to 1, this property specifies the number of submissions allowed.', 'wp-graphql-gravity-forms' ),
 					],
-					// @TODO: Convert to an enum.
 					'limitEntriesPeriod'         => [
-						'type'        => 'String',
-						'description' => __( 'When limitEntries is set to 1, this property specifies the time period during which submissions are allowed. Options are "day", "week", "month" and "year".', 'wp-graphql-gravity-forms' ),
+						'type'        => FormLimitEntriesPeriodEnum::ENUM_NAME,
+						'description' => __( 'When limitEntries is set to 1, this property specifies the time period during which submissions are allowed.', 'wp-graphql-gravity-forms' ),
 					],
 					'limitEntriesMessage'        => [
 						'type'        => 'String',

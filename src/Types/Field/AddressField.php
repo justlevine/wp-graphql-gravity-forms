@@ -11,6 +11,7 @@
 
 namespace WPGraphQLGravityForms\Types\Field;
 
+use WPGraphQLGravityForms\Types\Enum\AddressTypeEnum;
 use WPGraphQLGravityForms\Types\Field\FieldProperty;
 use WPGraphQLGravityForms\Types\GraphQLInterface\FieldInterface;
 use WPGraphQLGravityForms\Utils\Utils;
@@ -62,9 +63,8 @@ class AddressField extends Field {
 					FieldProperty\SubLabelPlacementProperty::get(),
 					FieldProperty\VisibilityProperty::get(),
 					[
-						// @TODO - Convert to an enum. Possible values: international, us, canadian
 						'addressType'             => [
-							'type'        => 'String',
+							'type'        => AddressTypeEnum::ENUM_NAME,
 							'description' => __( 'Determines the type of address to be displayed.', 'wp-graphql-gravity-forms' ),
 						],
 						'copyValuesOptionDefault' => [
@@ -81,15 +81,15 @@ class AddressField extends Field {
 						],
 						'defaultCountry'          => [
 							'type'        => 'String',
-							'description' => __( 'Contains the country that will be selected by default. Only applicable when "addressType" is set to "international".', 'wp-graphql-gravity-forms' ),
+							'description' => __( 'Contains the country that will be selected by default. Only applicable when "addressType" is set to "INTERATIONAL".', 'wp-graphql-gravity-forms' ),
 						],
 						'defaultProvince'         => [
 							'type'        => 'String',
-							'description' => __( 'Contains the province that will be selected by default. Only applicable when "addressType" is set to "canadian".', 'wp-graphql-gravity-forms' ),
+							'description' => __( 'Contains the province that will be selected by default. Only applicable when "addressType" is set to "CANADA".', 'wp-graphql-gravity-forms' ),
 						],
 						'defaultState'            => [
 							'type'        => 'String',
-							'description' => __( 'Contains the state that will be selected by default. Only applicable when "addressType" is set to "us".', 'wp-graphql-gravity-forms' ),
+							'description' => __( 'Contains the state that will be selected by default. Only applicable when "addressType" is set to "US".', 'wp-graphql-gravity-forms' ),
 						],
 						'enableCopyValuesOption'  => [
 							'type'        => 'Boolean',
