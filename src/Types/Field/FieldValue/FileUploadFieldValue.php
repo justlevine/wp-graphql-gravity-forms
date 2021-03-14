@@ -40,9 +40,19 @@ class FileUploadFieldValue implements Hookable, Type, FieldValue {
 			[
 				'description' => __( 'File upload field value.', 'wp-graphql-gravity-forms' ),
 				'fields'      => [
-					'url' => [
+					'value' => [
 						'type'        => 'String',
 						'description' => __( 'URL to the uploaded file.', 'wp-graphql-gravity-forms' ),
+					],
+					/**
+					 * Deprecated properties.
+					 *
+					 * @since 0.4.0
+					 */
+					'url'   => [
+						'type'              => 'String',
+						'description'       => __( 'URL to the uploaded file.', 'wp-graphql-gravity-forms' ),
+						'deprecationReason' => __( 'Please use `value` instead.', 'wp-graphql-gravity-forms' ),
 					],
 				],
 			]
@@ -58,8 +68,10 @@ class FileUploadFieldValue implements Hookable, Type, FieldValue {
 	 * @return array Entry field value.
 	 */
 	public static function get( array $entry, GF_Field $field ) : array {
+		$value = isset( $entry[ $field['id'] ] ) ? (string) $entry[ $field['id'] ] : null;
 		return [
-			'url' => isset( $entry[ $field['id'] ] ) ? (string) $entry[ $field['id'] ] : null,
+			'value' => $value,
+			'url'   => $value, // Deprecated @since 0.4.0 .
 		];
 	}
 }
