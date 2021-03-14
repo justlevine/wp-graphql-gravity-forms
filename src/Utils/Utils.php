@@ -34,4 +34,14 @@ class Utils {
 
 		return $property;
 	}
+
+	/**
+	 * Converts a string to snake_case.
+	 *
+	 * @param string $string the original string.
+	 * @return string
+	 */
+	public static function to_snake_case( string $string ) : string {
+		return strtolower( preg_replace( [ '/([a-z\d])([A-Z])/', '/([^_])([A-Z][a-z])/' ], '$1_$2', $string ) );
+	}
 }
