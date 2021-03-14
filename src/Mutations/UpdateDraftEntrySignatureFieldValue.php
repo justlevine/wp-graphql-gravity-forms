@@ -117,10 +117,11 @@ class UpdateDraftEntrySignatureFieldValue extends DraftEntryUpdater {
 			throw new UserError( __( 'The signature image exceeds the maximum upload file size allowed.', 'wp-graphql-gravity-forms' ) );
 		}
 
-		$folder          = GFSignature::get_signatures_folder();
-		$filename        = uniqid( '', true ) . '.png';
-		$path            = $folder . $filename;
-		$number_of_bytes = file_put_contents( $path, $signature_decoded );
+		$folder   = GFSignature::get_signatures_folder();
+		$filename = uniqid( '', true ) . '.png';
+		$path     = $folder . $filename;
+		// @TODO: switch to WP Filesystem.
+		$number_of_bytes = file_put_contents( $path, $signature_decoded ); //phpcs:disable WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
 
 		if ( false === $number_of_bytes ) {
 			throw new UserError( __( 'An error occurred while saving the signature image.', 'wp-graphql-gravity-forms' ) );
