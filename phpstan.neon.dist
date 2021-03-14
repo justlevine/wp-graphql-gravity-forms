@@ -2,6 +2,8 @@ parameters:
 		level: 8
 		inferPrivatePropertyTypeFromConstructor: true
 		checkMissingIterableValueType: false
+		featureToggles:
+			disableRuntimeReflectionProvider: true
 		bootstrapFiles:
 			- wp-graphql-gravity-forms.php
 		paths:
@@ -22,10 +24,6 @@ parameters:
 			- "#^Access to undefined constant WPGraphQLGravityForms\\\\Types\\\\Enum\\\\AbstractEnum\\:\\:ENUM_NAME\\.$#"
 			- "#^Access to undefined constant WPGraphQLGravityForms\\\\Types\\\\Field\\\\Field\\:\\:GF_TYPE\\.$#"
 			- "#^Access to undefined constant WPGraphQLGravityForms\\\\Types\\\\Field\\\\Field\\:\\:TYPE\\.$#"
-			-
-				message: "#^Call to an undefined method WPGraphQLGravityForms\\\\Mutations\\\\DraftEntryUpdater\\:\\:prepare_field_value\\(\\)\\.$#"
-				count: 1
-				path: src/Mutations/DraftEntryUpdater.php
 			-
 				message: "#^Parameter \\#1 \\$str of function strtolower expects string, string\\|null given\\.$#"
 				count: 1

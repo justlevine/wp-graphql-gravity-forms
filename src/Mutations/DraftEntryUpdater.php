@@ -151,7 +151,11 @@ abstract class DraftEntryUpdater implements Hookable, Mutation {
 			$form             = $this->get_draft_form();
 			$field_id         = absint( $input['fieldId'] );
 			$this->field      = $this->get_field_by_id( $form, $field_id );
-			$this->value      = $this->prepare_field_value( $input['value'] );
+
+			if ( ! method_exists( $this, 'prepare_field_value' ) ) {
+				throw new UserError( __( 'Mutation not processed. Field values could not be prepared', 'wp-graphql-gravity-forms' ) );
+			}
+			$this->value = $this->prepare_field_value( $input['value'] );
 
 			$this->field->validate( $this->value, $form );
 

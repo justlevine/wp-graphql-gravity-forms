@@ -78,8 +78,8 @@ class RootQueryEntriesConnection implements Hookable, Connection {
 					/**
 					 * Filter to control whether the user should be allowed to view entries.
 					 *
-					 * @param bool  Whether the current user should be allowed to view form entries.
-					 * @param array The form IDs to get entries by.
+					 * @param bool $can_view_entries Whether the current user should be allowed to view form entries.
+					 * @param array $form_ids The form IDs to get entries by.
 					 */
 					$can_user_view_entries = apply_filters( 'wp_graphql_gf_can_view_entries', current_user_can( 'gravityforms_view_entries' ), $this->get_form_ids( $args ) );
 
