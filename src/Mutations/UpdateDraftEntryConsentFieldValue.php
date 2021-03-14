@@ -26,7 +26,7 @@ class UpdateDraftEntryConsentFieldValue extends DraftEntryUpdater {
 	 */
 	protected function get_value_input_field() : array {
 		return [
-			'type'        => 'Boolean',
+			'type'        => 'String',
 			'description' => __( 'Consent input values.', 'wp-graphql-gravity-forms' ),
 		];
 	}
