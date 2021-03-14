@@ -11,6 +11,9 @@
 
 namespace WPGraphQLGravityForms\Types\Field;
 
+use WPGraphQLGravityForms\Types\Enum\CalendarIconTypeEnum;
+use WPGraphQLGravityForms\Types\Enum\DateFieldFormatEnum;
+use WPGraphQLGravityForms\Types\Enum\DateTypeEnum;
 use WPGraphQLGravityForms\Types\Field\FieldProperty;
 use WPGraphQLGravityForms\Types\GraphQLInterface\FieldInterface;
 
@@ -65,20 +68,20 @@ class DateField extends Field {
 					FieldProperty\VisibilityProperty::get(),
 					[
 						'calendarIconType' => [
-							'type'        => 'String',
-							'description' => __( 'Determines how the date field displays it’s calendar icon. Possible values: calendar, custom, none.', 'wp-graphql-gravity-forms' ),
+							'type'        => CalendarIconTypeEnum::ENUM_NAME,
+							'description' => __( 'Determines how the date field displays it’s calendar icon.', 'wp-graphql-gravity-forms' ),
 						],
 						'calendarIconUrl'  => [
 							'type'        => 'String',
 							'description' => __( 'Contains the URL to the custom calendar icon. Only applicable when calendarIconType is set to custom.', 'wp-graphql-gravity-forms' ),
 						],
 						'dateFormat'       => [
-							'type'        => 'String',
-							'description' => __( 'Determines how the date is displayed. Possible values: mdy, dmy.', 'wp-graphql-gravity-forms' ),
+							'type'        => DateFieldFormatEnum::ENUM_NAME,
+							'description' => __( 'Determines how the date is displayed.', 'wp-graphql-gravity-forms' ),
 						],
 						'dateType'         => [
-							'type'        => 'String',
-							'description' => __( 'The type of date field to display, from a simple date field, to a drop down, to a calendar picker. Possible Values: datefield, datedropdown, datepicker.', 'wp-graphql-gravity-forms' ),
+							'type'        => DateTypeEnum::ENUM_NAME,
+							'description' => __( 'The type of date field to display.', 'wp-graphql-gravity-forms' ),
 						],
 					]
 				),

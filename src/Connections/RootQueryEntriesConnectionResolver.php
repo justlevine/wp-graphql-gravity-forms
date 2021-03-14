@@ -14,6 +14,8 @@ use GFAPI;
 use GraphQL\Error\UserError;
 use WPGraphQL\Data\Connection\AbstractConnectionResolver;
 use WPGraphQLGravityForms\Data\Loader\EntriesLoader;
+use WPGraphQLGravityForms\Types\Enum\EntryStatusEnum;
+use WPGraphQLGravityForms\Types\Enum\FieldFiltersModeEnum;
 use WPGraphQLGravityForms\Types\Enum\FieldFiltersOperatorInputEnum;
 
 /**
@@ -169,7 +171,7 @@ class RootQueryEntriesConnectionResolver extends AbstractConnectionResolver {
 
 		if ( ! empty( $this->args['where']['fieldFilters'] ) && is_array( $this->args['where']['fieldFilters'] ) ) {
 			$search_criteria['field_filters'] = array_merge(
-				[ 'mode' => $this->args['where']['fieldFiltersMode'] ?? 'all' ],
+				[ 'mode' => $this->args['where']['fieldFiltersMode'] ?? FieldFiltersModeEnum::ALL ],
 				$this->format_field_filters( $this->args['where']['fieldFilters'] )
 			);
 		}
@@ -184,10 +186,10 @@ class RootQueryEntriesConnectionResolver extends AbstractConnectionResolver {
 	 * @return array
 	 */
 	private function apply_status_to_search_criteria( array $search_criteria ) : array {
-		$status = $this->args['where']['status'] ?? 'active'; // Default to active entries.
+		$status = $this->args['where']['status'] ?? EntryStatusEnum::ACTIVE; // Default to active entries.
 
 		// For all entries, don't add a 'status' value to search criteria.
-		if ( 'all' === $status ) {
+		if ( 'ALL' === $status ) {
 			return $search_criteria;
 		}
 

@@ -13,6 +13,7 @@ namespace WPGraphQLGravityForms\Types\Button;
 use WPGraphQLGravityForms\Interfaces\Hookable;
 use WPGraphQLGravityForms\Interfaces\Type;
 use WPGraphQLGravityForms\Types\ConditionalLogic\ConditionalLogic;
+use WPGraphQLGravityForms\Types\Enum\ButtonTypeEnum;
 
 /**
  * Class - Button
@@ -36,10 +37,9 @@ class Button implements Hookable, Type {
 			[
 				'description' => __( 'Gravity Forms button.', 'wp-graphql-gravity-forms' ),
 				'fields'      => [
-					// @TODO: Convert to an enum.
 					'type'             => [
-						'type'        => 'String',
-						'description' => __( 'Specifies the type of button to be displayed. Possible values: text, image.', 'wp-graphql-gravity-forms' ),
+						'type'        => ButtonTypeEnum::ENUM_NAME,
+						'description' => __( 'Specifies the type of button to be displayed. Defaults to TEXT.', 'wp-graphql-gravity-forms' ),
 					],
 					'text'             => [
 						'type'        => 'String',

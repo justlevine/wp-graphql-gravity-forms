@@ -78,7 +78,7 @@ class RootQueryFormsConnectionResolver {
 	 * @return array
 	 */
 	private function get_form_status( array $args ) : array {
-		$status = $args['where']['status'] ?? '';
+		$status = $args['where']['status'] ?? FormStatusEnum::ACTIVE;
 
 		if ( FormStatusEnum::INACTIVE === $status ) {
 			return [

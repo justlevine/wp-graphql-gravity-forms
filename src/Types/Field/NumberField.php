@@ -12,6 +12,7 @@
 namespace WPGraphQLGravityForms\Types\Field;
 
 use GF_Field_Number;
+use WPGraphQLGravityForms\Types\Enum\NumberFieldFormatEnum;
 use WPGraphQLGravityForms\Types\Field\FieldProperty;
 use WPGraphQLGravityForms\Types\GraphQLInterface\FieldInterface;
 
@@ -76,8 +77,8 @@ class NumberField extends Field {
 							'description' => __( 'Indicates whether the number field is a calculation.', 'wp-graphql-gravity-forms' ),
 						],
 						'numberFormat'        => [
-							'type'        => 'String',
-							'description' => __( 'Specifies the format allowed for the number field. Possible values are "currency", "decimal_dot" (9,999.99), "decimal_comma" (9.999,99).', 'wp-graphql-gravity-forms' ),
+							'type'        => NumberFieldFormatEnum::ENUM_NAME,
+							'description' => __( 'Specifies the format allowed for the number field.', 'wp-graphql-gravity-forms' ),
 						],
 						'rangeMin'            => [
 							'type'        => 'Float',
