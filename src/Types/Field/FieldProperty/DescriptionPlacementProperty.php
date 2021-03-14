@@ -14,7 +14,7 @@ use WPGraphQLGravityForms\Types\Enum\DescriptionPlacementPropertyEnum;
 /**
  * Class - DescriptionPlacementProperty
  */
-abstract class DescriptionPlacementProperty implements FieldProperty {
+class DescriptionPlacementProperty implements FieldProperty {
 	/**
 	 * Get Description placement property.
 	 * This is different from the 'descriptionPlacement' Form field.

@@ -14,7 +14,7 @@ use WPGraphQLGravityForms\Types\Enum\LabelPlacementPropertyEnum;
 /**
  * Class - LabelPlacementProperty
  */
-abstract class LabelPlacementProperty implements FieldProperty {
+class LabelPlacementProperty implements FieldProperty {
 	/**
 	 * Get 'labelPlacement' property.
 	 *
