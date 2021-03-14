@@ -35,7 +35,7 @@ class EntriesLoader extends AbstractDataLoader {
 	 *
 	 * @param array $keys .
 	 *
-	 * @return array
+	 * @return array|false
 	 * @throws \Exception .
 	 */
 	public function loadKeys( array $keys ) {
