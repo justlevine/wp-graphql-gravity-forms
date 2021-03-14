@@ -11,6 +11,7 @@
 
 namespace WPGraphQLGravityForms\Types\Field;
 
+use WPGraphQLGravityForms\Types\Enum\MinPasswordStrengthEnum;
 use WPGraphQLGravityForms\Types\Field\FieldProperty;
 use WPGraphQLGravityForms\Types\GraphQLInterface\FieldInterface;
 use WPGraphQLGravityForms\Utils\Utils;
@@ -63,10 +64,9 @@ class PasswordField extends Field {
 							'type'        => [ 'list_of' => FieldProperty\PasswordInputProperty::TYPE ],
 							'description' => __( 'Individual properties for each element of the password field.', 'wp-graphql-gravity-forms' ),
 						],
-						// @TODO: Convert to an enum.
 						'minPasswordStrength'     => [
-							'type'        => 'String',
-							'description' => __( 'Indicates how strong the password should be. The possible values are: short, bad, good, strong.', 'wp-graphql-gravity-forms' ),
+							'type'        => MinPasswordStrengthEnum::ENUM_NAME,
+							'description' => __( 'Indicates how strong the password should be.', 'wp-graphql-gravity-forms' ),
 						],
 						'passwordStrengthEnabled' => [
 							'type'        => 'Boolean',

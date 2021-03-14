@@ -14,6 +14,7 @@ namespace WPGraphQLGravityForms\Types\Field;
 
 use WPGraphQLGravityForms\Types\Field\FieldProperty;
 use WPGraphQLGravityForms\Types\GraphQLInterface\FieldInterface;
+use WPGraphQLGravityForms\Types\Enum\ChainedSelectsAlignmentEnum;
 
 /**
  * Class - ChainedSelectField
@@ -66,10 +67,9 @@ class ChainedSelectField extends Field {
 							'type'        => [ 'list_of' => FieldProperty\ChainedSelectChoiceProperty::TYPE ],
 							'description' => __( 'Choices used to populate the dropdown field. These can be nested multiple levels deep.', 'wp-graphql-gravity-forms' ),
 						],
-						// @TODO: Convert to an enum.
 						'chainedSelectsAlignment'    => [
-							'type'        => 'String',
-							'description' => __( 'Alignment of the dropdown fields. Possible values: "horizontal" (in a row) or "vertical" (in a column).', 'wp-graphql-gravity-forms' ),
+							'type'        => ChainedSelectsAlignmentEnum::ENUM_NAME,
+							'description' => __( 'Alignment of the dropdown fields.', 'wp-graphql-gravity-forms' ),
 						],
 						'chainedSelectsHideInactive' => [
 							'type'        => 'Boolean',

@@ -79,7 +79,7 @@ class SubmitEntry implements Hookable, Mutation {
 	public static function get_input_fields() : array {
 		return [
 			'entryType'            => [
-				'type'        => EntryTypeEnum::TYPE,
+				'type'        => EntryTypeEnum::ENUM_NAME,
 				'description' => __( 'Whether the user is creating a new entry or updating an existing one.', 'wp-graphql-gravity-forms' ),
 			],
 			'resumeToken'          => [

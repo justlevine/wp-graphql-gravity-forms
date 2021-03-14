@@ -11,6 +11,7 @@ namespace WPGraphQLGravityForms\Types\Input;
 
 use WPGraphQLGravityForms\Interfaces\Hookable;
 use WPGraphQLGravityForms\Interfaces\InputType;
+use WPGraphQLGravityForms\Types\Enum\SortingInputEnum;
 
 /**
  * Class - EntriesSortingInput
@@ -41,10 +42,9 @@ class EntriesSortingInput implements Hookable, InputType {
 						'type'        => 'String',
 						'description' => __( 'The key of the field to sort by.', 'wp-graphql-gravity-forms' ),
 					],
-					// @TODO: Convert to enum.
 					'direction' => [
-						'type'        => 'String',
-						'description' => __( 'The sorting direction. Possible values: DESC for descending (default), or ASC for ascending.', 'wp-graphql-gravity-forms' ),
+						'type'        => SortingInputEnum::ENUM_NAME,
+						'description' => __( 'The sorting direction.', 'wp-graphql-gravity-forms' ),
 					],
 					'isNumeric' => [
 						'type'        => 'Boolean',

@@ -43,7 +43,7 @@ class EntriesFieldFiltersInput implements Hookable, InputType {
 						'description' => __( 'The ID of the field to filter by. Use "0" to search all keys. You can also use the names of the columns in Gravity Forms\' database table for entries, such as "date_created", "is_read, "created_by", etc.', 'wp-graphql-gravity-forms' ),
 					],
 					'operator'     => [
-						'type'        => FieldFiltersOperatorInputEnum::TYPE,
+						'type'        => FieldFiltersOperatorInputEnum::ENUM_NAME,
 						'description' => __( 'The operator to use for filtering.', 'wp-graphql-gravity-forms' ),
 					],
 					// @TODO - Is there a cleaner way to do this? Values can be any of these types.

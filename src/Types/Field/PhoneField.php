@@ -11,6 +11,7 @@
 
 namespace WPGraphQLGravityForms\Types\Field;
 
+use WPGraphQLGravityForms\Types\Enum\PhoneFieldFormatEnum;
 use WPGraphQLGravityForms\Types\Field\FieldProperty;
 use WPGraphQLGravityForms\Types\GraphQLInterface\FieldInterface;
 
@@ -63,8 +64,8 @@ class PhoneField extends Field {
 					FieldProperty\VisibilityProperty::get(),
 					[
 						'phoneFormat' => [
-							'type'        => 'String',
-							'description' => __( 'Determines the allowed format for phones. If the phone value does not conform with the specified format, the field will fail validation. Possible values: standard, international.', 'wp-graphql-gravity-forms' ),
+							'type'        => PhoneFieldFormatEnum::ENUM_NAME,
+							'description' => __( 'Determines the allowed format for phones. If the phone value does not conform with the specified format, the field will fail validation.', 'wp-graphql-gravity-forms' ),
 						],
 					]
 				),
