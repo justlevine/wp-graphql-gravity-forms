@@ -14,7 +14,7 @@ use WPGraphQLGravityForms\Types\Enum\VisibilityPropertyEnum;
 /**
  * Class - VisibilityProperty
  */
-abstract class VisibilityProperty implements FieldProperty {
+class VisibilityProperty implements FieldProperty {
 	/**
 	 * Get 'visibility' property.
 	 *
