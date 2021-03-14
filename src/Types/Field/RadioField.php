@@ -17,7 +17,7 @@ use WPGraphQLGravityForms\Types\GraphQLInterface\FieldInterface;
 /**
  * Class - RadioField
  */
-class RadioField extends AbstractField {
+class RadioField extends Field {
 	/**
 	 * Type registered in WPGraphQL.
 	 */

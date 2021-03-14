@@ -20,7 +20,7 @@ use WPGraphQLGravityForms\Utils\Utils;
  *
  * @see https://docs.gravityforms.com/gf_field_hidden/
  */
-class HiddenField extends AbstractField {
+class HiddenField extends Field {
 	/**
 	 * Type registered in WPGraphQL.
 	 */

@@ -19,7 +19,7 @@ use WPGraphQLGravityForms\Types\GraphQLInterface\FieldInterface;
  *
  * @see https://docs.gravityforms.com/gf_field_multiselect/
  */
-class MultiSelectField extends AbstractField {
+class MultiSelectField extends Field {
 	/**
 	 * Type registered in WPGraphQL.
 	 */

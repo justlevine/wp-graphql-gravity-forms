@@ -18,7 +18,7 @@ use WPGraphQLGravityForms\Types\GraphQLInterface\FieldInterface;
 /**
  * Class - Field
  */
-abstract class AbstractField implements Hookable, Type {
+abstract class Field implements Hookable, Type {
 	/**
 	 * Get the global properties that apply to all GF field types.
 	 *

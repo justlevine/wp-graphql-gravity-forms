@@ -19,7 +19,7 @@ use WPGraphQLGravityForms\Utils\Utils;
 /**
  * Class - PageField
  */
-class PageField extends AbstractField {
+class PageField extends Field {
 	/**
 	 * Type registered in WPGraphQL.
 	 */

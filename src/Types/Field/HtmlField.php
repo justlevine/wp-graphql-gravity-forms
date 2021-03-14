@@ -18,7 +18,7 @@ use WPGraphQLGravityForms\Utils\Utils;
 /**
  * Class - HtmlField
  */
-class HtmlField extends AbstractField {
+class HtmlField extends Field {
 	/**
 	 * Type registered in WPGraphQL.
 	 */

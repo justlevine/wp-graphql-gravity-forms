@@ -16,7 +16,7 @@ use WPGraphQLGravityForms\Types\GraphQLInterface\FieldInterface;
 /**
  * Class - ConsentField
  */
-class ConsentField extends AbstractField {
+class ConsentField extends Field {
 	/**
 	 * Type registered in WPGraphQL.
 	 */

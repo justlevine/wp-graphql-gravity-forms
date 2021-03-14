@@ -19,7 +19,7 @@ use WPGraphQLGravityForms\Types\GraphQLInterface\FieldInterface;
 /**
  * Class - NumberField
  */
-class NumberField extends AbstractField {
+class NumberField extends Field {
 	/**
 	 * Type registered in WPGraphQL.
 	 */

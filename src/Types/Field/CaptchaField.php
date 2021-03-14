@@ -21,7 +21,7 @@ use WPGraphQLGravityForms\Utils\Utils;
 /**
  * Class - CaptchaField
  */
-class CaptchaField extends AbstractField {
+class CaptchaField extends Field {
 	/**
 	 * Type registered in WPGraphQL.
 	 */

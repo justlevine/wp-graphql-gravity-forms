@@ -17,7 +17,7 @@ use WPGraphQLGravityForms\Types\GraphQLInterface\FieldInterface;
 /**
  * Class - PostContentField
  */
-class PostContentField extends AbstractField {
+class PostContentField extends Field {
 	/**
 	 * Type registered in WPGraphQL.
 	 */
