@@ -42,9 +42,19 @@ class SignatureFieldValue implements Hookable, Type, FieldValue {
 			[
 				'description' => __( 'Signature field value.', 'wp-graphql-gravity-forms' ),
 				'fields'      => [
-					'url' => [
+					'value' => [
 						'type'        => 'String',
 						'description' => __( 'The URL to the signature image.', 'wp-graphql-gravity-forms' ),
+					],
+					/**
+					 * Deprecated properties.
+					 *
+					 * @since 0.4.0
+					 */
+					'url'   => [
+						'type'              => 'String',
+						'description'       => __( 'URL to the  file.', 'wp-graphql-gravity-forms' ),
+						'deprecationReason' => __( 'Please use `value` instead.', 'wp-graphql-gravity-forms' ),
 					],
 				],
 			]
@@ -63,9 +73,10 @@ class SignatureFieldValue implements Hookable, Type, FieldValue {
 		if ( ! class_exists( 'GF_Field_Signature' ) || ! $field instanceof GF_Field_Signature || ! array_key_exists( $field['id'], $entry ) ) {
 			return [ 'url' => null ];
 		}
-
+		$value = $field->get_value_url( $entry[ $field['id'] ] ) ?? null;
 		return [
-			'url' => $field->get_value_url( $entry[ $field['id'] ] ),
+			'value' => $value,
+			'url'   => $value, // Deprecated @since 0.4.0 .
 		];
 	}
 }
