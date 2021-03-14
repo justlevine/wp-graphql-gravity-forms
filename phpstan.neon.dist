@@ -12,16 +12,25 @@ parameters:
 			- ../gravityforms/
 			- ../gravityformssignature/
 			- ../gravityformschainedselects/
+		scanFiles:
+			- ../wp-graphql/src/Data/Loader/AbstractDataLoader.php
+			- ../wp-graphql/src/Data/Connection/AbstractConnectionResolver.php
 		ignoreErrors:
 			- '#^Function apply_filters(_ref_array)? invoked with ([1-9]|1[0-2]) parameters, 2 required\.$#'
 			- '#^Function gf_apply_filters(_ref_array)? invoked with ([1-9]|1[0-2]) parameters, 2 required\.$#'
 			- '#Cannot access property \$is_active on true.#'
 			- '#Cannot access property \$is_trash on true.#'
-			- "#^Access to undefined constant WPGraphQLGravityForms\\\\Types\\\\Field\\\\Field\\:\\:GF_TYPE\\.$#"
 			- "#^Access to undefined constant WPGraphQLGravityForms\\\\Interfaces\\\\FieldValue\\:\\:TYPE\\.$#"
-			- "#^Access to undefined constant WPGraphQLGravityForms\\\\Types\\\\Field\\\\Field\\:\\:TYPE\\.$#"
 			- "#^Access to undefined constant WPGraphQLGravityForms\\\\Mutations\\\\DraftEntryUpdater\\:\\:NAME\\.$#"
+			- "#^Access to undefined constant WPGraphQLGravityForms\\\\Types\\\\Enum\\\\AbstractEnum\\:\\:ENUM_NAME\\.$#"
+			- "#^Access to undefined constant WPGraphQLGravityForms\\\\Types\\\\Field\\\\Field\\:\\:GF_TYPE\\.$#"
+			- "#^Access to undefined constant WPGraphQLGravityForms\\\\Types\\\\Field\\\\Field\\:\\:TYPE\\.$#"
 			-
 				message: "#^Call to an undefined method WPGraphQLGravityForms\\\\Mutations\\\\DraftEntryUpdater\\:\\:prepare_field_value\\(\\)\\.$#"
 				count: 1
 				path: src/Mutations/DraftEntryUpdater.php
+			-
+				message: "#^Parameter \\#1 \\$str of function strtolower expects string, string\\|null given\\.$#"
+				count: 1
+				path: src/Utils/Utils.php
+
