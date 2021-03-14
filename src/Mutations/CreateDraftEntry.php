@@ -55,15 +55,19 @@ class CreateDraftEntry implements Hookable, Mutation {
 	 */
 	public static function get_input_fields() : array {
 		return [
-			'formId'     => [
-				'type'        => 'Integer',
+			'formId'      => [
+				'type'        => [ 'non_null' => 'Int' ],
 				'description' => __( 'The form ID.', 'wp-graphql-gravity-forms' ),
 			],
-			'pageNumber' => [
+			'fromEntryId' => [
+				'type'        => 'Integer',
+				'description' => __( 'Optional. If set, a new draft entry will be created from the existing Entry. ', 'wp-graphql-gravity-forms' ),
+			],
+			'pageNumber'  => [
 				'type'        => 'Integer',
 				'description' => __( 'Optional. The page number where the user left off. Default is 1.', 'wp-graphql-gravity-forms' ),
 			],
-			'ip'         => [
+			'ip'          => [
 				'type'        => 'String',
 				'description' => __( 'Optional. The IP address of the user who submitted the draft entry. Default is an empty string.', 'wp-graphql-gravity-forms' ),
 			],
@@ -103,7 +107,7 @@ class CreateDraftEntry implements Hookable, Mutation {
 			$form_id   = absint( $input['formId'] );
 			$form_info = GFFormsModel::get_form( $form_id, true );
 
-			if ( ! $form_info || ! $form_info->is_active || $form_info->is_trash ) {
+			if ( empty( $form_info ) || ! $form_info->is_active || $form_info->is_trash ) {
 				throw new UserError( __( 'The ID for a valid, active form must be provided.', 'wp-graphql-gravity-forms' ) );
 			}
 
@@ -136,8 +140,11 @@ class CreateDraftEntry implements Hookable, Mutation {
 	 * @return string The resume token, or empty string on failure.
 	 */
 	private function save_draft_submission( array $input, array $form, string $source_url ) : string {
-		$ip             = isset( $input['ip'] ) && ! empty( $form['personalData']['preventIP'] ) ? sanitize_text_field( $input['ip'] ) : '';
-		$entry          = $this->get_draft_entry_data( $form, $ip, $source_url );
+		$ip = isset( $input['ip'] ) && ! empty( $form['personalData']['preventIP'] ) ? sanitize_text_field( $input['ip'] ) : '';
+
+		// Get existing entry if `fromEntryId` is set, otherwise create new draft entry.
+		$entry = isset( $input['fromEntryId'] ) ? $this->get_existing_entry_data( $input['fromEntryId'] ) : $this->get_draft_entry_data( $form, $ip, $source_url );
+
 		$field_values   = '';
 		$page_number    = isset( $input['pageNumber'] ) ? absint( $input['pageNumber'] ) : 1;
 		$files          = []; // TODO: Get from Request.
@@ -180,6 +187,24 @@ class CreateDraftEntry implements Hookable, Mutation {
 			'created_by'   => get_current_user_id() ?: 'NULL',
 			'currency'     => gf_apply_filters( [ 'gform_currency_pre_save_entry', $form['id'] ], GFCommon::get_currency(), $form ),
 		];
+	}
+
+	/**
+	 * Calls Gravity Forms' GFFormsModel:get_lead() method to populate existing entry.
+	 *
+	 * @param integer $entry_id The entry id.
+	 *
+	 * @return array .
+	 * @throws UserError .
+	 */
+	private function get_existing_entry_data( int $entry_id ) : array {
+		$entry = GFFormsModel::get_lead( $entry_id );
+
+		if ( is_wp_error( $entry ) ) {
+			throw new UserError( sprintf( __( 'Error retrieving the form entry. No entry with the id %n found', 'wp-graphql-gravity-forms' ), $entry_id ) );
+		}
+
+		return $entry;
 	}
 
 	/**
