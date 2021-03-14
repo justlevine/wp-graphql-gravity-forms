@@ -151,9 +151,41 @@ final class WPGraphQLGravityForms {
 		$this->instances['root_query_forms_connection']   = new Connections\RootQueryFormsConnection();
 
 		// Enums.
-		$this->instances['create_entry_type_enum']            = new Enum\EntryTypeEnum();
-		$this->instances['form_status_enum']                  = new Enum\FormStatusEnum();
-		$this->instances['field_filters_operator_input_enum'] = new Enum\FieldFiltersOperatorInputEnum();
+		$this->instances['address_type_enum']                   = new Enum\AddressTypeEnum();
+		$this->instances['button_type_enum']                    = new Enum\ButtonTypeEnum();
+		$this->instances['calendar_icon_type_enum']             = new Enum\CalendarIconTypeEnum();
+		$this->instances['captcha_theme_enum']                  = new Enum\CaptchaThemeEnum();
+		$this->instances['captcha_type_enum']                   = new Enum\CaptchaTypeEnum();
+		$this->instances['chained_selects_alignmnet_enum']      = new Enum\ChainedSelectsAlignmentEnum();
+		$this->instances['conditional_logic_action_type_enum']  = new Enum\ConditionalLogicActionTypeEnum();
+		$this->instances['conditional_logic_logic_type_enum']   = new Enum\ConditionalLogicLogicTypeEnum();
+		$this->instances['confirmation_type_enum']              = new Enum\ConfirmationTypeEnum();
+		$this->instances['date_field_format_enum']              = new Enum\DateFieldFormatEnum();
+		$this->instances['date_type_enum']                      = new Enum\DateTypeEnum();
+		$this->instances['description_placement_property_enum'] = new Enum\DescriptionPlacementPropertyEnum();
+		$this->instances['entry_status_enum']                   = new Enum\EntryStatusEnum();
+		$this->instances['entry_type_enum']                     = new Enum\EntryTypeEnum();
+		$this->instances['field_filters_mode_enum']             = new Enum\FieldFiltersModeEnum();
+		$this->instances['field_filters_operator_input_enum']   = new Enum\FieldFiltersOperatorInputEnum();
+		$this->instances['form_description_placement_enum']     = new Enum\FormDescriptionPlacementEnum();
+		$this->instances['form_label_placement_enum']           = new Enum\FormLabelPlacementEnum();
+		$this->instances['form_limit_entries_period_enum']      = new Enum\FormLimitEntriesPeriodEnum();
+		$this->instances['form_status_enum']                    = new Enum\FormStatusEnum();
+		$this->instances['form_sub_label_placement_enum']       = new Enum\FormSubLabelPlacementEnum();
+		$this->instances['label_placement_property_enum']       = new Enum\LabelPlacementPropertyEnum();
+		$this->instances['min_password_strength_enum']          = new Enum\MinPasswordStrengthEnum();
+		$this->instances['notification_to_type_enum']           = new Enum\NotificationToTypeEnum();
+		$this->instances['number_field_format_enum']            = new Enum\NumberFieldFormatEnum();
+		$this->instances['page_progress_style_enum']            = new Enum\PageProgressStyleEnum();
+		$this->instances['page_progress_type_enum']             = new Enum\PageProgressTypeEnum();
+		$this->instances['phone_field_format_enum']             = new Enum\PhoneFieldFormatEnum();
+		$this->instances['rule_operator_enum']                  = new Enum\RuleOperatorEnum();
+		$this->instances['signature_border_style_enum']         = new Enum\SignatureBorderStyleEnum();
+		$this->instances['signature_border_width_enum']         = new Enum\SignatureBorderWidthEnum();
+		$this->instances['size_property_enum']                  = new Enum\SizePropertyEnum();
+		$this->instances['sorting_input_enum']                  = new Enum\SortingInputEnum();
+		$this->instances['time_field_format_enum']              = new Enum\TimeFieldFormatEnum();
+		$this->instances['visibility_property_enum']            = new Enum\VisibilityPropertyEnum();
 
 		// Field errors.
 		$this->instances['field_error'] = new FieldError();
