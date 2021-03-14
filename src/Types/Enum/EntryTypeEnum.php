@@ -8,45 +8,40 @@
 
 namespace WPGraphQLGravityForms\Types\Enum;
 
-use WPGraphQLGravityForms\Interfaces\Hookable;
-use WPGraphQLGravityForms\Interfaces\Enum;
-
 /**
  * Class - EntryTypeEnum
  */
-class EntryTypeEnum implements Hookable, Enum {
-	const TYPE = 'EntryTypeEnum';
+class EntryTypeEnum extends AbstractEnum {
+	const ENUM_NAME = 'EntryTypeEnum';
 
 	// Individual elements.
 	const NEW      = 'NEW';
 	const EXISTING = 'EXISTING';
 
 	/**
-	 * Register hooks to WordPress.
+	 * Sets the Enum type description.
+	 *
+	 * @return string Enum type description.
 	 */
-	public function register_hooks() : void {
-		add_action( 'graphql_register_types', [ $this, 'register' ] );
+	public function set_type_description() : string {
+		return __( 'Type of entry to be created. Default is NEW.', 'wp-graphql-gravity-forms' );
 	}
 
 	/**
-	 * Registers Enum type.
+	 * Sets the Enum type values.
+	 *
+	 * @return array
 	 */
-	public function register() : void {
-		register_graphql_enum_type(
-			self::TYPE,
-			[
-				'description' => __( 'Type of entry to be created. Default is NEW.', 'wp-graphql-gravity-forms' ),
-				'values'      => [
-					self::NEW      => [
-						'description' => __( 'New entry (default).', 'wp-graphql-gravity-forms' ),
-						'value'       => self::NEW,
-					],
-					self::EXISTING => [
-						'description' => __( 'Existing entry', 'wp-graphql-gravity-forms' ),
-						'value'       => self::EXISTING,
-					],
-				],
-			]
-		);
+	public function set_values() : array {
+		return [
+			self::NEW      => [
+				'description' => __( 'New entry (default).', 'wp-graphql-gravity-forms' ),
+				'value'       => self::NEW,
+			],
+			self::EXISTING => [
+				'description' => __( 'Existing entry', 'wp-graphql-gravity-forms' ),
+				'value'       => self::EXISTING,
+			],
+		];
 	}
 }
