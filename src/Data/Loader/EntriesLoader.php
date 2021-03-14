@@ -11,7 +11,6 @@
 namespace WPGraphQLGravityForms\Data\Loader;
 
 use GF_Query;
-use GraphQL\Deferred;
 use WPGraphQL\Data\Loader\AbstractDataLoader;
 use WPGraphQLGravityForms\DataManipulators\EntryDataManipulator;
 

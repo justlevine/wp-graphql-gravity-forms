@@ -15,5 +15,5 @@ interface Mutation {
 	/**
 	 * Register mutation in GraphQL schema.
 	 */
-	public function register_mutation();
+	public function register_mutation() : void;
 }

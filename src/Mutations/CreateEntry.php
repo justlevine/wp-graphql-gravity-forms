@@ -32,14 +32,14 @@ class CreateEntry implements Hookable, Mutation {
 	/**
 	 * Register hooks to WordPress.
 	 */
-	public function register_hooks() {
+	public function register_hooks() : void {
 		add_action( 'graphql_register_types', [ $this, 'register_mutation' ] );
 	}
 
 	/**
 	 * Registers mutation.
 	 */
-	public function register_mutation() {
+	public function register_mutation() : void {
 		register_graphql_mutation(
 			self::NAME,
 			[
@@ -77,10 +77,7 @@ class CreateEntry implements Hookable, Mutation {
 				'type'        => 'String',
 				'description' => __( 'Optional. The IP address of the user who submitted the draft entry. Default is an empty string.', 'wp-graphql-gravity-forms' ),
 			],
-			// 'files' => [
-			// 'type'        => '',
-			// 'description' => __( '', 'wp-graphql-gravity-forms' ),
-			// ],
+			// @TODO: Files.
 		];
 	}
 
@@ -124,11 +121,14 @@ class CreateEntry implements Hookable, Mutation {
 			$form_id   = absint( $input['formId'] );
 			$form_info = GFFormsModel::get_form( $form_id, true );
 
-			if ( ! $form_info || ! $form_info->is_active || $form_info->is_trash ) {
+			if ( empty( $form_info ) || ! $form_info->is_active || $form_info->is_trash ) {
 				throw new UserError( __( 'The ID for a valid, active form must be provided.', 'wp-graphql-gravity-forms' ) );
 			}
 
-			$form         = GFFormsModel::get_form_meta( $form_id );
+			$form = GFFormsModel::get_form_meta( $form_id );
+			if ( ! $form ) {
+				throw new UserError( __( 'An error occurred while trying to create the draft entry.', 'wp-graphql-gravity-forms' ) );
+			}
 			$source_url   = esc_url_raw( $this->truncate( $_SERVER['HTTP_REFERER'] ?? '', 250 ) );
 			$resume_token = $this->save_draft_submission( $input, $form, $source_url );
 
@@ -172,7 +172,7 @@ class CreateEntry implements Hookable, Mutation {
 			''
 		);
 
-		return $resume_token ?: '';
+		return $resume_token ? (string) $resume_token : '';
 	}
 
 	/**
@@ -204,7 +204,7 @@ class CreateEntry implements Hookable, Mutation {
 	 *
 	 * @param integer $entry_id The entry id.
 	 *
-	 * @return array|WP_Error .
+	 * @return array|\WP_Error .
 	 */
 	private function get_existing_entry_data( int $entry_id ) {
 		return GFFormsModel::get_lead( $entry_id );
@@ -244,13 +244,13 @@ class CreateEntry implements Hookable, Mutation {
 	/**
 	 * Get the draft resume URL.
 	 *
-	 * @param string $source_url   Source URL.
-	 * @param string $resume_token Resume token.
-	 * @param array  $form         Form object.
+	 * @param string     $source_url   Source URL.
+	 * @param string     $resume_token Resume token.
+	 * @param array|null $form         Form object.
 	 *
 	 * @return string Resume URL, or empty string if no source URL was provided.
 	 */
-	private function get_resume_url( string $source_url, string $resume_token, array $form ) : string {
+	private function get_resume_url( string $source_url, string $resume_token, $form = [] ) : string {
 		if ( ! $source_url ) {
 			return '';
 		}

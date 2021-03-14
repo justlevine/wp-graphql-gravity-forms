@@ -53,7 +53,7 @@ class Form implements Hookable, Type, Field {
 	/**
 	 * Register hooks to WordPress.
 	 */
-	public function register_hooks() {
+	public function register_hooks() : void {
 		add_action( 'graphql_register_types', [ $this, 'register_type' ] );
 		add_action( 'graphql_register_types', [ $this, 'register_field' ] );
 	}
@@ -61,7 +61,7 @@ class Form implements Hookable, Type, Field {
 	/**
 	 * Register Object type to GraphQL schema.
 	 */
-	public function register_type() {
+	public function register_type() : void {
 		register_graphql_object_type(
 			self::TYPE,
 			[
@@ -271,7 +271,7 @@ class Form implements Hookable, Type, Field {
 	/**
 	 * Register form query.
 	 */
-	public function register_field() {
+	public function register_field() : void {
 		register_graphql_field(
 			'RootQuery',
 			self::FIELD,
@@ -297,7 +297,7 @@ class Form implements Hookable, Type, Field {
 						throw new UserError( __( 'A valid form ID must be provided.', 'wp-graphql-gravity-forms' ) );
 					}
 
-					$form = $this->form_data_manipulator->manipulate( $form_raw, $args );
+					$form = $this->form_data_manipulator->manipulate( $form_raw );
 
 					/**
 					 * "wp_graphql_gf_form_object" filter

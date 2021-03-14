@@ -29,14 +29,14 @@ class DeleteEntry implements Hookable, Mutation {
 	/**
 	 * Mutation name.
 	 */
-	public function register_hooks() {
+	public function register_hooks() : void {
 		add_action( 'graphql_register_types', [ $this, 'register_mutation' ] );
 	}
 
 	/**
 	 * Registers mutation.
 	 */
-	public function register_mutation() {
+	public function register_mutation() : void {
 		register_graphql_mutation(
 			self::NAME,
 			[
