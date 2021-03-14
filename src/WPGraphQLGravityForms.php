@@ -164,7 +164,6 @@ final class WPGraphQLGravityForms {
 		$this->instances['date_type_enum']                      = new Enum\DateTypeEnum();
 		$this->instances['description_placement_property_enum'] = new Enum\DescriptionPlacementPropertyEnum();
 		$this->instances['entry_status_enum']                   = new Enum\EntryStatusEnum();
-		$this->instances['entry_type_enum']                     = new Enum\EntryTypeEnum();
 		$this->instances['field_filters_mode_enum']             = new Enum\FieldFiltersModeEnum();
 		$this->instances['field_filters_operator_input_enum']   = new Enum\FieldFiltersOperatorInputEnum();
 		$this->instances['form_description_placement_enum']     = new Enum\FormDescriptionPlacementEnum();
@@ -191,9 +190,7 @@ final class WPGraphQLGravityForms {
 		$this->instances['field_error'] = new FieldError();
 
 		// Mutations.
-		$this->instances['create_entry']                                  = new Mutations\CreateEntry();
 		$this->instances['delete_entry']                                  = new Mutations\DeleteEntry();
-		$this->instances['submit_entry']                                  = new Mutations\SubmitEntry( $this->instances['entry_data_manipulator'] );
 		$this->instances['create_draft_entry']                            = new Mutations\CreateDraftEntry();
 		$this->instances['delete_draft_entry']                            = new Mutations\DeleteDraftEntry();
 		$this->instances['submit_draft_entry']                            = new Mutations\SubmitDraftEntry( $this->instances['entry_data_manipulator'] );
