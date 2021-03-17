@@ -21,6 +21,7 @@ class WPGraphQLGravityFormsTest extends \Codeception\TestCase\WPTestCase {
 	public function tearDown(): void {
 		// Your tear down methods here.
 
+    unset($this->wPGraphQLGravityForms);
 		// Then...
 		parent::tearDown();
 	}
@@ -28,5 +29,16 @@ class WPGraphQLGravityFormsTest extends \Codeception\TestCase\WPTestCase {
 	// Tests
 	public function testInstance() {
 		$this->assertTrue( $this->instance instanceof WPGraphQLGravityForms );
+	}
+
+	public function testRun(){
+		$this->instance->run();
+
+		$this->assertTrue(TRUE);
+	}
+
+	public function testGetEnabledFieldTypes(){
+		$fields = $this->instance::get_enabled_field_types();
+		$this->assertIsArray($fields);
 	}
 }
