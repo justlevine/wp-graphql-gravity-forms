@@ -76,6 +76,7 @@ class ComposerStaticInitc0769f616b013655fd745e5ced376c8f
         'WPGraphQLGravityForms\\Mutations\\UpdateDraftEntryWebsiteFieldValue' => __DIR__ . '/../..' . '/src/Mutations/UpdateDraftEntryWebsiteFieldValue.php',
         'WPGraphQLGravityForms\\Settings\\WPGraphQLSettings' => __DIR__ . '/../..' . '/src/Settings/WPGraphQLSettings.php',
         'WPGraphQLGravityForms\\Types\\Button\\Button' => __DIR__ . '/../..' . '/src/Types/Button/Button.php',
+        'WPGraphQLGravityForms\\Types\\Button\\LastPageButton' => __DIR__ . '/../..' . '/src/Types/Button/LastPageButton.php',
         'WPGraphQLGravityForms\\Types\\ConditionalLogic\\ConditionalLogic' => __DIR__ . '/../..' . '/src/Types/ConditionalLogic/ConditionalLogic.php',
         'WPGraphQLGravityForms\\Types\\ConditionalLogic\\ConditionalLogicRule' => __DIR__ . '/../..' . '/src/Types/ConditionalLogic/ConditionalLogicRule.php',
         'WPGraphQLGravityForms\\Types\\Entry\\Entry' => __DIR__ . '/../..' . '/src/Types/Entry/Entry.php',
