@@ -19,8 +19,8 @@ class PageProgressStyleEnum extends AbstractEnum {
 	const GREY   = 'grey';
 	const GREEN  = 'green';
 	const ORANGE = 'orange';
-	const RED    = 'RED';
-	const CUSTOM = 'CUSTOM';
+	const RED    = 'red';
+	const CUSTOM = 'custom';
 
 	/**
 	 * Sets the Enum type description.
