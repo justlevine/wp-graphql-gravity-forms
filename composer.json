@@ -45,6 +45,11 @@
       "WPGraphQLGravityForms\\": "src/"
     }
   },
+	"autoload-dev": {
+		"psr-4": {
+			"WPGraphQLGravityForms\\Tests\\": "tests/_support"
+		}
+	},
   "scripts": {
     "lint": "vendor/bin/phpcs",
     "phpcs-i": [
