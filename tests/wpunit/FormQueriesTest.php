@@ -471,10 +471,9 @@ class FormQueriesTest extends \Codeception\TestCase\WPTestCase {
 	}
 
 	public function testEmptyGravityFormsFormQuery() {
-		$form_id   = $this->factory->form->create( [ 'fields' => [] ] );
-		$global_id = Relay::toGlobalId( 'GravityFormsForm', $form_id );
-		$form      = GFAPI::get_form( $form_id );
-		codecept_debug( $form );
+		$form_id          = $this->factory->form->create( [ 'fields' => [] ] );
+		$global_id        = Relay::toGlobalId( 'GravityFormsForm', $form_id );
+		$form             = GFAPI::get_form( $form_id );
 		$confirmation_key = key( $form['confirmations'] );
 		$query            = $this->get_form_query();
 
