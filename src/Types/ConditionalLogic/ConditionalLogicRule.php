@@ -41,7 +41,7 @@ class ConditionalLogicRule implements Hookable, Type {
 						'description' => __( 'Target field Id. Field that will have it’s value compared with the value property to determine if this rule is a match.', 'wp-graphql-gravity-forms' ),
 					],
 					'operator' => [
-						'type'        => RuleOperatorEnum::ENUM_NAME,
+						'type'        => RuleOperatorEnum::TYPE,
 						'description' => __( 'Operator to be used when evaluating this rule.', 'wp-graphql-gravity-forms' ),
 					],
 					'value'    => [

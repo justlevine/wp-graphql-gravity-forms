@@ -12,7 +12,7 @@ namespace WPGraphQLGravityForms\Types\Enum;
  * Class - ConfirmationTypeEnum
  */
 class ConfirmationTypeEnum extends AbstractEnum {
-	const ENUM_NAME = 'ConfirmationTypeEnum';
+	const TYPE = 'ConfirmationTypeEnum';
 
 	// Individual elements.
 	const MESSAGE  = 'message';

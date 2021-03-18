@@ -12,7 +12,7 @@ namespace WPGraphQLGravityForms\Types\Enum;
  * Class - NotificationToTypeEnum
  */
 class NotificationToTypeEnum extends AbstractEnum {
-	const ENUM_NAME = 'NotificationToTypeEnum';
+	const TYPE = 'NotificationToTypeEnum';
 
 	// Individual elements.
 	const EMAIL   = 'email';

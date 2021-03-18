@@ -138,7 +138,7 @@ class Entry implements Hookable, Type, Field {
 					],
 					// @TODO: Convert to an enum.
 					'status'      => [
-						'type'        => EntryStatusEnum::ENUM_NAME,
+						'type'        => EntryStatusEnum::TYPE,
 						'description' => __( 'The current status of the entry.', 'wp-graphql-gravity-forms' ),
 					],
 					'isDraft'     => [
@@ -175,7 +175,7 @@ class Entry implements Hookable, Type, Field {
 						'description' => __( 'Unique identifier for the object.', 'wp-graphql-gravity-forms' ),
 					],
 					'idType' => [
-						'type'        => IdTypeEnum::ENUM_NAME,
+						'type'        => IdTypeEnum::TYPE,
 						'description' => __( 'Type of unique identifier to fetch a content node by. Default is Global ID', 'wp-graphql-gravity-forms' ),
 					],
 				],

@@ -12,7 +12,7 @@ namespace WPGraphQLGravityForms\Types\Enum;
  * Class - PhoneFieldFormatEnum
  */
 class PhoneFieldFormatEnum extends AbstractEnum {
-	const ENUM_NAME = 'PhoneFieldFormatEnum';
+	const TYPE = 'PhoneFieldFormatEnum';
 
 	// Individual elements.
 	const STANDARD      = 'standard';

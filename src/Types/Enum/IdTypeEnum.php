@@ -12,7 +12,7 @@ namespace WPGraphQLGravityForms\Types\Enum;
  * Class - IdTypeEnum
  */
 class IdTypeEnum extends AbstractEnum {
-	const ENUM_NAME = 'IdTypeEnum';
+	const TYPE = 'IdTypeEnum';
 
 	// Individual elements.
 	const ID          = 'global_id';

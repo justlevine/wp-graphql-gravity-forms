@@ -65,7 +65,7 @@ class PasswordField extends Field {
 							'description' => __( 'Individual properties for each element of the password field.', 'wp-graphql-gravity-forms' ),
 						],
 						'minPasswordStrength'     => [
-							'type'        => MinPasswordStrengthEnum::ENUM_NAME,
+							'type'        => MinPasswordStrengthEnum::TYPE,
 							'description' => __( 'Indicates how strong the password should be.', 'wp-graphql-gravity-forms' ),
 						],
 						'passwordStrengthEnabled' => [

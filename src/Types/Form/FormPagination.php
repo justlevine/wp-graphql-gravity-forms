@@ -38,7 +38,7 @@ class FormPagination implements Hookable, Type {
 				'description' => __( 'Gravity Forms form pagination data.', 'wp-graphql-gravity-forms' ),
 				'fields'      => [
 					'type'                             => [
-						'type'        => PageProgressTypeEnum::ENUM_NAME,
+						'type'        => PageProgressTypeEnum::TYPE,
 						'description' => __( 'Type of progress indicator.', 'wp-graphql-gravity-forms' ),
 					],
 					'pages'                            => [
@@ -46,7 +46,7 @@ class FormPagination implements Hookable, Type {
 						'description' => __( 'Names of the form\'s pages.', 'wp-graphql-gravity-forms' ),
 					],
 					'style'                            => [
-						'type'        => PageProgressStyleEnum::ENUM_NAME,
+						'type'        => PageProgressStyleEnum::TYPE,
 						'description' => __( 'Style of progress bar.', 'wp-graphql-gravity-forms' ),
 					],
 					'backgroundColor'                  => [

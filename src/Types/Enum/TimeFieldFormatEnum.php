@@ -12,7 +12,7 @@ namespace WPGraphQLGravityForms\Types\Enum;
  * Class - TimeFieldFormatEnum
  */
 class TimeFieldFormatEnum extends AbstractEnum {
-	const ENUM_NAME = 'TimeFieldFormatEnum';
+	const TYPE = 'TimeFieldFormatEnum';
 
 	// Individual elements.
 	const H12 = '12';

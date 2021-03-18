@@ -89,11 +89,11 @@ class Form implements Hookable, Type, Field {
 						'description' => __( 'Form description.', 'wp-graphql-gravity-forms' ),
 					],
 					'labelPlacement'             => [
-						'type'        => FormLabelPlacementEnum::ENUM_NAME,
+						'type'        => FormLabelPlacementEnum::TYPE,
 						'description' => __( 'Determines where the field labels should be placed in relation to the field.', 'wp-graphql-gravity-forms' ),
 					],
 					'descriptionPlacement'       => [
-						'type'        => FormDescriptionPlacementEnum::ENUM_NAME,
+						'type'        => FormDescriptionPlacementEnum::TYPE,
 						'description' => __( 'Determines if the field description is displayed above the field input (i.e. immediately after the field label) or below the field input.', 'wp-graphql-gravity-forms' ),
 					],
 					'button'                     => [
@@ -149,7 +149,7 @@ class Form implements Hookable, Type, Field {
 						'description' => __( 'For forms with Post fields, determines the status that the Post should be created with.', 'wp-graphql-gravity-forms' ),
 					],
 					'subLabelPlacement'          => [
-						'type'        => FormSubLabelPlacementEnum::ENUM_NAME,
+						'type'        => FormSubLabelPlacementEnum::TYPE,
 						'description' => __( 'How sub-labels are aligned.', 'wp-graphql-gravity-forms' ),
 					],
 					'cssClass'                   => [
@@ -181,7 +181,7 @@ class Form implements Hookable, Type, Field {
 						'description' => __( 'When limitEntries is set to 1, this property specifies the number of submissions allowed.', 'wp-graphql-gravity-forms' ),
 					],
 					'limitEntriesPeriod'         => [
-						'type'        => FormLimitEntriesPeriodEnum::ENUM_NAME,
+						'type'        => FormLimitEntriesPeriodEnum::TYPE,
 						'description' => __( 'When limitEntries is set to 1, this property specifies the time period during which submissions are allowed.', 'wp-graphql-gravity-forms' ),
 					],
 					'limitEntriesMessage'        => [
@@ -285,7 +285,7 @@ class Form implements Hookable, Type, Field {
 						'description' => __( 'Unique identifier for the object.', 'wp-graphql-gravity-forms' ),
 					],
 					'idType' => [
-						'type'        => IdTypeEnum::ENUM_NAME,
+						'type'        => IdTypeEnum::TYPE,
 						'description' => __( 'Type of unique identifier to fetch a content node by. Default is Global ID', 'wp-graphql-gravity-forms' ),
 					],
 				],

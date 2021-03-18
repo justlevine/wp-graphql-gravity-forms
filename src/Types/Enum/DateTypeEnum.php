@@ -12,7 +12,7 @@ namespace WPGraphQLGravityForms\Types\Enum;
  * Class - DateTypeEnum
  */
 class DateTypeEnum extends AbstractEnum {
-	const ENUM_NAME = 'DateTypeEnum';
+	const TYPE = 'DateTypeEnum';
 
 	// Individual elements.
 	const FIELD    = 'datefield';

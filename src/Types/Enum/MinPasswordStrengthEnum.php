@@ -12,7 +12,7 @@ namespace WPGraphQLGravityForms\Types\Enum;
  * Class - MinPasswordStrengthEnum
  */
 class MinPasswordStrengthEnum extends AbstractEnum {
-	const ENUM_NAME = 'MinPasswordStrengthEnum';
+	const TYPE = 'MinPasswordStrengthEnum';
 
 	// Individual elements.
 	const SHORT  = 'short';

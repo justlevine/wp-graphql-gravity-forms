@@ -77,7 +77,7 @@ class NumberField extends Field {
 							'description' => __( 'Indicates whether the number field is a calculation.', 'wp-graphql-gravity-forms' ),
 						],
 						'numberFormat'        => [
-							'type'        => NumberFieldFormatEnum::ENUM_NAME,
+							'type'        => NumberFieldFormatEnum::TYPE,
 							'description' => __( 'Specifies the format allowed for the number field.', 'wp-graphql-gravity-forms' ),
 						],
 						'rangeMin'            => [
