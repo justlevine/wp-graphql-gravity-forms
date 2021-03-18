@@ -18,6 +18,7 @@ use WPGraphQLGravityForms\Interfaces\Type;
 use WPGraphQLGravityForms\Interfaces\Field;
 use WPGraphQLGravityForms\DataManipulators\FormDataManipulator;
 use WPGraphQLGravityForms\Types\Button\Button;
+use WPGraphQLGravityForms\Types\Button\LastPageButton;
 use WPGraphQLGravityForms\Types\Enum\FormDescriptionPlacementEnum;
 use WPGraphQLGravityForms\Types\Enum\FormLabelPlacementEnum;
 use WPGraphQLGravityForms\Types\Enum\FormLimitEntriesPeriodEnum;
@@ -120,7 +121,7 @@ class Form implements Hookable, Type, Field {
 						'description' => __( 'Template to be used when creating the post content. Field variables (i.e. {Name:3} ) can be added to the template to insert user submitted values into the post content. Only applicable when postContentTemplateEnabled is true.', 'wp-graphql-gravity-forms' ),
 					],
 					'lastPageButton'             => [
-						'type'        => Button::TYPE,
+						'type'        => LastPageButton::TYPE,
 						'description' => __( 'Last page button data.', 'wp-graphql-gravity-forms' ),
 					],
 					'pagination'                 => [

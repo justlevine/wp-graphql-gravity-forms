@@ -12,6 +12,7 @@ namespace WPGraphQLGravityForms;
 
 use WPGraphQLGravityForms\Interfaces\Hookable;
 use WPGraphQLGravityForms\Types\Button\Button;
+use WPGraphQLGravityForms\Types\Button\LastPageButton;
 use WPGraphQLGravityForms\Types\ConditionalLogic;
 use WPGraphQLGravityForms\Types\Enum;
 use WPGraphQLGravityForms\Types\Form;
@@ -60,7 +61,8 @@ final class WPGraphQLGravityForms {
 		$this->instances['loader_registrar'] = new Data\Loader\LoadersRegistrar();
 
 		// Buttons.
-		$this->instances['button'] = new Button();
+		$this->instances['button']           = new Button();
+		$this->instances['last_page_button'] = new LastPageButton();
 
 		// Conditional Logic.
 		$this->instances['conditional_logic']      = new ConditionalLogic\ConditionalLogic();

@@ -61,6 +61,7 @@ return array(
     'WPGraphQLGravityForms\\Mutations\\UpdateDraftEntryWebsiteFieldValue' => $baseDir . '/src/Mutations/UpdateDraftEntryWebsiteFieldValue.php',
     'WPGraphQLGravityForms\\Settings\\WPGraphQLSettings' => $baseDir . '/src/Settings/WPGraphQLSettings.php',
     'WPGraphQLGravityForms\\Types\\Button\\Button' => $baseDir . '/src/Types/Button/Button.php',
+    'WPGraphQLGravityForms\\Types\\Button\\LastPageButton' => $baseDir . '/src/Types/Button/LastPageButton.php',
     'WPGraphQLGravityForms\\Types\\ConditionalLogic\\ConditionalLogic' => $baseDir . '/src/Types/ConditionalLogic/ConditionalLogic.php',
     'WPGraphQLGravityForms\\Types\\ConditionalLogic\\ConditionalLogicRule' => $baseDir . '/src/Types/ConditionalLogic/ConditionalLogicRule.php',
     'WPGraphQLGravityForms\\Types\\Entry\\Entry' => $baseDir . '/src/Types/Entry/Entry.php',
