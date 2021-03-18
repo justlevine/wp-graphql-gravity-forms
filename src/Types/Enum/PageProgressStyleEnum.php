@@ -12,7 +12,7 @@ namespace WPGraphQLGravityForms\Types\Enum;
  * Class - PageProgressStyleEnum
  */
 class PageProgressStyleEnum extends AbstractEnum {
-	const ENUM_NAME = 'PageProgressStyleEnum';
+	const TYPE = 'PageProgressStyleEnum';
 
 	// Individual elements.
 	const BLUE   = 'blue';

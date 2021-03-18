@@ -12,7 +12,7 @@ namespace WPGraphQLGravityForms\Types\Enum;
  * Class - SizePropertyEnum
  */
 class SizePropertyEnum extends AbstractEnum {
-	const ENUM_NAME = 'SizePropertyEnum';
+	const TYPE = 'SizePropertyEnum';
 
 	// Individual elements.
 	const SMALL  = 'small';

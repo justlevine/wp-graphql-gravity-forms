@@ -12,7 +12,7 @@ namespace WPGraphQLGravityForms\Types\Enum;
  * Class - CalendarIconTypeEnum
  */
 class CalendarIconTypeEnum extends AbstractEnum {
-	const ENUM_NAME = 'CalendarIconTypeEnum';
+	const TYPE = 'CalendarIconTypeEnum';
 
 	// Individual elements.
 	const CALENDAR = 'calendar';

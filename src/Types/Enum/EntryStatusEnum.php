@@ -12,7 +12,7 @@ namespace WPGraphQLGravityForms\Types\Enum;
  * Class - EntryStatusEnum
  */
 class EntryStatusEnum extends AbstractEnum {
-	const ENUM_NAME = 'EntryStatusEnum';
+	const TYPE = 'EntryStatusEnum';
 
 	// Individual elements.
 	const ACTIVE = 'active';

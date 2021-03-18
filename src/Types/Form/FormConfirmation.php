@@ -49,7 +49,7 @@ class FormConfirmation implements Hookable, Type {
 						'description' => __( 'Whether this is the default confirmation.', 'wp-graphql-gravity-forms' ),
 					],
 					'type'        => [
-						'type'        => ConfirmationTypeEnum::ENUM_NAME,
+						'type'        => ConfirmationTypeEnum::TYPE,
 						'description' => __( 'Determines the type of confirmation to be used.', 'wp-graphql-gravity-forms' ),
 					],
 					'message'     => [

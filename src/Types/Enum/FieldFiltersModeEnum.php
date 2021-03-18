@@ -12,7 +12,7 @@ namespace WPGraphQLGravityForms\Types\Enum;
  * Class - FieldFiltersModeEnum
  */
 class FieldFiltersModeEnum extends AbstractEnum {
-	const ENUM_NAME = 'FieldFiltersModeEnum';
+	const TYPE = 'FieldFiltersModeEnum';
 
 	// Individual elements.
 	const ALL = 'all';

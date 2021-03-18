@@ -43,7 +43,7 @@ class EntriesSortingInput implements Hookable, InputType {
 						'description' => __( 'The key of the field to sort by.', 'wp-graphql-gravity-forms' ),
 					],
 					'direction' => [
-						'type'        => SortingInputEnum::ENUM_NAME,
+						'type'        => SortingInputEnum::TYPE,
 						'description' => __( 'The sorting direction.', 'wp-graphql-gravity-forms' ),
 					],
 					'isNumeric' => [

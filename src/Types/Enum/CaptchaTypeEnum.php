@@ -12,7 +12,7 @@ namespace WPGraphQLGravityForms\Types\Enum;
  * Class - CaptchaTypeEnum
  */
 class CaptchaTypeEnum extends AbstractEnum {
-	const ENUM_NAME = 'CaptchaTypeEnum';
+	const TYPE = 'CaptchaTypeEnum';
 
 	// Individual elements.
 	const RECAPTCHA = 'recaptcha';

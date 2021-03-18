@@ -12,7 +12,7 @@ namespace WPGraphQLGravityForms\Types\Enum;
  * Class - FormSubLabelPlacementEnum
  */
 class FormSubLabelPlacementEnum extends AbstractEnum {
-	const ENUM_NAME = 'FormSubLabelPlacementEnum';
+	const TYPE = 'FormSubLabelPlacementEnum';
 
 	// Individual elements.
 	const ABOVE = 'above';

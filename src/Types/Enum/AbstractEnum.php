@@ -29,7 +29,7 @@ abstract class AbstractEnum implements Hookable, Enum {
 	 */
 	public function register() : void {
 		register_graphql_enum_type(
-			static::ENUM_NAME,
+			static::TYPE,
 			[
 				'description' => $this->set_type_description(),
 				'values'      => $this->prepare_values(),
@@ -48,7 +48,7 @@ abstract class AbstractEnum implements Hookable, Enum {
 		 * Pass the values through a filter.
 		 */
 
-		$values = apply_filters( 'wp_graphql_' . Utils::to_snake_case( static::ENUM_NAME ) . '_values', $this->set_values() );
+		$values = apply_filters( 'wp_graphql_' . Utils::to_snake_case( static::TYPE ) . '_values', $this->set_values() );
 
 		/**
 		 * Sort the values alpahbetically by key.

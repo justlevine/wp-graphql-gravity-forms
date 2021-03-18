@@ -54,7 +54,7 @@ class RootQueryEntriesConnection implements Hookable, Connection {
 						'description' => __( 'Array of form IDs to limit the entries to. Exclude this argument to query all forms.', 'wp-graphql-gravity-forms' ),
 					],
 					'status'           => [
-						'type'        => EntryStatusEnum::ENUM_NAME,
+						'type'        => EntryStatusEnum::TYPE,
 						'description' => __( 'Entry status. Default is "ACTIVE".', 'wp-graphql-gravity-forms' ),
 					],
 					'dateFilters'      => [
@@ -66,7 +66,7 @@ class RootQueryEntriesConnection implements Hookable, Connection {
 						'description' => __( 'Field-specific filters to apply.', 'wp-graphql-gravity-forms' ),
 					],
 					'fieldFiltersMode' => [
-						'type'        => FieldFiltersModeEnum::ENUM_NAME,
+						'type'        => FieldFiltersModeEnum::TYPE,
 						'description' => __( 'Whether to filter by ALL or ANY of the field filters. Default is ALL.', 'wp-graphql-gravity-forms' ),
 					],
 					'sort'             => [

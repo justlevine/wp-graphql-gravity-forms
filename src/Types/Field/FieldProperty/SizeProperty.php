@@ -25,7 +25,7 @@ class SizeProperty implements FieldProperty {
 	public static function get() : array {
 		return [
 			'size' => [
-				'type'        => SizePropertyEnum::ENUM_NAME,
+				'type'        => SizePropertyEnum::TYPE,
 				'description' => __( 'Determines the size of the field when displayed on the page.', 'wp-graphql-gravity-forms' ),
 			],
 		];

@@ -12,7 +12,7 @@ namespace WPGraphQLGravityForms\Types\Enum;
  * Class - LabelPlacementPropertyEnum
  */
 class LabelPlacementPropertyEnum extends AbstractEnum {
-	const ENUM_NAME = 'LabelPlacementPropertyEnum';
+	const TYPE = 'LabelPlacementPropertyEnum';
 
 	// Individual elements.
 	const TOP     = 'top_label';

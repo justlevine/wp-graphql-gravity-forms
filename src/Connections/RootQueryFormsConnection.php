@@ -44,7 +44,7 @@ class RootQueryFormsConnection implements Hookable, Connection {
 				'fromFieldName'  => self::FROM_FIELD,
 				'connectionArgs' => [
 					'status' => [
-						'type'        => FormStatusEnum::ENUM_NAME,
+						'type'        => FormStatusEnum::TYPE,
 						'description' => __( 'Status of the forms to get.', 'wp-graphql-gravity-forms' ),
 					],
 				],

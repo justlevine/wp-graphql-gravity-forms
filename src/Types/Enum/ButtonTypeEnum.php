@@ -12,7 +12,7 @@ namespace WPGraphQLGravityForms\Types\Enum;
  * Class - ButtonTypeEnum
  */
 class ButtonTypeEnum extends AbstractEnum {
-	const ENUM_NAME = 'ButtonTypeEnum';
+	const TYPE = 'ButtonTypeEnum';
 
 	// Individual elements.
 	const TEXT  = 'text';

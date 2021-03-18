@@ -64,7 +64,7 @@ class TimeField extends Field {
 					FieldProperty\VisibilityProperty::get(),
 					[
 						'timeFormat' => [
-							'type'        => TimeFieldFormatEnum::ENUM_NAME,
+							'type'        => TimeFieldFormatEnum::TYPE,
 							'description' => __( 'Determines how the time is displayed.', 'wp-graphql-gravity-forms' ),
 						],
 					]

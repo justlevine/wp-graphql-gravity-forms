@@ -12,7 +12,7 @@ namespace WPGraphQLGravityForms\Types\Enum;
  * Class - SignatureBorderWidthEnum
  */
 class SignatureBorderWidthEnum extends AbstractEnum {
-	const ENUM_NAME = 'SignatureBorderWidthEnum';
+	const TYPE = 'SignatureBorderWidthEnum';
 
 	// Individual elements.
 	const NONE   = '0';

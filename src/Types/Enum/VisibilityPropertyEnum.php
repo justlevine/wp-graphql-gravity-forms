@@ -12,7 +12,7 @@ namespace WPGraphQLGravityForms\Types\Enum;
  * Class - VisibilityPropertyEnum
  */
 class VisibilityPropertyEnum extends AbstractEnum {
-	const ENUM_NAME = 'VisibilityPropertyEnum';
+	const TYPE = 'VisibilityPropertyEnum';
 
 	// Individual elements.
 	const VISIBLE        = 'visible';

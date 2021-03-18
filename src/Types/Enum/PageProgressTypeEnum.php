@@ -12,7 +12,7 @@ namespace WPGraphQLGravityForms\Types\Enum;
  * Class - PageProgressTypeEnum
  */
 class PageProgressTypeEnum extends AbstractEnum {
-	const ENUM_NAME = 'PageProgressTypeEnum';
+	const TYPE = 'PageProgressTypeEnum';
 
 	// Individual elements.
 	const PERCENTAGE = 'percentage';
