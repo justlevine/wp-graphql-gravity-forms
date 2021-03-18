@@ -1,6 +1,6 @@
 <?php
 
-namespace WPGraphQLGravityForms\Test\Factories;
+namespace WPGraphQLGravityForms\Tests\Factories;
 
 use GF_Fields;
 use WP_UnitTest_Generator_Sequence;
@@ -16,22 +16,14 @@ class Field extends \WP_UnitTest_Factory_For_Thing {
 	}
 
 	public function create_object( $args ) {
-		$properties = [
-			'id'    => $args['id'] ?? null,
-			'type'  => $args['type'] ?? null,
-			'label' => $args['label'] ?? null,
-		];
-
-		$field = GF_Fields::create( $properties );
-
-		return $field;
+		return GF_Fields::create( $args );
 	}
 
 	public function create_many( $count, $args = [], $generation_definitions = null ) {
 		$fields = [];
 		for ( $n = 0; $n < $count; $n++ ) {
 			$field_args = $args;
-			$fields[]   = $this->create_object( $field_args );
+			$fields[]   = $this->create( $field_args );
 		}
 
 		return $fields;

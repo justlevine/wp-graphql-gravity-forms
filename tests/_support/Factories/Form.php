@@ -1,6 +1,6 @@
 <?php
 
-namespace WPGraphQLGravityForms\Test\Factories;
+namespace WPGraphQLGravityForms\Tests\Factories;
 
 use GFAPI;
 use WP_UnitTest_Generator_Sequence;
@@ -11,27 +11,20 @@ class Form extends \WP_UnitTest_Factory_For_Thing {
 		parent::__construct( $factory );
 		$this->default_generation_definitions = [
 			'title'       => new WP_UnitTest_Generator_Sequence( 'Form title %s' ),
-			'description' => new WP_UnitTest_Generator_Sequence( ' Form description %s' ),
+			'description' => new WP_UnitTest_Generator_Sequence( 'Form description %s' ),
+			'fields' => [],
 		];
 	}
 
 	public function create_object( $args ) {
-		$form = [
-			'title'       => $args['title'],
-			'description' => $args['description'],
-			'fields'      => $args['fields'],
-		];
-
-		$form_id = GFAPI::add_form( $form );
-
-		return $form_id;
+		return GFAPI::add_form( $args );
 	}
 
 	public function create_many( $count, $args = [], $generation_definitions = null ) {
 		$form_ids = [];
 		for ( $n = 0; $n < $count; $n++ ) {
 			$form_args  = $args;
-			$form_ids[] = $this->create_object( $form_args );
+			$form_ids[] = $this->create( $form_args );
 		}
 
 		return $form_ids;

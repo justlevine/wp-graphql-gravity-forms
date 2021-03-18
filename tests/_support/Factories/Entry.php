@@ -1,6 +1,6 @@
 <?php
 
-namespace WPGraphQLGravityForms\Test\Factories;
+namespace WPGraphQLGravityForms\Tests\Factories;
 
 use GFAPI;
 use WP_UnitTest_Generator_Sequence;
