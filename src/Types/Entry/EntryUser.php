@@ -68,7 +68,7 @@ class EntryUser implements Hookable, Type, Field {
 				'type'        => self::TYPE,
 				'description' => __( 'The user who created the entry.', 'wp-graphql-gravity-forms' ),
 				'resolve'     => function( array $entry ) : array {
-					$user = get_userdata( $entry['createdById'] );
+					$user = isset( $entry['createdById'] ) ? get_userdata( $entry['createdById'] ) : null;
 
 					if ( ! $user instanceof WP_User ) {
 						throw new UserError( __( 'The user who created this entry could not be found.', 'wp-graphql-gravity-forms' ) );
