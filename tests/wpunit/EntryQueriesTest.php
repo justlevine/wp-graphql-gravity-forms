@@ -159,7 +159,7 @@ class EntryQueriesTest extends \Codeception\TestCase\WPTestCase {
 		$global_id = Relay::toGlobalId( 'GravityFormsEntry', $entry_id );
 		$entry     = GFAPI::get_entry( $entry_id );
 		$form      = GFAPI::get_form( $this->form_id );
-		$query = $this->get_entry_query();
+		$query     = $this->get_entry_query();
 
 		$actual = graphql(
 			[

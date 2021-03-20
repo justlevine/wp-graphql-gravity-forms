@@ -20,7 +20,7 @@ class FormQueriesTest extends \Codeception\TestCase\WPTestCase {
 		parent::setUp();
 
 		// Your set up methods here.
-		$I = $this->tester;
+		$I             = $this->tester;
 		$this->factory = new Factories\Factory();
 
 		// Text field.
