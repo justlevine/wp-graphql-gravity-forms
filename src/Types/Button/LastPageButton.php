@@ -37,15 +37,15 @@ class LastPageButton implements Hookable, Type {
 			[
 				'description' => __( 'Gravity Forms button.', 'wp-graphql-gravity-forms' ),
 				'fields'      => [
-					'type'             => [
+					'type'     => [
 						'type'        => ButtonTypeEnum::TYPE,
 						'description' => __( 'Specifies the type of button to be displayed. Defaults to TEXT.', 'wp-graphql-gravity-forms' ),
 					],
-					'text'             => [
+					'text'     => [
 						'type'        => 'String',
 						'description' => __( 'Contains the button text. Only applicable when type is set to text.', 'wp-graphql-gravity-forms' ),
 					],
-					'imageUrl'         => [
+					'imageUrl' => [
 						'type'        => 'String',
 						'description' => __( 'Contains the URL for the image button. Only applicable when type is set to image.', 'wp-graphql-gravity-forms' ),
 					],
