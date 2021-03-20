@@ -5,6 +5,7 @@ actor: WpunitTesterActions
 modules:
   enabled:
     - WPLoader
+    - \Helper\Wpunit
   disabled:
     - WPDb
     - WPBrowser

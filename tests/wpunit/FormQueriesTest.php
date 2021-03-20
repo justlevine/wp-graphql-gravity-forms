@@ -10,7 +10,6 @@ class FormQueriesTest extends \Codeception\TestCase\WPTestCase {
 	 */
 	protected $tester;
 	protected $factory;
-	protected $typeRegistry;
 	protected $helpers;
 	private $fields = [];
 	private $form;
@@ -19,244 +18,23 @@ class FormQueriesTest extends \Codeception\TestCase\WPTestCase {
 	public function setUp(): void {
 		// Before...
 		parent::setUp();
+
+		// Your set up methods here.
+		$I = $this->tester;
 		$this->factory = new Factories\Factory();
 
-		$this->typeRegistry = WPGraphQL::get_type_registry();
 		// Text field.
 		$this->fields[] = $this->factory->field->create(
-			[
-				'type'                 => 'text',
-				'id'                   => 1,
-				'label'                => 'Single Line Text',
-				'adminLabel'           => '',
-				'isRequired'           => false,
-				'size'                 => 'medium',
-				'errorMessage'         => '',
-				'visibility'           => 'visible',
-				'inputs'               => null,
-				'formId'               => 2,
-				'description'          => 'I am a single line text field.',
-				'allowsPrepopulate'    => false,
-				'inputMask'            => false,
-				'inputMaskValue'       => '',
-				'inputMaskIsCustom'    => false,
-				'maxLength'            => '',
-				'inputType'            => '',
-				'labelPlacement'       => '',
-				'descriptionPlacement' => '',
-				'subLabelPlacement'    => '',
-				'placeholder'          => '',
-				'cssClass'             => '',
-				'inputName'            => '',
-				'noDuplicates'         => false,
-				'defaultValue'         => '',
-				'choices'              => '',
-				'productField'         => '',
-				'enablePasswordInput'  => '',
-				'multipleFiles'        => false,
-				'maxFiles'             => '',
-				'calculationFormula'   => '',
-				'calculationRounding'  => '',
-				'enableCalculation'    => '',
-				'disableQuantity'      => false,
-				'displayAllCategories' => false,
-				'useRichTextEditor'    => false,
-				'checkboxLabel'        => '',
-				'pageNumber'           => 1,
-				'fields'               => '',
-				'displayOnly'          => '',
-			]
+			$I->getTextFieldDefaultArgs()
 		);
 		// TextAreaField.
 		$this->fields[] = $this->factory->field->create(
-			[
-				'type'                 => 'textarea',
-				'id'                   => 2,
-				'label'                => 'Text Area',
-				'adminLabel'           => '',
-				'isRequired'           => false,
-				'size'                 => 'medium',
-				'errorMessage'         => '',
-				'visibility'           => 'visible',
-				'inputs'               => null,
-				'formId'               => 2,
-				'description'          => 'I am a text area field.',
-				'allowsPrepopulate'    => false,
-				'inputMask'            => false,
-				'inputMaskValue'       => '',
-				'inputMaskIsCustom'    => false,
-				'maxLength'            => 28,
-				'inputType'            => '',
-				'labelPlacement'       => '',
-				'descriptionPlacement' => '',
-				'subLabelPlacement'    => '',
-				'placeholder'          => '',
-				'cssClass'             => '',
-				'inputName'            => '',
-				'noDuplicates'         => false,
-				'defaultValue'         => '',
-				'choices'              => '',
-				'conditionalLogic'     => '',
-				'productField'         => '',
-				'form_id'              => '',
-				'useRichTextEditor'    => false,
-				'multipleFiles'        => false,
-				'maxFiles'             => '',
-				'calculationFormula'   => '',
-				'calculationRounding'  => '',
-				'enableCalculation'    => '',
-				'disableQuantity'      => false,
-				'displayAllCategories' => false,
-				'pageNumber'           => 1,
-				'fields'               => '',
-				'displayOnly'          => '',
-			]
+			$I->getTextAreaFieldDefaultArgs()
 		);
 		// Form.
 		$this->form = $this->factory->form->create_many(
 			2,
-			[
-				'button'                     => [
-					'conditionalLogic' => [
-						'actionType' => 'show',
-						'logicType'  => 'any',
-						'rules'      => [
-							[
-								'fieldId'  => 1,
-								'operator' => 'is',
-								'value'    => 'value1',
-							],
-							[
-								'fieldId'  => 1,
-								'operator' => 'is',
-								'value'    => 'value2',
-							],
-						],
-					],
-					'imageUrl'         => 'https://example.com',
-					'text'             => 'Submit',
-					'type'             => 'text',
-				],
-				'confirmations'              => [
-					'5cfec9464e7d7' => [
-						'id'          => '5cfec9464e7d7',
-						'isDefault'   => true,
-						'message'     => 'Thanks for contacting us! We will get in touch with you shortly.',
-						'name'        => 'Default Confirmation',
-						'pageId'      => 1,
-						'queryString' => 'text={Single Line Text:1}&textarea={Text Area:2}',
-						'type'        => 'message',
-						'url'         => 'https://example.com/',
-					],
-				],
-				'cssClass'                   => 'css-class-1 css-class-2',
-				'date_created'               => '2019-06-10 21:19:02', // This is disregarded by GFAPI::add_form().
-				'descriptionPlacement'       => 'below',
-				'enableAnimation'            => false,
-				'enableHoneypot'             => false,
-				'fields'                     => $this->fields,
-				'firstPageCssClass'          => 'first-page-css-class',
-				'is_active'                  => true,
-				'is_trash'                   => false,
-				'labelPlacement'             => 'top_label',
-				'lastPageButton'             => [
-					'imageUrl' => 'https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png',
-					'text'     => 'Previous',
-					'type'     => 'text',
-				],
-				'limitEntries'               => true,
-				'limitEntriesCount'          => 100,
-				'limitEntriesMessage'        => 'Only 100 entries are permitted.',
-				'limitEntriesPeriod'         => 'year',
-				'nextFieldId'                => 3,
-				'notifications'              => [
-					'5cfec9464e529' => [
-						'bcc'               => 'bcc-email@example.com',
-						'conditionalLogic'  => [
-							'actionType' => 'show',
-							'logicType'  => 'any',
-							'rules'      => [
-								[
-									'fieldId'  => 1,
-									'operator' => 'is',
-									'value'    => 'value1',
-								],
-								[
-									'fieldId'  => 1,
-									'operator' => 'is',
-									'value'    => 'value2',
-								],
-							],
-						],
-						'disableAutoformat' => false,
-						'enableAttachments' => false,
-						'event'             => 'form_submission',
-						'from'              => 'from-email@example.com',
-						'fromName'          => 'WordPress',
-						'id'                => '5cfec9464e529',
-						'isActive'          => true,
-						'message'           => '{all_fields}',
-						'name'              => 'Admin Notification',
-						'replyTo'           => 'replyto-email@example.com',
-						'routing'           => [
-							[
-								'fieldId'  => 1,
-								'operator' => 'is',
-								'value'    => 'value1',
-								'email'    => 'email1@example.com',
-							],
-							[
-								'fieldId'  => 1,
-								'operator' => 'is',
-								'value'    => 'value2',
-								'email'    => 'email2@example.com',
-							],
-						],
-						'service'           => 'wordpress',
-						'subject'           => 'New submission from {form_title}',
-						'to'                => '{admin_email}',
-						'toType'            => 'email',
-					],
-				],
-				'pagination'                 => [
-					'backgroundColor'                     => '#c6df9c',
-					'color'                               => '#197b30',
-					'display_progressbar_on_confirmation' => true,
-					'pages'                               => [ 'page-1-name', 'page-2-name' ],
-					'progressbar_completion_text'         => 'Completed!',
-					'style'                               => 'custom',
-					'type'                                => 'percentage',
-				],
-				'postAuthor'                 => 1,
-				'postCategory'               => 1,
-				'postContentTemplate'        => 'Post content template',
-				'postContentTemplateEnabled' => false,
-				'postFormat'                 => '0',
-				'postStatus'                 => 'publish',
-				'postTitleTemplate'          => 'Post title template',
-				'postTitleTemplateEnabled'   => false,
-				'requireLogin'               => true,
-				'requireLoginMessage'        => 'You must be logged in to submit this form.',
-				'save'                       => [
-					'button'  => [
-						'text' => 'Save and Continue Later',
-					],
-					'enabled' => true,
-				],
-				'scheduleEnd'                => '01/01/2030',
-				'scheduleEndAmpm'            => 'pm',
-				'scheduleEndHour'            => 10,
-				'scheduleEndMinute'          => 45,
-				'scheduleForm'               => true,
-				'scheduleMessage'            => 'Schedule message.',
-				'schedulePendingMessage'     => 'Schedule pending message.',
-				'scheduleStart'              => '01/01/2020',
-				'scheduleStartAmpm'          => 'am',
-				'scheduleStartHour'          => 9,
-				'scheduleStartMinute'        => 30,
-				'subLabelPlacement'          => 'below',
-				'useCurrentUserAsAuthor'     => true,
-			]
+			array_merge( [ 'fields' => $this->fields ], $I->getFormDefaultArgs() )
 		);
 	}
 
@@ -269,6 +47,8 @@ class FormQueriesTest extends \Codeception\TestCase\WPTestCase {
 
 	// Tests
 	public function testGravityFormsFormQuery() {
+		$I = $this->tester;
+
 		$form_id   = $this->form[0];
 		$global_id = Relay::toGlobalId( 'GravityFormsForm', $form_id );
 		$form      = GFAPI::get_form( $form_id );
@@ -289,24 +69,24 @@ class FormQueriesTest extends \Codeception\TestCase\WPTestCase {
 			'gravityFormsForm' => [
 				'button'                     => [
 					'conditionalLogic' => [
-						'actionType' => $this->get_enum_for_value( Enum\ConditionalLogicActionTypeEnum::TYPE, $form['button']['conditionalLogic']['actionType'] ),
-						'logicType'  => $this->get_enum_for_value( Enum\ConditionalLogicLogicTypeEnum::TYPE, $form['button']['conditionalLogic']['logicType'] ),
+						'actionType' => $I->get_enum_for_value( Enum\ConditionalLogicActionTypeEnum::TYPE, $form['button']['conditionalLogic']['actionType'] ),
+						'logicType'  => $I->get_enum_for_value( Enum\ConditionalLogicLogicTypeEnum::TYPE, $form['button']['conditionalLogic']['logicType'] ),
 						'rules'      => [
 							[
 								'fieldId'  => $form['button']['conditionalLogic']['rules'][0]['fieldId'],
-								'operator' => $this->get_enum_for_value( Enum\RuleOperatorEnum::TYPE, $form['button']['conditionalLogic']['rules'][0]['operator'] ),
+								'operator' => $I->get_enum_for_value( Enum\RuleOperatorEnum::TYPE, $form['button']['conditionalLogic']['rules'][0]['operator'] ),
 								'value'    => $form['button']['conditionalLogic']['rules'][0]['value'],
 							],
 							[
 								'fieldId'  => $form['button']['conditionalLogic']['rules'][1]['fieldId'],
-								'operator' => $this->get_enum_for_value( Enum\RuleOperatorEnum::TYPE, $form['button']['conditionalLogic']['rules'][1]['operator'] ),
+								'operator' => $I->get_enum_for_value( Enum\RuleOperatorEnum::TYPE, $form['button']['conditionalLogic']['rules'][1]['operator'] ),
 								'value'    => $form['button']['conditionalLogic']['rules'][1]['value'],
 							],
 						],
 					],
 					'imageUrl'         => $form['button']['imageUrl'],
 					'text'             => $form['button']['text'],
-					'type'             => $this->get_enum_for_value( Enum\ButtonTypeEnum::TYPE, $form['button']['type'] ),
+					'type'             => $I->get_enum_for_value( Enum\ButtonTypeEnum::TYPE, $form['button']['type'] ),
 				],
 				'confirmations'              => [
 					[
@@ -316,14 +96,14 @@ class FormQueriesTest extends \Codeception\TestCase\WPTestCase {
 						'name'        => $form['confirmations']['5cfec9464e7d7']['name'],
 						'pageId'      => $form['confirmations']['5cfec9464e7d7']['pageId'],
 						'queryString' => $form['confirmations']['5cfec9464e7d7']['queryString'],
-						'type'        => $this->get_enum_for_value( Enum\ConfirmationTypeEnum::TYPE, $form['confirmations']['5cfec9464e7d7']['type'] ),
+						'type'        => $I->get_enum_for_value( Enum\ConfirmationTypeEnum::TYPE, $form['confirmations']['5cfec9464e7d7']['type'] ),
 						'url'         => $form['confirmations']['5cfec9464e7d7']['url'],
 					],
 				],
 				'cssClass'                   => $form['cssClass'],
 				'dateCreated'                => $form['date_created'],
 				'description'                => $form['description'],
-				'descriptionPlacement'       => $this->get_enum_for_value( Enum\FormDescriptionPlacementEnum::TYPE, $form['descriptionPlacement'] ),
+				'descriptionPlacement'       => $I->get_enum_for_value( Enum\FormDescriptionPlacementEnum::TYPE, $form['descriptionPlacement'] ),
 				'enableAnimation'            => $form['enableAnimation'],
 				'enableHoneypot'             => $form['enableHoneypot'],
 				'fields'                     => [
@@ -337,33 +117,33 @@ class FormQueriesTest extends \Codeception\TestCase\WPTestCase {
 				'id'                         => $global_id,
 				'isActive'                   => (bool) $form['is_active'],
 				'isTrash'                    => (bool) $form['is_trash'],
-				'labelPlacement'             => $this->get_enum_for_value( Enum\FormLabelPlacementEnum::TYPE, $form['labelPlacement'] ),
+				'labelPlacement'             => $I->get_enum_for_value( Enum\FormLabelPlacementEnum::TYPE, $form['labelPlacement'] ),
 				'lastPageButton'             => [
 					'imageUrl' => $form['lastPageButton']['imageUrl'],
 					'text'     => $form['lastPageButton']['text'],
-					'type'     => $this->get_enum_for_value( Enum\ButtonTypeEnum::TYPE, $form['lastPageButton']['type'] ),
+					'type'     => $I->get_enum_for_value( Enum\ButtonTypeEnum::TYPE, $form['lastPageButton']['type'] ),
 				],
 				'limitEntries'               => $form['limitEntries'],
 				'limitEntriesCount'          => $form['limitEntriesCount'],
 				'limitEntriesMessage'        => $form['limitEntriesMessage'],
-				'limitEntriesPeriod'         => $this->get_enum_for_value( Enum\FormLimitEntriesPeriodEnum::TYPE, $form['limitEntriesPeriod'] ),
+				'limitEntriesPeriod'         => $I->get_enum_for_value( Enum\FormLimitEntriesPeriodEnum::TYPE, $form['limitEntriesPeriod'] ),
 				'nextFieldId'                => $form['nextFieldId'],
 				'notifications'              => [
 					[
 						'bcc'               => $form['notifications']['5cfec9464e529']['bcc'],
 						'conditionalLogic'  => [
-							'actionType' => $this->get_enum_for_value( Enum\ConditionalLogicActionTypeEnum::TYPE, $form['notifications']['5cfec9464e529']['conditionalLogic']['actionType'] ),
-							'logicType'  => $this->get_enum_for_value( Enum\ConditionalLogicLogicTypeEnum::TYPE, $form['notifications']['5cfec9464e529']['conditionalLogic']['logicType'] ),
+							'actionType' => $I->get_enum_for_value( Enum\ConditionalLogicActionTypeEnum::TYPE, $form['notifications']['5cfec9464e529']['conditionalLogic']['actionType'] ),
+							'logicType'  => $I->get_enum_for_value( Enum\ConditionalLogicLogicTypeEnum::TYPE, $form['notifications']['5cfec9464e529']['conditionalLogic']['logicType'] ),
 
 							'rules'      => [
 								[
 									'fieldId'  => $form['notifications']['5cfec9464e529']['conditionalLogic']['rules'][0]['fieldId'],
-									'operator' => $this->get_enum_for_value( Enum\RuleOperatorEnum::TYPE, $form['notifications']['5cfec9464e529']['conditionalLogic']['rules'][0]['operator'] ),
+									'operator' => $I->get_enum_for_value( Enum\RuleOperatorEnum::TYPE, $form['notifications']['5cfec9464e529']['conditionalLogic']['rules'][0]['operator'] ),
 									'value'    => $form['notifications']['5cfec9464e529']['conditionalLogic']['rules'][0]['value'],
 								],
 								[
 									'fieldId'  => $form['notifications']['5cfec9464e529']['conditionalLogic']['rules'][1]['fieldId'],
-									'operator' => $this->get_enum_for_value( Enum\RuleOperatorEnum::TYPE, $form['notifications']['5cfec9464e529']['conditionalLogic']['rules'][1]['operator'] ),
+									'operator' => $I->get_enum_for_value( Enum\RuleOperatorEnum::TYPE, $form['notifications']['5cfec9464e529']['conditionalLogic']['rules'][1]['operator'] ),
 									'value'    => $form['notifications']['5cfec9464e529']['conditionalLogic']['rules'][1]['value'],
 								],
 							],
@@ -381,13 +161,13 @@ class FormQueriesTest extends \Codeception\TestCase\WPTestCase {
 						'routing'           => [
 							[
 								'fieldId'  => $form['notifications']['5cfec9464e529']['routing'][0]['fieldId'],
-								'operator' => $this->get_enum_for_value( Enum\RuleOperatorEnum::TYPE, $form['notifications']['5cfec9464e529']['routing'][0]['operator'] ),
+								'operator' => $I->get_enum_for_value( Enum\RuleOperatorEnum::TYPE, $form['notifications']['5cfec9464e529']['routing'][0]['operator'] ),
 								'value'    => $form['notifications']['5cfec9464e529']['routing'][0]['value'],
 								'email'    => $form['notifications']['5cfec9464e529']['routing'][0]['email'],
 							],
 							[
 								'fieldId'  => $form['notifications']['5cfec9464e529']['routing'][1]['fieldId'],
-								'operator' => $this->get_enum_for_value( Enum\RuleOperatorEnum::TYPE, $form['notifications']['5cfec9464e529']['routing'][1]['operator'] ),
+								'operator' => $I->get_enum_for_value( Enum\RuleOperatorEnum::TYPE, $form['notifications']['5cfec9464e529']['routing'][1]['operator'] ),
 								'value'    => $form['notifications']['5cfec9464e529']['routing'][1]['value'],
 								'email'    => $form['notifications']['5cfec9464e529']['routing'][1]['email'],
 							],
@@ -395,7 +175,7 @@ class FormQueriesTest extends \Codeception\TestCase\WPTestCase {
 						'service'           => $form['notifications']['5cfec9464e529']['service'],
 						'subject'           => $form['notifications']['5cfec9464e529']['subject'],
 						'to'                => $form['notifications']['5cfec9464e529']['to'],
-						'toType'            => $this->get_enum_for_value( Enum\NotificationToTypeEnum::TYPE, $form['notifications']['5cfec9464e529']['toType'] ),
+						'toType'            => $I->get_enum_for_value( Enum\NotificationToTypeEnum::TYPE, $form['notifications']['5cfec9464e529']['toType'] ),
 					],
 				],
 				'pagination'                 => [
@@ -404,8 +184,8 @@ class FormQueriesTest extends \Codeception\TestCase\WPTestCase {
 					'displayProgressbarOnConfirmation' => $form['pagination']['display_progressbar_on_confirmation'],
 					'pages'                            => $form['pagination']['pages'],
 					'progressbarCompletionText'        => $form['pagination']['progressbar_completion_text'],
-					'style'                            => $this->get_enum_for_value( Enum\PageProgressStyleEnum::TYPE, $form['pagination']['style'] ),
-					'type'                             => $this->get_enum_for_value( Enum\PageProgressTypeEnum::TYPE, $form['pagination']['type'] ),
+					'style'                            => $I->get_enum_for_value( Enum\PageProgressStyleEnum::TYPE, $form['pagination']['style'] ),
+					'type'                             => $I->get_enum_for_value( Enum\PageProgressTypeEnum::TYPE, $form['pagination']['type'] ),
 				],
 				'postAuthor'                 => $form['postAuthor'],
 				'postCategory'               => $form['postCategory'],
@@ -432,7 +212,7 @@ class FormQueriesTest extends \Codeception\TestCase\WPTestCase {
 				'scheduleStartAmpm'          => $form['scheduleStartAmpm'],
 				'scheduleStartHour'          => $form['scheduleStartHour'],
 				'scheduleStartMinute'        => $form['scheduleStartMinute'],
-				'subLabelPlacement'          => $this->get_enum_for_value( Enum\FormSubLabelPlacementEnum::TYPE, $form['subLabelPlacement'] ),
+				'subLabelPlacement'          => $I->get_enum_for_value( Enum\FormSubLabelPlacementEnum::TYPE, $form['subLabelPlacement'] ),
 				'title'                      => $form['title'],
 				'useCurrentUserAsAuthor'     => $form['useCurrentUserAsAuthor'],
 			],
@@ -471,6 +251,8 @@ class FormQueriesTest extends \Codeception\TestCase\WPTestCase {
 	}
 
 	public function testEmptyGravityFormsFormQuery() {
+		$I = $this->tester;
+
 		$form_id          = $this->factory->form->create( [ 'fields' => [] ] );
 		$global_id        = Relay::toGlobalId( 'GravityFormsForm', $form_id );
 		$form             = GFAPI::get_form( $form_id );
@@ -499,7 +281,7 @@ class FormQueriesTest extends \Codeception\TestCase\WPTestCase {
 							'name'        => $form['confirmations'][ $confirmation_key ]['name'],
 							'pageId'      => $form['confirmations'][ $confirmation_key ]['pageId'],
 							'queryString' => $form['confirmations'][ $confirmation_key ]['queryString'],
-							'type'        => $this->get_enum_for_value( Enum\ConfirmationTypeEnum::TYPE, $form['confirmations'][ $confirmation_key ]['type'] ),
+							'type'        => $I->get_enum_for_value( Enum\ConfirmationTypeEnum::TYPE, $form['confirmations'][ $confirmation_key ]['type'] ),
 							'url'         => $form['confirmations'][ $confirmation_key ]['url'],
 						],
 					],
@@ -558,9 +340,7 @@ class FormQueriesTest extends \Codeception\TestCase\WPTestCase {
 	}
 
 
-	private function get_enum_for_value( string $enumName, string $value ) : string {
-		return $this->typeRegistry->get_type( $enumName )->serialize( $value );
-	}
+
 
 	private function get_form_query() {
 		return '
