@@ -28,13 +28,13 @@ class UtilsUtilsTest extends \Codeception\Test\Unit {
 	public function testToSnakeCase() {
 		$expected = 'test_string_case';
 
-		$string = 'testStringCase';
-		$to_snake_case = Utils::to_snake_case($string);
+		$string        = 'testStringCase';
+		$to_snake_case = Utils::to_snake_case( $string );
 
-		$this->assertEquals($expected, $to_snake_case);
+		$this->assertEquals( $expected, $to_snake_case );
 
-		$string = 'TestStringCase';
-		$to_snake_case = Utils::to_snake_case($string);
-		$this->assertEquals($expected, $to_snake_case);
+		$string        = 'TestStringCase';
+		$to_snake_case = Utils::to_snake_case( $string );
+		$this->assertEquals( $expected, $to_snake_case );
 	}
 }

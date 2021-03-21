@@ -240,7 +240,7 @@ class Wpunit extends \Codeception\Module {
 		];
 	}
 
-		function get_enum_for_value( string $enumName, string $value ) : string {
+	function get_enum_for_value( string $enumName, string $value ) : string {
 		$typeRegistry = \WPGraphQL::get_type_registry();
 
 		return $typeRegistry->get_type( $enumName )->serialize( $value );

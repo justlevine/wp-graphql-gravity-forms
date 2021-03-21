@@ -10,13 +10,12 @@ class Entry extends \WP_UnitTest_Factory_For_Thing {
 	public function __construct( $factory = null ) {
 		parent::__construct( $factory );
 		$this->default_generation_definitions = [
-			'id'               => new WP_UnitTest_Generator_Sequence( '%n' ),
+			'id' => new WP_UnitTest_Generator_Sequence( '%n' ),
 		];
 	}
 
 	public function create_object( $args ) {
 		return GFAPI::add_entry( $args );
-
 	}
 
 	public function create_many( $count, $args = [], $generation_definitions = null ) {
