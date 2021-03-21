@@ -20,8 +20,6 @@ class EntryQueriesTest extends \Codeception\TestCase\WPTestCase {
 		// Before...
 		parent::setUp();
 
-		$I = $this->tester;
-
 		// Your set up methods here.
 		$this->admin = $this->factory()->user->create_and_get(
 			[
@@ -32,8 +30,8 @@ class EntryQueriesTest extends \Codeception\TestCase\WPTestCase {
 		wp_set_current_user( $this->admin->ID );
 
 		$this->factory  = new Factories\Factory();
-		$this->fields[] = $this->factory->field->create( $I->getTextFieldDefaultArgs() );
-		$this->form_id  = $this->factory->form->create( array_merge( [ 'fields' => $this->fields ], $I->getFormDefaultArgs() ) );
+		$this->fields[] = $this->factory->field->create( $this->tester->getTextFieldDefaultArgs() );
+		$this->form_id  = $this->factory->form->create( array_merge( [ 'fields' => $this->fields ], $this->tester->getFormDefaultArgs() ) );
 
 		$this->entry_ids = $this->factory->entry->create_many(
 			2,
@@ -54,8 +52,6 @@ class EntryQueriesTest extends \Codeception\TestCase\WPTestCase {
 
 	// Tests
 	public function testGravityFormsEntryQuery() {
-		$I = $this->tester;
-
 		$global_id = Relay::toGlobalId( 'GravityFormsEntry', $this->entry_ids[0] );
 		$entry     = GFAPI::get_entry( $this->entry_ids[0] );
 		$form      = GFAPI::get_form( $this->form_id );
@@ -114,7 +110,7 @@ class EntryQueriesTest extends \Codeception\TestCase\WPTestCase {
 				'postId'      => $entry['post_id'],
 				'resumeToken' => null,
 				'sourceUrl'   => $entry['source_url'],
-				'status'      => $I->get_enum_for_value( Enum\EntryStatusEnum::TYPE, $entry['status'] ),
+				'status'      => $this->tester->get_enum_for_value( Enum\EntryStatusEnum::TYPE, $entry['status'] ),
 				'userAgent'   => $entry['user_agent'],
 			],
 		];
@@ -151,8 +147,6 @@ class EntryQueriesTest extends \Codeception\TestCase\WPTestCase {
 	}
 
 	public function testEmptyGravityFormsEntryQuery() {
-		$I = $this->tester;
-
 		$entry_id  = $this->factory->entry->create(
 			[ 'form_id' => $this->form_id ]
 		);
@@ -213,7 +207,7 @@ class EntryQueriesTest extends \Codeception\TestCase\WPTestCase {
 				'postId'      => null,
 				'resumeToken' => null,
 				'sourceUrl'   => $entry['source_url'],
-				'status'      => $I->get_enum_for_value( Enum\EntryStatusEnum::TYPE, $entry['status'] ),
+				'status'      => $this->tester->get_enum_for_value( Enum\EntryStatusEnum::TYPE, $entry['status'] ),
 				'userAgent'   => $entry['user_agent'],
 			],
 		];
