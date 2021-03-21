@@ -39,12 +39,11 @@ class RootQueryFormsConnectionResolver {
 		$status = $this->get_form_status( $args );
 		$forms  = GFAPI::get_forms( $status['active'], $status['trashed'] );
 
-		if ( empty( $forms ) ) {
-			throw new UserError( __( 'An error occurred while trying to get Gravity Forms forms.', 'wp-graphql-gravity-forms' ) );
+		if ( ! empty( $forms ) ) {
+			$form_data_manipulator = new FormDataManipulator( new FieldsDataManipulator() );
+			$forms                 = array_map( fn( $form ) => $form_data_manipulator->manipulate( $form ), $forms );
 		}
 
-		$form_data_manipulator = new FormDataManipulator( new FieldsDataManipulator() );
-		$forms                 = array_map( fn( $form ) => $form_data_manipulator->manipulate( $form ), $forms );
 
 		/**
 		 * "wp_graphql_gf_form_object" filter
@@ -79,7 +78,6 @@ class RootQueryFormsConnectionResolver {
 	 */
 	private function get_form_status( array $args ) : array {
 		$status = $args['where']['status'] ?? FormStatusEnum::ACTIVE;
-
 		if ( FormStatusEnum::INACTIVE === $status ) {
 			return [
 				'active'  => false,
