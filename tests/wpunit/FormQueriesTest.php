@@ -20,21 +20,20 @@ class FormQueriesTest extends \Codeception\TestCase\WPTestCase {
 		parent::setUp();
 
 		// Your set up methods here.
-		$I             = $this->tester;
 		$this->factory = new Factories\Factory();
 
 		// Text field.
 		$this->fields[] = $this->factory->field->create(
-			$I->getTextFieldDefaultArgs()
+			$this->tester->getTextFieldDefaultArgs()
 		);
 		// TextAreaField.
 		$this->fields[] = $this->factory->field->create(
-			$I->getTextAreaFieldDefaultArgs()
+			$this->tester->getTextAreaFieldDefaultArgs()
 		);
 		// Form.
 		$this->form = $this->factory->form->create_many(
 			2,
-			array_merge( [ 'fields' => $this->fields ], $I->getFormDefaultArgs() )
+			array_merge( [ 'fields' => $this->fields ], $this->tester->getFormDefaultArgs() )
 		);
 	}
 
@@ -47,8 +46,6 @@ class FormQueriesTest extends \Codeception\TestCase\WPTestCase {
 
 	// Tests
 	public function testGravityFormsFormQuery() {
-		$I = $this->tester;
-
 		$form_id   = $this->form[0];
 		$global_id = Relay::toGlobalId( 'GravityFormsForm', $form_id );
 		$form      = GFAPI::get_form( $form_id );
@@ -69,24 +66,24 @@ class FormQueriesTest extends \Codeception\TestCase\WPTestCase {
 			'gravityFormsForm' => [
 				'button'                     => [
 					'conditionalLogic' => [
-						'actionType' => $I->get_enum_for_value( Enum\ConditionalLogicActionTypeEnum::TYPE, $form['button']['conditionalLogic']['actionType'] ),
-						'logicType'  => $I->get_enum_for_value( Enum\ConditionalLogicLogicTypeEnum::TYPE, $form['button']['conditionalLogic']['logicType'] ),
+						'actionType' => $this->tester->get_enum_for_value( Enum\ConditionalLogicActionTypeEnum::TYPE, $form['button']['conditionalLogic']['actionType'] ),
+						'logicType'  => $this->tester->get_enum_for_value( Enum\ConditionalLogicLogicTypeEnum::TYPE, $form['button']['conditionalLogic']['logicType'] ),
 						'rules'      => [
 							[
 								'fieldId'  => $form['button']['conditionalLogic']['rules'][0]['fieldId'],
-								'operator' => $I->get_enum_for_value( Enum\RuleOperatorEnum::TYPE, $form['button']['conditionalLogic']['rules'][0]['operator'] ),
+								'operator' => $this->tester->get_enum_for_value( Enum\RuleOperatorEnum::TYPE, $form['button']['conditionalLogic']['rules'][0]['operator'] ),
 								'value'    => $form['button']['conditionalLogic']['rules'][0]['value'],
 							],
 							[
 								'fieldId'  => $form['button']['conditionalLogic']['rules'][1]['fieldId'],
-								'operator' => $I->get_enum_for_value( Enum\RuleOperatorEnum::TYPE, $form['button']['conditionalLogic']['rules'][1]['operator'] ),
+								'operator' => $this->tester->get_enum_for_value( Enum\RuleOperatorEnum::TYPE, $form['button']['conditionalLogic']['rules'][1]['operator'] ),
 								'value'    => $form['button']['conditionalLogic']['rules'][1]['value'],
 							],
 						],
 					],
 					'imageUrl'         => $form['button']['imageUrl'],
 					'text'             => $form['button']['text'],
-					'type'             => $I->get_enum_for_value( Enum\ButtonTypeEnum::TYPE, $form['button']['type'] ),
+					'type'             => $this->tester->get_enum_for_value( Enum\ButtonTypeEnum::TYPE, $form['button']['type'] ),
 				],
 				'confirmations'              => [
 					[
@@ -96,14 +93,14 @@ class FormQueriesTest extends \Codeception\TestCase\WPTestCase {
 						'name'        => $form['confirmations']['5cfec9464e7d7']['name'],
 						'pageId'      => $form['confirmations']['5cfec9464e7d7']['pageId'],
 						'queryString' => $form['confirmations']['5cfec9464e7d7']['queryString'],
-						'type'        => $I->get_enum_for_value( Enum\ConfirmationTypeEnum::TYPE, $form['confirmations']['5cfec9464e7d7']['type'] ),
+						'type'        => $this->tester->get_enum_for_value( Enum\ConfirmationTypeEnum::TYPE, $form['confirmations']['5cfec9464e7d7']['type'] ),
 						'url'         => $form['confirmations']['5cfec9464e7d7']['url'],
 					],
 				],
 				'cssClass'                   => $form['cssClass'],
 				'dateCreated'                => $form['date_created'],
 				'description'                => $form['description'],
-				'descriptionPlacement'       => $I->get_enum_for_value( Enum\FormDescriptionPlacementEnum::TYPE, $form['descriptionPlacement'] ),
+				'descriptionPlacement'       => $this->tester->get_enum_for_value( Enum\FormDescriptionPlacementEnum::TYPE, $form['descriptionPlacement'] ),
 				'enableAnimation'            => $form['enableAnimation'],
 				'enableHoneypot'             => $form['enableHoneypot'],
 				'fields'                     => [
@@ -117,33 +114,33 @@ class FormQueriesTest extends \Codeception\TestCase\WPTestCase {
 				'id'                         => $global_id,
 				'isActive'                   => (bool) $form['is_active'],
 				'isTrash'                    => (bool) $form['is_trash'],
-				'labelPlacement'             => $I->get_enum_for_value( Enum\FormLabelPlacementEnum::TYPE, $form['labelPlacement'] ),
+				'labelPlacement'             => $this->tester->get_enum_for_value( Enum\FormLabelPlacementEnum::TYPE, $form['labelPlacement'] ),
 				'lastPageButton'             => [
 					'imageUrl' => $form['lastPageButton']['imageUrl'],
 					'text'     => $form['lastPageButton']['text'],
-					'type'     => $I->get_enum_for_value( Enum\ButtonTypeEnum::TYPE, $form['lastPageButton']['type'] ),
+					'type'     => $this->tester->get_enum_for_value( Enum\ButtonTypeEnum::TYPE, $form['lastPageButton']['type'] ),
 				],
 				'limitEntries'               => $form['limitEntries'],
 				'limitEntriesCount'          => $form['limitEntriesCount'],
 				'limitEntriesMessage'        => $form['limitEntriesMessage'],
-				'limitEntriesPeriod'         => $I->get_enum_for_value( Enum\FormLimitEntriesPeriodEnum::TYPE, $form['limitEntriesPeriod'] ),
+				'limitEntriesPeriod'         => $this->tester->get_enum_for_value( Enum\FormLimitEntriesPeriodEnum::TYPE, $form['limitEntriesPeriod'] ),
 				'nextFieldId'                => $form['nextFieldId'],
 				'notifications'              => [
 					[
 						'bcc'               => $form['notifications']['5cfec9464e529']['bcc'],
 						'conditionalLogic'  => [
-							'actionType' => $I->get_enum_for_value( Enum\ConditionalLogicActionTypeEnum::TYPE, $form['notifications']['5cfec9464e529']['conditionalLogic']['actionType'] ),
-							'logicType'  => $I->get_enum_for_value( Enum\ConditionalLogicLogicTypeEnum::TYPE, $form['notifications']['5cfec9464e529']['conditionalLogic']['logicType'] ),
+							'actionType' => $this->tester->get_enum_for_value( Enum\ConditionalLogicActionTypeEnum::TYPE, $form['notifications']['5cfec9464e529']['conditionalLogic']['actionType'] ),
+							'logicType'  => $this->tester->get_enum_for_value( Enum\ConditionalLogicLogicTypeEnum::TYPE, $form['notifications']['5cfec9464e529']['conditionalLogic']['logicType'] ),
 
 							'rules'      => [
 								[
 									'fieldId'  => $form['notifications']['5cfec9464e529']['conditionalLogic']['rules'][0]['fieldId'],
-									'operator' => $I->get_enum_for_value( Enum\RuleOperatorEnum::TYPE, $form['notifications']['5cfec9464e529']['conditionalLogic']['rules'][0]['operator'] ),
+									'operator' => $this->tester->get_enum_for_value( Enum\RuleOperatorEnum::TYPE, $form['notifications']['5cfec9464e529']['conditionalLogic']['rules'][0]['operator'] ),
 									'value'    => $form['notifications']['5cfec9464e529']['conditionalLogic']['rules'][0]['value'],
 								],
 								[
 									'fieldId'  => $form['notifications']['5cfec9464e529']['conditionalLogic']['rules'][1]['fieldId'],
-									'operator' => $I->get_enum_for_value( Enum\RuleOperatorEnum::TYPE, $form['notifications']['5cfec9464e529']['conditionalLogic']['rules'][1]['operator'] ),
+									'operator' => $this->tester->get_enum_for_value( Enum\RuleOperatorEnum::TYPE, $form['notifications']['5cfec9464e529']['conditionalLogic']['rules'][1]['operator'] ),
 									'value'    => $form['notifications']['5cfec9464e529']['conditionalLogic']['rules'][1]['value'],
 								],
 							],
@@ -161,13 +158,13 @@ class FormQueriesTest extends \Codeception\TestCase\WPTestCase {
 						'routing'           => [
 							[
 								'fieldId'  => $form['notifications']['5cfec9464e529']['routing'][0]['fieldId'],
-								'operator' => $I->get_enum_for_value( Enum\RuleOperatorEnum::TYPE, $form['notifications']['5cfec9464e529']['routing'][0]['operator'] ),
+								'operator' => $this->tester->get_enum_for_value( Enum\RuleOperatorEnum::TYPE, $form['notifications']['5cfec9464e529']['routing'][0]['operator'] ),
 								'value'    => $form['notifications']['5cfec9464e529']['routing'][0]['value'],
 								'email'    => $form['notifications']['5cfec9464e529']['routing'][0]['email'],
 							],
 							[
 								'fieldId'  => $form['notifications']['5cfec9464e529']['routing'][1]['fieldId'],
-								'operator' => $I->get_enum_for_value( Enum\RuleOperatorEnum::TYPE, $form['notifications']['5cfec9464e529']['routing'][1]['operator'] ),
+								'operator' => $this->tester->get_enum_for_value( Enum\RuleOperatorEnum::TYPE, $form['notifications']['5cfec9464e529']['routing'][1]['operator'] ),
 								'value'    => $form['notifications']['5cfec9464e529']['routing'][1]['value'],
 								'email'    => $form['notifications']['5cfec9464e529']['routing'][1]['email'],
 							],
@@ -175,7 +172,7 @@ class FormQueriesTest extends \Codeception\TestCase\WPTestCase {
 						'service'           => $form['notifications']['5cfec9464e529']['service'],
 						'subject'           => $form['notifications']['5cfec9464e529']['subject'],
 						'to'                => $form['notifications']['5cfec9464e529']['to'],
-						'toType'            => $I->get_enum_for_value( Enum\NotificationToTypeEnum::TYPE, $form['notifications']['5cfec9464e529']['toType'] ),
+						'toType'            => $this->tester->get_enum_for_value( Enum\NotificationToTypeEnum::TYPE, $form['notifications']['5cfec9464e529']['toType'] ),
 					],
 				],
 				'pagination'                 => [
@@ -184,8 +181,8 @@ class FormQueriesTest extends \Codeception\TestCase\WPTestCase {
 					'displayProgressbarOnConfirmation' => $form['pagination']['display_progressbar_on_confirmation'],
 					'pages'                            => $form['pagination']['pages'],
 					'progressbarCompletionText'        => $form['pagination']['progressbar_completion_text'],
-					'style'                            => $I->get_enum_for_value( Enum\PageProgressStyleEnum::TYPE, $form['pagination']['style'] ),
-					'type'                             => $I->get_enum_for_value( Enum\PageProgressTypeEnum::TYPE, $form['pagination']['type'] ),
+					'style'                            => $this->tester->get_enum_for_value( Enum\PageProgressStyleEnum::TYPE, $form['pagination']['style'] ),
+					'type'                             => $this->tester->get_enum_for_value( Enum\PageProgressTypeEnum::TYPE, $form['pagination']['type'] ),
 				],
 				'postAuthor'                 => $form['postAuthor'],
 				'postCategory'               => $form['postCategory'],
@@ -212,7 +209,7 @@ class FormQueriesTest extends \Codeception\TestCase\WPTestCase {
 				'scheduleStartAmpm'          => $form['scheduleStartAmpm'],
 				'scheduleStartHour'          => $form['scheduleStartHour'],
 				'scheduleStartMinute'        => $form['scheduleStartMinute'],
-				'subLabelPlacement'          => $I->get_enum_for_value( Enum\FormSubLabelPlacementEnum::TYPE, $form['subLabelPlacement'] ),
+				'subLabelPlacement'          => $this->tester->get_enum_for_value( Enum\FormSubLabelPlacementEnum::TYPE, $form['subLabelPlacement'] ),
 				'title'                      => $form['title'],
 				'useCurrentUserAsAuthor'     => $form['useCurrentUserAsAuthor'],
 			],
@@ -251,8 +248,6 @@ class FormQueriesTest extends \Codeception\TestCase\WPTestCase {
 	}
 
 	public function testEmptyGravityFormsFormQuery() {
-		$I = $this->tester;
-
 		$form_id          = $this->factory->form->create( [ 'fields' => [] ] );
 		$global_id        = Relay::toGlobalId( 'GravityFormsForm', $form_id );
 		$form             = GFAPI::get_form( $form_id );
@@ -281,7 +276,7 @@ class FormQueriesTest extends \Codeception\TestCase\WPTestCase {
 							'name'        => $form['confirmations'][ $confirmation_key ]['name'],
 							'pageId'      => $form['confirmations'][ $confirmation_key ]['pageId'],
 							'queryString' => $form['confirmations'][ $confirmation_key ]['queryString'],
-							'type'        => $I->get_enum_for_value( Enum\ConfirmationTypeEnum::TYPE, $form['confirmations'][ $confirmation_key ]['type'] ),
+							'type'        => $this->tester->get_enum_for_value( Enum\ConfirmationTypeEnum::TYPE, $form['confirmations'][ $confirmation_key ]['type'] ),
 							'url'         => $form['confirmations'][ $confirmation_key ]['url'],
 						],
 					],
@@ -339,8 +334,125 @@ class FormQueriesTest extends \Codeception\TestCase\WPTestCase {
 		$this->assertEquals( $expected, $actual['data'] );
 	}
 
+	public function testGravityFormsFormsQueryArgs() {
+		$form_ids = $this->factory->form->create_many(
+			20,
+			[ 'fields' => [] ]
+		);
 
+		$cursor = Relay::toGlobalId( 'arrayConnection', '9' );
 
+		$query = '
+			query( $cursor: String ) {
+				gravityFormsForms(first: 2, after: $cursor) {
+					nodes {
+						formId
+					}
+				}
+			}
+		';
+
+		$actual = graphql(
+			[
+				'query'     => $query,
+				'variables' => [
+					'cursor' => $cursor,
+				],
+			]
+		);
+		// Check `first` argument.
+		$this->assertEquals( 2, count( $actual['data']['gravityFormsForms']['nodes'] ) );
+		// Check `after` argument.
+		$this->assertEquals( $form_ids[8], $actual['data']['gravityFormsForms']['nodes'][0]['formId'] );
+
+		$query = '
+			query( $cursor: String ) {
+				gravityFormsForms(last: 2, before: $cursor) {
+					nodes {
+						formId
+					}
+				}
+			}
+		';
+
+		$actual = graphql(
+			[
+				'query'     => $query,
+				'variables' => [
+					'cursor' => $cursor,
+				],
+			]
+		);
+		// Check `last` argument.
+		$this->assertEquals( 2, count( $actual['data']['gravityFormsForms']['nodes'] ) );
+
+		// Check `before` argument.
+		$this->assertEquals( $form_ids[5], $actual['data']['gravityFormsForms']['nodes'][0]['formId'] );
+
+		// Check `where.status` argument.
+
+		// Deactivate.
+		$this->factory->form->update_object( $form_ids[0], [ 'is_active' => 0 ] );
+		$this->factory->form->update_object( $form_ids[1], [ 'is_active' => 0 ] );
+		// Trash.
+		$this->factory->form->update_object( $form_ids[4], [ 'is_trash' => 1 ] );
+		$this->factory->form->update_object( $form_ids[5], [ 'is_trash' => 1 ] );
+		// Trash & Deactivate.
+		$this->factory->form->update_object(
+			$form_ids[2],
+			[
+				'is_active' => 0,
+				'is_trash'  => 1,
+			]
+		);
+		$this->factory->form->update_object(
+			$form_ids[3],
+			[
+				'is_active' => 0,
+				'is_trash'  => 1,
+			]
+		);
+
+		$query = '
+			query {
+				inactive: gravityFormsForms(where: {status: INACTIVE}) {
+					nodes {
+						formId
+						isActive
+						isTrash
+					}
+				}
+				trashed: gravityFormsForms(where: {status: TRASHED}) {
+					nodes {
+						formId
+						isActive
+						isTrash
+					}
+				}
+				inactive_trashed: gravityFormsForms(where: {status: INACTIVE_TRASHED}) {
+					nodes {
+						formId
+						isActive
+						isTrash
+					}
+				}
+			}
+		';
+
+		$actual = graphql( [ 'query' => $query ] );
+		// Test inactive.
+		$this->assertEquals( 2, count( $actual['data']['inactive']['nodes'] ) );
+		$this->assertFalse( $actual['data']['inactive']['nodes'][0]['isActive'] );
+		$this->assertFalse( $actual['data']['inactive']['nodes'][0]['isTrash'] );
+		// Test trashed.
+		$this->assertEquals( 2, count( $actual['data']['trashed']['nodes'] ) );
+		$this->assertTrue( $actual['data']['trashed']['nodes'][0]['isActive'] );
+		$this->assertTrue( $actual['data']['trashed']['nodes'][0]['isTrash'] );
+		// Test inactive_trashed.
+		$this->assertEquals( 2, count( $actual['data']['inactive_trashed']['nodes'] ) );
+		$this->assertFalse( $actual['data']['inactive_trashed']['nodes'][0]['isActive'] );
+		$this->assertTrue( $actual['data']['inactive_trashed']['nodes'][0]['isTrash'] );
+	}
 
 	private function get_form_query() {
 		return '
