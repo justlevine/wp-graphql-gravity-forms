@@ -8,7 +8,6 @@
 
 namespace WPGraphQLGravityForms\Mutations;
 
-use GFAPI;
 use GF_Field;
 use GFFormsModel;
 use GraphQL\Error\UserError;
@@ -17,7 +16,7 @@ use WPGraphQL\AppContext;
 use WPGraphQLGravityForms\Types\FieldError\FieldError;
 use WPGraphQLGravityForms\Types\Entry\Entry;
 use WPGraphQLGravityForms\DataManipulators\DraftEntryDataManipulator;
-
+use WPGraphQLGravityForms\Utils\GFUtils;
 /**
  * Class - AbstractDraftEntryUpdater
  */
@@ -124,7 +123,7 @@ abstract class AbstractDraftEntryUpdater extends AbstractMutation {
 
 			$resume_token     = sanitize_text_field( $input['resumeToken'] );
 			$this->submission = $this->get_draft_submission( $resume_token );
-			$form             = $this->get_draft_form();
+			$form             = GFUtils::get_form( $this->submission['partial_entry']['form_id'] );
 			$field_id         = absint( $input['fieldId'] );
 			$this->field      = $this->get_field_by_id( $form, $field_id );
 
@@ -177,22 +176,6 @@ abstract class AbstractDraftEntryUpdater extends AbstractMutation {
 		}
 
 		return $submission;
-	}
-
-	/**
-	 * Returns Gravity Form associated with the draft entry.
-	 *
-	 * @return array Form Object array.
-	 * @throws UserError .
-	 */
-	private function get_draft_form() : array {
-		$form = GFAPI::get_form( $this->submission['partial_entry']['form_id'] );
-
-		if ( ! $form || ! $form['is_active'] || $form['is_trash'] ) {
-			throw new UserError( __( 'The form associated with this entry is nonexistent or inactive.', 'wp-graphql-gravity-forms' ) );
-		}
-
-		return $form;
 	}
 
 	/**

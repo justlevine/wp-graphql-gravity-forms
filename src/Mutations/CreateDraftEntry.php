@@ -15,6 +15,8 @@ use GFCommon;
 use GraphQL\Error\UserError;
 use GraphQL\Type\Definition\ResolveInfo;
 use WPGraphQL\AppContext;
+use WPGraphQLGravityForms\Utils\GFUtils;
+
 /**
  * Class - CreateDraftEntry
  */
@@ -82,17 +84,8 @@ class CreateDraftEntry extends AbstractMutation {
 				throw new UserError( __( 'Mutation not processed. The input data was missing or invalid.', 'wp-graphql-gravity-forms' ) );
 			}
 
-			$form_id   = absint( $input['formId'] );
-			$form_info = GFAPI::get_form( $form_id );
-
-			if ( empty( $form_info ) || ! $form_info->is_active || $form_info->is_trash ) {
-				throw new UserError( __( 'The ID for a valid, active form must be provided.', 'wp-graphql-gravity-forms' ) );
-			}
-
-			$form = GFFormsModel::get_form_meta( $form_id );
-			if ( ! $form ) {
-				throw new UserError( __( 'An error occurred while trying to create the draft entry.', 'wp-graphql-gravity-forms' ) );
-			}
+			$form_id = absint( $input['formId'] );
+			$form    = GFUtils::get_form( $form_id );
 
 			$source_url   = esc_url_raw( $this->truncate( $_SERVER['HTTP_REFERER'] ?? '', 250 ) );
 			$resume_token = $this->save_draft_submission( $input, $form, $source_url );

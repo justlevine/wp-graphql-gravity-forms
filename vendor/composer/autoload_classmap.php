@@ -233,6 +233,7 @@ return array(
     'WPGraphQLGravityForms\\Types\\Input\\ListInput' => $baseDir . '/src/Types/Input/ListInput.php',
     'WPGraphQLGravityForms\\Types\\Input\\NameInput' => $baseDir . '/src/Types/Input/NameInput.php',
     'WPGraphQLGravityForms\\Types\\Union\\ObjectFieldValueUnion' => $baseDir . '/src/Types/Union/ObjectFieldValueUnion.php',
+    'WPGraphQLGravityForms\\Utils\\GFUtils' => $baseDir . '/src/Utils/GFUtils.php',
     'WPGraphQLGravityForms\\Utils\\Utils' => $baseDir . '/src/Utils/Utils.php',
     'WPGraphQLGravityForms\\WPGraphQLGravityForms' => $baseDir . '/src/WPGraphQLGravityForms.php',
 );

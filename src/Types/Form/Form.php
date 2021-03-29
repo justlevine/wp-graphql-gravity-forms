@@ -24,6 +24,7 @@ use WPGraphQLGravityForms\Types\Enum\FormLabelPlacementEnum;
 use WPGraphQLGravityForms\Types\Enum\FormLimitEntriesPeriodEnum;
 use WPGraphQLGravityForms\Types\Enum\FormSubLabelPlacementEnum;
 use WPGraphQLGravityForms\Types\Enum\IdTypeEnum;
+use WPGraphQLGravityForms\Utils\GFUtils;
 
 /**
  * Class - Form
@@ -306,11 +307,7 @@ class Form implements Hookable, Type, Field {
 						$id = (int) sanitize_text_field( $args['id'] );
 					}
 
-					$form_raw = GFAPI::get_form( $id );
-
-					if ( ! $form_raw ) {
-						throw new UserError( __( 'A valid form ID must be provided.', 'wp-graphql-gravity-forms' ) );
-					}
+					$form_raw = GFUtils::get_form( $id, false );
 
 					$form = $this->form_data_manipulator->manipulate( $form_raw );
 

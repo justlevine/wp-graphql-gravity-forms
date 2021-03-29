@@ -21,6 +21,7 @@ use GraphQL\Type\Definition\ResolveInfo;
 use WPGraphQL\AppContext;
 use WPGraphQLGravityForms\Types\Entry\Entry;
 use WPGraphQLGravityForms\DataManipulators\EntryDataManipulator;
+use WPGraphQLGravityForms\Utils\GFUtils;
 
 /**
  * Class - SubmitDraftEntry
@@ -178,11 +179,7 @@ class SubmitDraftEntry extends AbstractMutation {
 	 * @throws UserError .
 	 */
 	private function validate_form_id( int $form_id ) : void {
-		$form_info = GFAPI::get_form( $form_id );
-
-		if ( empty( $form_info ) || ! $form_info->is_active || $form_info->is_trash ) {
-			throw new UserError( __( 'The form associated with this entry is nonexistent or inactive.', 'wp-graphql-gravity-forms' ) );
-		}
+		$form_info = GFUtils::get_form( $form_id );
 	}
 
 	/**
@@ -240,11 +237,11 @@ class SubmitDraftEntry extends AbstractMutation {
 	 * @throws UserError .
 	 */
 	private function create_post( int $form_id, int $entry_id ) : void {
-		$form  = GFAPI::get_form( $form_id );
+		$form  = GFUtils::get_form( $form_id );
 		$entry = GFAPI::get_entry( $entry_id );
 
-		if ( ! $form || ! $entry ) {
-			throw new UserError( __( 'An error occured while trying to create a post from the form submission. Form or entry not found', 'wp-graphql-gravity-forms' ) );
+		if ( ! $entry ) {
+			throw new UserError( __( 'An error occured while trying to create a post from the form submission. Entry not found', 'wp-graphql-gravity-forms' ) );
 		}
 
 		GFCommon::create_post( $form, $entry );
@@ -258,10 +255,10 @@ class SubmitDraftEntry extends AbstractMutation {
 	 * @throws UserError .
 	 */
 	private function send_notifications( int $form_id, int $entry_id ) : void {
-		$form  = GFAPI::get_form( $form_id );
+		$form  = GFUtils::get_form( $form_id );
 		$entry = GFAPI::get_entry( $entry_id );
 
-		if ( ! $form || ! $entry || is_wp_error( $entry ) ) {
+		if ( ! $entry || is_wp_error( $entry ) ) {
 			throw new UserError( __( 'An error occurred while trying to send notifications, form or entry not found.', 'wp-graphql-gravity-forms' ) );
 		}
 
@@ -306,7 +303,7 @@ class SubmitDraftEntry extends AbstractMutation {
 		$draft_entry      = $this->get_draft_entry( $args['input']['resumeToken'] );
 		$submission       = $this->get_draft_submission( $draft_entry );
 		$submitted_values = $submission['submitted_values'];
-		$form             = GFAPI::get_form( $submission['partial_entry']['form_id'] );
+		$form             = GFUtils::get_form( $submission['partial_entry']['form_id'] );
 		$fields           = $form['fields'];
 
 		foreach ( $fields as $field ) {
@@ -362,7 +359,7 @@ class SubmitDraftEntry extends AbstractMutation {
 	private function set_form_page_to_last( int $form_id ) : void {
 		require_once GFCommon::get_base_path() . '/form_display.php';
 
-		$form = GFAPI::get_form( $form_id );
+		$form = GFUtils::get_form( $form_id );
 
 		GFFormDisplay::set_current_page( $form_id, GFFormDisplay::get_max_page_number( $form ) );
 	}

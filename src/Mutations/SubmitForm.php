@@ -24,6 +24,8 @@ use WPGraphQLGravityForms\Interfaces\Mutation;
 use WPGraphQLGravityForms\Types\Entry\Entry;
 use WPGraphQLGravityForms\Types\FieldError\FieldError;
 use WPGraphQLGravityForms\Types\Input\FieldValuesInput;
+use WPGraphQLGravityForms\Utils\GFUtils;
+
 /**
  * Class - SubmitForm
  */
@@ -178,7 +180,7 @@ class SubmitForm extends AbstractMutation {
 			$created_by          = isset( $input['createdBy'] ) ? absint( $input['createdBy'] ) : null;
 			$source_url          = esc_url_raw( $this->truncate( $_SERVER['HTTP_REFERER'] ?? '', 250 ) );
 
-			$this->form = $this->get_form( $input['formId'] );
+			$this->form = GFUtils::get_form( $input['formId'] );
 
 			$field_values = $this->get_field_values( $input['fieldValues'] );
 
@@ -585,23 +587,6 @@ class SubmitForm extends AbstractMutation {
 		}
 	}
 
-	/**
-	 * Gets the Gravity Form array for the given form id.
-	 * Uses GFAPI::get_form().
-	 *
-	 * @param integer $form_id .
-	 * @return array
-	 * @throws UserError .
-	 */
-	private function get_form( int $form_id ) : array {
-		$form = GFAPI::get_form( $form_id );
-
-		if ( ! $form || ! $form['is_active'] || $form['is_trash'] ) {
-			throw new UserError( __( 'The form associated with this entry is nonexistent or inactive.', 'wp-graphql-gravity-forms' ) );
-		}
-
-		return $form;
-	}
 
 	/**
 	 * Get the Gravity Forms field object for the given id.

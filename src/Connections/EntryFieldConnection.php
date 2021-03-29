@@ -10,19 +10,18 @@
 
 namespace WPGraphQLGravityForms\Connections;
 
-use GFAPI;
-use GraphQL\Error\UserError;
 use GraphQL\Type\Definition\ResolveInfo;
 use GraphQLRelay\Relay;
 use WPGraphQL\AppContext;
-use WPGraphQLGravityForms\Interfaces\Hookable;
+use WPGraphQLGravityForms\DataManipulators\FieldsDataManipulator;
 use WPGraphQLGravityForms\Interfaces\Connection;
 use WPGraphQLGravityForms\Interfaces\FieldValue as FieldValueInterface;
+use WPGraphQLGravityForms\Interfaces\Hookable;
 use WPGraphQLGravityForms\Types\Entry\Entry;
 use WPGraphQLGravityForms\Types\Field\Field;
-use WPGraphQLGravityForms\Types\Union\ObjectFieldValueUnion;
-use WPGraphQLGravityForms\DataManipulators\FieldsDataManipulator;
 use WPGraphQLGravityForms\Types\GraphQLInterface\FieldInterface;
+use WPGraphQLGravityForms\Types\Union\ObjectFieldValueUnion;
+use WPGraphQLGravityForms\Utils\GFUtils;
 
 /**
  * Class - EntryFieldConnection.
@@ -88,11 +87,7 @@ class EntryFieldConnection implements Hookable, Connection {
 					],
 				],
 				'resolve'       => function( $root, array $args, AppContext $context, ResolveInfo $info ) : array {
-					$form = GFAPI::get_form( $root['formId'] );
-
-					if ( ! $form ) {
-						throw new UserError( __( 'The form used to generate this entry was not found.', 'wp-graphql-gravity-forms' ) );
-					}
+					$form = GFUtils::get_form( $root['formId'], false );
 
 					$fields     = ( new FieldsDataManipulator() )->manipulate( $form['fields'] );
 					$connection = Relay::connectionFromArray( $fields, $args );

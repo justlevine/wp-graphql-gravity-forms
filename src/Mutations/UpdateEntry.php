@@ -23,6 +23,7 @@ use WPGraphQLGravityForms\Types\Entry\Entry;
 use WPGraphQLGravityForms\Types\FieldError\FieldError;
 use WPGraphQLGravityForms\Types\Input\FieldValuesInput;
 use WPGraphQLGravityForms\Types\Enum\EntryStatusEnum;
+use WPGraphQLGravityForms\Utils\GFUtils;
 
 /**
  * Class - UpdateEntry
@@ -184,7 +185,7 @@ class UpdateEntry extends AbstractMutation {
 			// Set default values.
 
 			$this->entry = $this->get_entry( (int) $input['entryId'] );
-			$this->form  = $this->get_form( $this->entry['form_id'] );
+			$this->form  = GFUtils::get_form( $this->entry['form_id'] );
 
 			$entry_data = $this->prepare_entry_data( $input );
 
@@ -202,24 +203,6 @@ class UpdateEntry extends AbstractMutation {
 				'entryId' => $this->entry['id'],
 			];
 		};
-	}
-
-	/**
-	 * Gets the Gravity Form array for the given form id.
-	 * Uses GFAPI::get_form().
-	 *
-	 * @param integer $form_id .
-	 * @return array
-	 * @throws UserError .
-	 */
-	private function get_form( int $form_id ) : array {
-		$form = GFAPI::get_form( $form_id );
-
-		if ( ! $form || ! $form['is_active'] || $form['is_trash'] ) {
-			throw new UserError( __( 'The form associated with this entry is nonexistent or inactive.', 'wp-graphql-gravity-forms' ) );
-		}
-
-		return $form;
 	}
 
 	/**

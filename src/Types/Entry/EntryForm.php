@@ -16,6 +16,7 @@ use WPGraphQLGravityForms\Interfaces\Type;
 use WPGraphQLGravityForms\Interfaces\Field;
 use WPGraphQLGravityForms\DataManipulators\FormDataManipulator;
 use WPGraphQLGravityForms\Types\Form\Form;
+use WPGraphQLGravityForms\Utils\GFUtils;
 
 /**
  * Creates a 1:1 relationship between an Entry and the Form associated with it.
@@ -84,11 +85,7 @@ class EntryForm implements Hookable, Type, Field {
 				'type'        => self::TYPE,
 				'description' => __( 'The Gravity Forms form associated with the entry.', 'wp-graphql-gravity-forms' ),
 				'resolve'     => function( array $entry ) : array {
-					$form = GFAPI::get_form( $entry['formId'] );
-
-					if ( ! $form ) {
-						throw new UserError( __( 'The form used to generate this entry was not found.', 'wp-graphql-gravity-forms' ) );
-					}
+					$form = GFUtils::get_form( $entry['formId'], false );
 
 					return [
 						'node' => $this->form_data_manipulator->manipulate( $form ),

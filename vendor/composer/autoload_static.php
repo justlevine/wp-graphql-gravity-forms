@@ -248,6 +248,7 @@ class ComposerStaticInit87c4913e01e527b1d65725d26d58ba74
         'WPGraphQLGravityForms\\Types\\Input\\ListInput' => __DIR__ . '/../..' . '/src/Types/Input/ListInput.php',
         'WPGraphQLGravityForms\\Types\\Input\\NameInput' => __DIR__ . '/../..' . '/src/Types/Input/NameInput.php',
         'WPGraphQLGravityForms\\Types\\Union\\ObjectFieldValueUnion' => __DIR__ . '/../..' . '/src/Types/Union/ObjectFieldValueUnion.php',
+        'WPGraphQLGravityForms\\Utils\\GFUtils' => __DIR__ . '/../..' . '/src/Utils/GFUtils.php',
         'WPGraphQLGravityForms\\Utils\\Utils' => __DIR__ . '/../..' . '/src/Utils/Utils.php',
         'WPGraphQLGravityForms\\WPGraphQLGravityForms' => __DIR__ . '/../..' . '/src/WPGraphQLGravityForms.php',
     );
