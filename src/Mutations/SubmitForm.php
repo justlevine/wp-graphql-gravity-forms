@@ -132,7 +132,7 @@ class SubmitForm extends AbstractMutation {
 					if ( $payload['entryId'] ) {
 						$entry = GFAPI::get_entry( $payload['entryId'] );
 						if ( is_wp_error( $entry ) ) {
-							throw new UserError( __( 'Error retrieving the output fields. Entry was not resolved.', 'wp-graphql-gravity-forms' ) );
+							throw new UserError( __( 'Error retrieving the output fields. Entry was not resolved. Error: ', 'wp-graphql-gravity-forms' ) . $entry->get_error_message() );
 						}
 
 						return $this->entry_data_manipulator->manipulate( $entry );
@@ -191,7 +191,7 @@ class SubmitForm extends AbstractMutation {
 			);
 
 			if ( is_wp_error( $submission ) ) {
-				throw new UserError( __( 'There was an error while processing the form.', 'wp-graphql-gravity-forms' ) );
+				throw new UserError( __( 'There was an error while processing the form. Error: ', 'wp-graphql-gravity-forms' ) . $submission->get_error_message() );
 			}
 
 			if ( $submission['is_valid'] ) {

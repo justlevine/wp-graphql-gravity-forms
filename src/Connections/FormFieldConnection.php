@@ -63,7 +63,7 @@ class FormFieldConnection implements Hookable, Connection {
 				'resolve'       => function( array $root, array $args, AppContext $context, ResolveInfo $info ) : array {
 					$form_entries = GFAPI::get_entries( $root['formId'] );
 					if ( is_wp_error( $form_entries ) ) {
-						throw new UserError( __( 'Error retrieving the form entries.', 'wp-graphql-gravity-forms' ) );
+						throw new UserError( __( 'Error retrieving the form entries. Error: ', 'wp-graphql-gravity-forms' ) . $form_entries->get_error_message() );
 					}
 
 					$entry_data_manipulator = new EntryDataManipulator();

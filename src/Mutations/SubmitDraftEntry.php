@@ -99,7 +99,7 @@ class SubmitDraftEntry extends AbstractMutation {
 				'resolve'     => function( array $payload ) : array {
 					$entry = GFAPI::get_entry( $payload['entryId'] );
 					if ( is_wp_error( $entry ) ) {
-						throw new UserError( __( 'Error retrieving the output fields. Entry was not resolved.', 'wp-graphql-gravity-forms' ) );
+						throw new UserError( __( 'Error retrieving the output fields. Entry was not resolved. Error: ', 'wp-graphql-gravity-forms' ) . $entry->get_error_message() );
 					}
 
 					return $this->entry_data_manipulator->manipulate( $entry );

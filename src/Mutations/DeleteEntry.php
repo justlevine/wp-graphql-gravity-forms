@@ -71,7 +71,7 @@ class DeleteEntry extends AbstractMutation {
 			$result = GFAPI::delete_entry( $entry_id );
 
 			if ( is_wp_error( $result ) ) {
-				throw new UserError( __( 'An error occurred while deleting the entry', 'wp-graphql-gravity-forms' ) );
+				throw new UserError( __( 'An error occurred while deleting the entry. Error: ', 'wp-graphql-gravity-forms' ) . $result->get_error_message() );
 			}
 
 			return [ 'entryId' => $entry_id ];

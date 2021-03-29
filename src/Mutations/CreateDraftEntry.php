@@ -179,7 +179,7 @@ class CreateDraftEntry extends AbstractMutation {
 		$entry = GFFormsModel::get_lead( $entry_id );
 
 		if ( is_wp_error( $entry ) ) {
-			throw new UserError( sprintf( __( 'Error retrieving the form entry. No entry with the id %n found', 'wp-graphql-gravity-forms' ), $entry_id ) );
+			throw new UserError( sprintf( __( 'Error retrieving the form entry. No entry with the id %n found. Error: ', 'wp-graphql-gravity-forms' ), $entry_id ) . $entry->get_error_message() );
 		}
 
 		return $entry;
