@@ -224,6 +224,7 @@ final class WPGraphQLGravityForms {
 		$this->instances['update_draft_entry_time_field_value']           = new Mutations\UpdateDraftEntryTimeFieldValue( $this->instances['draft_entry_data_manipulator'] );
 		$this->instances['update_draft_entry_website_field_value']        = new Mutations\UpdateDraftEntryWebsiteFieldValue( $this->instances['draft_entry_data_manipulator'] );
 		$this->instances['submit_form']                                   = new Mutations\SubmitForm( $this->instances );
+		$this->instances['update_entry']                                  = new Mutations\UpdateEntry( $this->instances );
 	}
 
 	/**

@@ -19,7 +19,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => 'ae8b918db5435a40950dac7977ff33de44fb8178',
+    'reference' => '254152e5f79f974f601b5ff96db844ef9fb48e4e',
     'name' => 'harness-software/wp-graphql-gravity-forms',
   ),
   'versions' => 
@@ -250,7 +250,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => 'ae8b918db5435a40950dac7977ff33de44fb8178',
+      'reference' => '254152e5f79f974f601b5ff96db844ef9fb48e4e',
     ),
     'hautelook/phpass' => 
     array (

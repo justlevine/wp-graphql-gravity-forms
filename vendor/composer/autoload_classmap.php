@@ -60,6 +60,7 @@ return array(
     'WPGraphQLGravityForms\\Mutations\\UpdateDraftEntryTextFieldValue' => $baseDir . '/src/Mutations/UpdateDraftEntryTextFieldValue.php',
     'WPGraphQLGravityForms\\Mutations\\UpdateDraftEntryTimeFieldValue' => $baseDir . '/src/Mutations/UpdateDraftEntryTimeFieldValue.php',
     'WPGraphQLGravityForms\\Mutations\\UpdateDraftEntryWebsiteFieldValue' => $baseDir . '/src/Mutations/UpdateDraftEntryWebsiteFieldValue.php',
+    'WPGraphQLGravityForms\\Mutations\\UpdateEntry' => $baseDir . '/src/Mutations/UpdateEntry.php',
     'WPGraphQLGravityForms\\Settings\\WPGraphQLSettings' => $baseDir . '/src/Settings/WPGraphQLSettings.php',
     'WPGraphQLGravityForms\\Types\\Button\\Button' => $baseDir . '/src/Types/Button/Button.php',
     'WPGraphQLGravityForms\\Types\\Button\\LastPageButton' => $baseDir . '/src/Types/Button/LastPageButton.php',

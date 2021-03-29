@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitc0769f616b013655fd745e5ced376c8f
+class ComposerStaticInit6120ab8922389197de2b98258d642f42
 {
     public static $prefixLengthsPsr4 = array (
         'W' => 
@@ -75,6 +75,7 @@ class ComposerStaticInitc0769f616b013655fd745e5ced376c8f
         'WPGraphQLGravityForms\\Mutations\\UpdateDraftEntryTextFieldValue' => __DIR__ . '/../..' . '/src/Mutations/UpdateDraftEntryTextFieldValue.php',
         'WPGraphQLGravityForms\\Mutations\\UpdateDraftEntryTimeFieldValue' => __DIR__ . '/../..' . '/src/Mutations/UpdateDraftEntryTimeFieldValue.php',
         'WPGraphQLGravityForms\\Mutations\\UpdateDraftEntryWebsiteFieldValue' => __DIR__ . '/../..' . '/src/Mutations/UpdateDraftEntryWebsiteFieldValue.php',
+        'WPGraphQLGravityForms\\Mutations\\UpdateEntry' => __DIR__ . '/../..' . '/src/Mutations/UpdateEntry.php',
         'WPGraphQLGravityForms\\Settings\\WPGraphQLSettings' => __DIR__ . '/../..' . '/src/Settings/WPGraphQLSettings.php',
         'WPGraphQLGravityForms\\Types\\Button\\Button' => __DIR__ . '/../..' . '/src/Types/Button/Button.php',
         'WPGraphQLGravityForms\\Types\\Button\\LastPageButton' => __DIR__ . '/../..' . '/src/Types/Button/LastPageButton.php',
@@ -253,9 +254,9 @@ class ComposerStaticInitc0769f616b013655fd745e5ced376c8f
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitc0769f616b013655fd745e5ced376c8f::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitc0769f616b013655fd745e5ced376c8f::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitc0769f616b013655fd745e5ced376c8f::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit6120ab8922389197de2b98258d642f42::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit6120ab8922389197de2b98258d642f42::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit6120ab8922389197de2b98258d642f42::$classMap;
 
         }, null, ClassLoader::class);
     }
