@@ -1,6 +1,6 @@
 <?php
 /**
- * Mutation - submitGravityFormsDraftEntryJson
+ * Mutation - submitGravityFormsForm
  *
  * Registers mutation to submit a Gravity Forms draft entry so that it becomes a permanent entry.
  *
@@ -103,10 +103,6 @@ class SubmitForm implements Hookable, Mutation {
 			'createdBy'   => [
 				'type'        => 'Integer',
 				'description' => __( 'Optional. ID of the user that submitted of the form if a logged in user submitted the form.', 'wp-graphql-gravity-forms' ),
-			],
-			'entryId'     => [
-				'type'        => 'String',
-				'description' => __( 'Optional. The Gravity Forms entry id. Empty if submitting a new entry, the resume token if submitting a draft entry, or the existing entry id if updating a previously submitted entry.', 'wp-graphql-gravity-forms' ),
 			],
 			'fieldValues' => [
 				'type'        => [ 'list_of' => FieldValuesInput::TYPE ],
