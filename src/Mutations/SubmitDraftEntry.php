@@ -33,12 +33,20 @@ class SubmitDraftEntry extends AbstractMutation {
 	 * @var string
 	 */
 	public static $name = 'submitGravityFormsDraftEntry';
+
 	/**
 	 * EntryDataManipulator instance.
 	 *
 	 * @var EntryDataManipulator
 	 */
 	private $entry_data_manipulator;
+
+	/**
+	 * Gravity Forms form object.
+	 *
+	 * @var array
+	 */
+	private $form;
 
 	/**
 	 * Constructor
@@ -124,10 +132,10 @@ class SubmitDraftEntry extends AbstractMutation {
 			$draft_entry  = $this->get_draft_entry( $resume_token );
 			$form_id      = $draft_entry['form_id'];
 
-			// Sets last page.
-			$this->set_form_page_to_last( $form_id );
+			$this->form = GFUtils::get_form( $form_id );
 
-			$this->validate_form_id( $form_id );
+			// Sets last page.
+			$this->set_form_page_to_last();
 
 			// Force creates new entry if `$input['createNewEntry']` is true.
 			$submission = $this->get_draft_submission( $draft_entry );
@@ -139,12 +147,12 @@ class SubmitDraftEntry extends AbstractMutation {
 			 * @TODO: Check how GF handles post creation when entries are updated.
 			 */
 			if ( ! isset( $input['triggerPostCreation'] ) || $input['triggerPostCreation'] ) {
-				$this->create_post( $form_id, $entry_id );
+				$this->create_post( $entry_id );
 			}
 
 			// Send notifications.
 			if ( ! isset( $input['triggerNotifications'] ) || $input['triggerNotifications'] ) {
-				$this->send_notifications( $form_id, $entry_id );
+				$this->send_notifications( $entry_id );
 			}
 
 			GFFormsModel::delete_draft_submission( $resume_token );
@@ -170,16 +178,6 @@ class SubmitDraftEntry extends AbstractMutation {
 		}
 
 		return $draft_entry;
-	}
-
-	/**
-	 * Checks if form id exists.
-	 *
-	 * @param integer $form_id .
-	 * @throws UserError .
-	 */
-	private function validate_form_id( int $form_id ) : void {
-		$form_info = GFUtils::get_form( $form_id );
 	}
 
 	/**
@@ -232,37 +230,33 @@ class SubmitDraftEntry extends AbstractMutation {
 	/**
 	 * Create WordPress post if the form has any post fields.
 	 *
-	 * @param integer $form_id .
 	 * @param integer $entry_id .
 	 * @throws UserError .
 	 */
-	private function create_post( int $form_id, int $entry_id ) : void {
-		$form  = GFUtils::get_form( $form_id );
-		$entry = GFAPI::get_entry( $entry_id );
-
-		if ( ! $entry ) {
-			throw new UserError( __( 'An error occured while trying to create a post from the form submission. Entry not found', 'wp-graphql-gravity-forms' ) );
-		}
-
-		GFCommon::create_post( $form, $entry );
-	}
-
-	/**
-	 * Triggers Gravity Forms Notificiations associated with the entry.
-	 *
-	 * @param integer $form_id .
-	 * @param integer $entry_id .
-	 * @throws UserError .
-	 */
-	private function send_notifications( int $form_id, int $entry_id ) : void {
-		$form  = GFUtils::get_form( $form_id );
+	private function create_post( int $entry_id ) : void {
 		$entry = GFAPI::get_entry( $entry_id );
 
 		if ( ! $entry || is_wp_error( $entry ) ) {
 			throw new UserError( __( 'An error occurred while trying to send notifications, form or entry not found.', 'wp-graphql-gravity-forms' ) );
 		}
 
-		GFAPI::send_notifications( $form, $entry );
+		GFCommon::create_post( $this->form, $entry );
+	}
+
+	/**
+	 * Triggers Gravity Forms Notificiations associated with the entry.
+	 *
+	 * @param integer $entry_id .
+	 * @throws UserError .
+	 */
+	private function send_notifications( int $entry_id ) : void {
+		$entry = GFAPI::get_entry( $entry_id );
+
+		if ( ! $entry || is_wp_error( $entry ) ) {
+			throw new UserError( __( 'An error occurred while trying to send notifications, form or entry not found.', 'wp-graphql-gravity-forms' ) );
+		}
+
+		GFAPI::send_notifications( $this->form, $entry );
 	}
 
 	/**
@@ -353,14 +347,10 @@ class SubmitDraftEntry extends AbstractMutation {
 
 	/**
 	 * Sets form page to last page so post creation can work.
-	 *
-	 * @param integer $form_id .
 	 */
-	private function set_form_page_to_last( int $form_id ) : void {
+	private function set_form_page_to_last() : void {
 		require_once GFCommon::get_base_path() . '/form_display.php';
 
-		$form = GFUtils::get_form( $form_id );
-
-		GFFormDisplay::set_current_page( $form_id, GFFormDisplay::get_max_page_number( $form ) );
+		GFFormDisplay::set_current_page( $this->form['id'], GFFormDisplay::get_max_page_number( $this->form ) );
 	}
 }
