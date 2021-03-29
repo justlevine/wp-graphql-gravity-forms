@@ -178,7 +178,7 @@ class SubmitDraftEntry extends AbstractMutation {
 	 * @throws UserError .
 	 */
 	private function validate_form_id( int $form_id ) : void {
-		$form_info = GFFormsModel::get_form( $form_id, true );
+		$form_info = GFAPI::get_form( $form_id );
 
 		if ( empty( $form_info ) || ! $form_info->is_active || $form_info->is_trash ) {
 			throw new UserError( __( 'The form associated with this entry is nonexistent or inactive.', 'wp-graphql-gravity-forms' ) );

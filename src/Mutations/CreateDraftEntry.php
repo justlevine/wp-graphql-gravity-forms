@@ -83,7 +83,7 @@ class CreateDraftEntry extends AbstractMutation {
 			}
 
 			$form_id   = absint( $input['formId'] );
-			$form_info = GFFormsModel::get_form( $form_id, true );
+			$form_info = GFAPI::get_form( $form_id );
 
 			if ( empty( $form_info ) || ! $form_info->is_active || $form_info->is_trash ) {
 				throw new UserError( __( 'The ID for a valid, active form must be provided.', 'wp-graphql-gravity-forms' ) );
