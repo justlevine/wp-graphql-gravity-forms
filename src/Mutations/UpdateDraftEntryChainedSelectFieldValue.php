@@ -15,11 +15,13 @@ use WPGraphQLGravityForms\Types\Input\ChainedSelectInput;
 /**
  * Class - UpdateDraftEntryChainedSelectFieldValue
  */
-class UpdateDraftEntryChainedSelectFieldValue extends DraftEntryUpdater {
+class UpdateDraftEntryChainedSelectFieldValue extends AbstractDraftEntryUpdater {
 	/**
-	 * Mutation name.
+	 * Mutation Name
+	 *
+	 * @var string
 	 */
-	const NAME = 'updateDraftEntryChainedSelectFieldValue';
+	public static $name = 'updateDraftEntryChainedSelectFieldValue';
 
 	/**
 	 * Defines the input field value configuration.

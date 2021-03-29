@@ -15,45 +15,23 @@ use GFCommon;
 use GraphQL\Error\UserError;
 use GraphQL\Type\Definition\ResolveInfo;
 use WPGraphQL\AppContext;
-use WPGraphQLGravityForms\Interfaces\Hookable;
-use WPGraphQLGravityForms\Interfaces\Mutation;
-
 /**
  * Class - CreateDraftEntry
  */
-class CreateDraftEntry implements Hookable, Mutation {
+class CreateDraftEntry extends AbstractMutation {
 	/**
-	 * Mutation name.
+	 * Mutation Name
+	 *
+	 * @var string
 	 */
-	const NAME = 'createGravityFormsDraftEntry';
-
-	/**
-	 * Register hooks to WordPress.
-	 */
-	public function register_hooks() : void {
-		add_action( 'graphql_register_types', [ $this, 'register_mutation' ] );
-	}
-
-	/**
-	 * Registers mutation.
-	 */
-	public function register_mutation() : void {
-		register_graphql_mutation(
-			self::NAME,
-			[
-				'inputFields'         => $this->get_input_fields(),
-				'outputFields'        => $this->get_output_fields(),
-				'mutateAndGetPayload' => $this->mutate_and_get_payload(),
-			]
-		);
-	}
+	public static $name = 'createGravityFormsDraftEntry';
 
 	/**
 	 * Defines the input field configuration.
 	 *
 	 * @return array
 	 */
-	public static function get_input_fields() : array {
+	public function get_input_fields() : array {
 		return [
 			'formId'      => [
 				'type'        => [ 'non_null' => 'Int' ],

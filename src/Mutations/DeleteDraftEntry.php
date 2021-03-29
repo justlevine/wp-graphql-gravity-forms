@@ -12,45 +12,25 @@ namespace WPGraphQLGravityForms\Mutations;
 
 use GFFormsModel;
 use GraphQL\Error\UserError;
-use WPGraphQLGravityForms\Interfaces\Hookable;
-use WPGraphQLGravityForms\Interfaces\Mutation;
 
 /**
  * Class - DeleteDraftEntry
  */
-class DeleteDraftEntry implements Hookable, Mutation {
-	/**
-	 * Mutation name.
-	 */
-	const NAME = 'deleteGravityFormsDraftEntry';
+class DeleteDraftEntry extends AbstractMutation {
 
 	/**
-	 * Register hooks to WordPress.
+	 * Mutation Name
+	 *
+	 * @var string
 	 */
-	public function register_hooks() : void {
-		add_action( 'graphql_register_types', [ $this, 'register_mutation' ] );
-	}
-
-	/**
-	 * Registers mutation.
-	 */
-	public function register_mutation() : void {
-		register_graphql_mutation(
-			self::NAME,
-			[
-				'inputFields'         => $this->get_input_fields(),
-				'outputFields'        => $this->get_output_fields(),
-				'mutateAndGetPayload' => $this->mutate_and_get_payload(),
-			]
-		);
-	}
+	public static $name = 'deleteGravityFormsDraftEntry';
 
 	/**
 	 * Defines the input field configuration.
 	 *
 	 * @return array
 	 */
-	public static function get_input_fields() : array {
+	public function get_input_fields() : array {
 		return [
 			'resumeToken' => [
 				'type'        => 'String',

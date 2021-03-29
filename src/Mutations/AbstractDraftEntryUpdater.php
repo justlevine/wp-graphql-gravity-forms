@@ -14,16 +14,14 @@ use GFFormsModel;
 use GraphQL\Error\UserError;
 use GraphQL\Type\Definition\ResolveInfo;
 use WPGraphQL\AppContext;
-use WPGraphQLGravityForms\Interfaces\Hookable;
-use WPGraphQLGravityForms\Interfaces\Mutation;
 use WPGraphQLGravityForms\Types\FieldError\FieldError;
 use WPGraphQLGravityForms\Types\Entry\Entry;
 use WPGraphQLGravityForms\DataManipulators\DraftEntryDataManipulator;
 
 /**
- * Class - DraftEntryUpdator
+ * Class - AbstractDraftEntryUpdater
  */
-abstract class DraftEntryUpdater implements Hookable, Mutation {
+abstract class AbstractDraftEntryUpdater extends AbstractMutation {
 	/**
 	 * DraftEntryDataManipulator instance.
 	 *
@@ -60,28 +58,6 @@ abstract class DraftEntryUpdater implements Hookable, Mutation {
 	 * @var mixed
 	 */
 	private $value = null;
-
-
-	/**
-	 * Register hooks to WordPress.
-	 */
-	public function register_hooks() : void {
-		add_action( 'graphql_register_types', [ $this, 'register_mutation' ] );
-	}
-
-	/**
-	 * Registers mutation.
-	 */
-	public function register_mutation() : void {
-		register_graphql_mutation(
-			static::NAME,
-			[
-				'inputFields'         => $this->get_input_fields(),
-				'outputFields'        => $this->get_output_fields(),
-				'mutateAndGetPayload' => $this->mutate_and_get_payload(),
-			]
-		);
-	}
 
 	/**
 	 * Defines the input field configuration.

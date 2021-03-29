@@ -13,11 +13,13 @@ namespace WPGraphQLGravityForms\Mutations;
 /**
  * Update a Gravity Forms draft entry Website field value.
  */
-class UpdateDraftEntryWebsiteFieldValue extends DraftEntryUpdater {
+class UpdateDraftEntryWebsiteFieldValue extends AbstractDraftEntryUpdater {
 	/**
-	 * Mutation name.
+	 * Mutation Name
+	 *
+	 * @var string
 	 */
-	const NAME = 'updateDraftEntryWebsiteFieldValue';
+	public static $name = 'updateDraftEntryWebsiteFieldValue';
 
 	/**
 	 * Defines the input field value configuration.

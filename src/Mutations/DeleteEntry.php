@@ -14,45 +14,24 @@ use GFAPI;
 use GraphQL\Error\UserError;
 use GraphQL\Type\Definition\ResolveInfo;
 use WPGraphQL\AppContext;
-use WPGraphQLGravityForms\Interfaces\Hookable;
-use WPGraphQLGravityForms\Interfaces\Mutation;
 
 /**
  * Class - DeleteEntry
  */
-class DeleteEntry implements Hookable, Mutation {
+class DeleteEntry extends AbstractMutation {
 	/**
-	 * Mutation name.
+	 * Mutation Name
+	 *
+	 * @var string
 	 */
-	const NAME = 'deleteGravityFormsEntry';
-
-	/**
-	 * Mutation name.
-	 */
-	public function register_hooks() : void {
-		add_action( 'graphql_register_types', [ $this, 'register_mutation' ] );
-	}
-
-	/**
-	 * Registers mutation.
-	 */
-	public function register_mutation() : void {
-		register_graphql_mutation(
-			self::NAME,
-			[
-				'inputFields'         => $this->get_input_fields(),
-				'outputFields'        => $this->get_output_fields(),
-				'mutateAndGetPayload' => $this->mutate_and_get_payload(),
-			]
-		);
-	}
+	public static $name = 'deleteGravityFormsEntry';
 
 	/**
 	 * Defines the input field configuration.
 	 *
 	 * @return array
 	 */
-	public static function get_input_fields() : array {
+	public function get_input_fields() : array {
 		return [
 			'entryId' => [
 				'type'        => [ 'non_null' => 'Int' ],

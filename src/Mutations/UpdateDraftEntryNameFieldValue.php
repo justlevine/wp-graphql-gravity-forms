@@ -15,11 +15,13 @@ use WPGraphQLGravityForms\Types\Input\NameInput;
 /**
  * Class - UpdateDraftEntryNameFieldValue
  */
-class UpdateDraftEntryNameFieldValue extends DraftEntryUpdater {
+class UpdateDraftEntryNameFieldValue extends AbstractDraftEntryUpdater {
 	/**
-	 * Mutation name.
+	 * Mutation Name
+	 *
+	 * @var string
 	 */
-	const NAME = 'updateDraftEntryNameFieldValue';
+	public static $name = 'updateDraftEntryNameFieldValue';
 
 	/**
 	 * Defines the input field value configuration.

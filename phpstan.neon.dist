@@ -20,7 +20,6 @@ parameters:
 			- '#Cannot access property \$is_active on true.#'
 			- '#Cannot access property \$is_trash on true.#'
 			- "#^Access to undefined constant WPGraphQLGravityForms\\\\Interfaces\\\\FieldValue\\:\\:TYPE\\.$#"
-			- "#^Access to undefined constant WPGraphQLGravityForms\\\\Mutations\\\\DraftEntryUpdater\\:\\:NAME\\.$#"
 			- "#^Access to undefined constant WPGraphQLGravityForms\\\\Types\\\\Enum\\\\AbstractEnum\\:\\:TYPE\\.$#"
 			- "#^Access to undefined constant WPGraphQLGravityForms\\\\Types\\\\Field\\\\Field\\:\\:GF_TYPE\\.$#"
 			- "#^Access to undefined constant WPGraphQLGravityForms\\\\Types\\\\Field\\\\Field\\:\\:TYPE\\.$#"

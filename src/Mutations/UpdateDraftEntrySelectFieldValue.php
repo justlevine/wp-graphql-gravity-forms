@@ -13,11 +13,13 @@ namespace WPGraphQLGravityForms\Mutations;
 /**
  * Class - UpdateDraftEntrySelectFieldValue
  */
-class UpdateDraftEntrySelectFieldValue extends DraftEntryUpdater {
+class UpdateDraftEntrySelectFieldValue extends AbstractDraftEntryUpdater {
 	/**
-	 * Mutation name.
+	 * Mutation Name
+	 *
+	 * @var string
 	 */
-	const NAME = 'updateDraftEntrySelectFieldValue';
+	public static $name = 'updateDraftEntrySelectFieldValue';
 
 	/**
 	 * Defines the input field value configuration.

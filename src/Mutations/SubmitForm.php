@@ -27,11 +27,13 @@ use WPGraphQLGravityForms\Types\Input\FieldValuesInput;
 /**
  * Class - SubmitForm
  */
-class SubmitForm implements Hookable, Mutation {
+class SubmitForm extends AbstractMutation {
 	/**
-	 * Mutation name.
+	 * Mutation Name
+	 *
+	 * @var string
 	 */
-	const NAME = 'submitGravityFormsForm';
+	public static $name = 'submitGravityFormsForm';
 
 	/**
 	 * EntryDataManipulator instance.
@@ -70,35 +72,12 @@ class SubmitForm implements Hookable, Mutation {
 		$this->draft_entry_data_manipulator = $instances['draft_entry_data_manipulator'];
 	}
 
-
-
-	/**
-	 * Register hooks to WordPress.
-	 */
-	public function register_hooks() : void {
-		add_action( 'graphql_register_types', [ $this, 'register_mutation' ] );
-	}
-
-	/**
-	 * Registers mutation.
-	 */
-	public function register_mutation() : void {
-		register_graphql_mutation(
-			self::NAME,
-			[
-				'inputFields'         => $this->get_input_fields(),
-				'outputFields'        => $this->get_output_fields(),
-				'mutateAndGetPayload' => $this->mutate_and_get_payload(),
-			]
-		);
-	}
-
 	/**
 	 * Defines the input field configuration.
 	 *
 	 * @return array
 	 */
-	public static function get_input_fields() : array {
+	public function get_input_fields() : array {
 		return [
 			'createdBy'   => [
 				'type'        => 'Integer',

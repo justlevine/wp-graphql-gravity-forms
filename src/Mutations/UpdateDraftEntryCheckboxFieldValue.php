@@ -15,11 +15,13 @@ use WPGraphQLGravityForms\Types\Input\CheckboxInput;
 /**
  * Class - UpdateDraftEntryCheckboxFieldValue
  */
-class UpdateDraftEntryCheckboxFieldValue extends DraftEntryUpdater {
+class UpdateDraftEntryCheckboxFieldValue extends AbstractDraftEntryUpdater {
 	/**
-	 * Mutation name.
+	 * Mutation Name
+	 *
+	 * @var string
 	 */
-	const NAME = 'updateDraftEntryCheckboxFieldValue';
+	public static $name = 'updateDraftEntryCheckboxFieldValue';
 
 	/**
 	 * Defines the input field value configuration.

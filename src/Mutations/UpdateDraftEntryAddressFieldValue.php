@@ -15,11 +15,13 @@ use WPGraphQLGravityForms\Types\Input\AddressInput;
 /**
  * Class - UpdateDraftEntryAddressFieldValue
  */
-class UpdateDraftEntryAddressFieldValue extends DraftEntryUpdater {
+class UpdateDraftEntryAddressFieldValue extends AbstractDraftEntryUpdater {
 	/**
-	 * Mutation name.
+	 * Mutation Name
+	 *
+	 * @var string
 	 */
-	const NAME = 'updateDraftEntryAddressFieldValue';
+	public static $name = 'updateDraftEntryAddressFieldValue';
 
 	/**
 	 * Defines the input field value configuration.

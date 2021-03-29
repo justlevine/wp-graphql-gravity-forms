@@ -18,11 +18,13 @@ use GraphQL\Error\UserError;
 /**
  * Class - UpdateDraftEntrySignatureFieldValue
  */
-class UpdateDraftEntrySignatureFieldValue extends DraftEntryUpdater {
+class UpdateDraftEntrySignatureFieldValue extends AbstractDraftEntryUpdater {
 	/**
-	 * Mutation name.
+	 * Mutation Name
+	 *
+	 * @var string
 	 */
-	const NAME = 'updateDraftEntrySignatureFieldValue';
+	public static $name = 'updateDraftEntrySignatureFieldValue';
 
 	/**
 	 * Defines the input field value configuration.

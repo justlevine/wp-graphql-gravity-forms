@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit6120ab8922389197de2b98258d642f42
+class ComposerStaticInit87c4913e01e527b1d65725d26d58ba74
 {
     public static $prefixLengthsPsr4 = array (
         'W' => 
@@ -44,10 +44,11 @@ class ComposerStaticInit6120ab8922389197de2b98258d642f42
         'WPGraphQLGravityForms\\Interfaces\\InputType' => __DIR__ . '/../..' . '/src/Interfaces/InputType.php',
         'WPGraphQLGravityForms\\Interfaces\\Mutation' => __DIR__ . '/../..' . '/src/Interfaces/Mutation.php',
         'WPGraphQLGravityForms\\Interfaces\\Type' => __DIR__ . '/../..' . '/src/Interfaces/Type.php',
+        'WPGraphQLGravityForms\\Mutations\\AbstractDraftEntryUpdater' => __DIR__ . '/../..' . '/src/Mutations/AbstractDraftEntryUpdater.php',
+        'WPGraphQLGravityForms\\Mutations\\AbstractMutation' => __DIR__ . '/../..' . '/src/Mutations/AbstractMutation.php',
         'WPGraphQLGravityForms\\Mutations\\CreateDraftEntry' => __DIR__ . '/../..' . '/src/Mutations/CreateDraftEntry.php',
         'WPGraphQLGravityForms\\Mutations\\DeleteDraftEntry' => __DIR__ . '/../..' . '/src/Mutations/DeleteDraftEntry.php',
         'WPGraphQLGravityForms\\Mutations\\DeleteEntry' => __DIR__ . '/../..' . '/src/Mutations/DeleteEntry.php',
-        'WPGraphQLGravityForms\\Mutations\\DraftEntryUpdater' => __DIR__ . '/../..' . '/src/Mutations/DraftEntryUpdater.php',
         'WPGraphQLGravityForms\\Mutations\\SubmitDraftEntry' => __DIR__ . '/../..' . '/src/Mutations/SubmitDraftEntry.php',
         'WPGraphQLGravityForms\\Mutations\\SubmitForm' => __DIR__ . '/../..' . '/src/Mutations/SubmitForm.php',
         'WPGraphQLGravityForms\\Mutations\\UpdateDraftEntryAddressFieldValue' => __DIR__ . '/../..' . '/src/Mutations/UpdateDraftEntryAddressFieldValue.php',
@@ -254,9 +255,9 @@ class ComposerStaticInit6120ab8922389197de2b98258d642f42
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit6120ab8922389197de2b98258d642f42::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit6120ab8922389197de2b98258d642f42::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit6120ab8922389197de2b98258d642f42::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit87c4913e01e527b1d65725d26d58ba74::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit87c4913e01e527b1d65725d26d58ba74::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit87c4913e01e527b1d65725d26d58ba74::$classMap;
 
         }, null, ClassLoader::class);
     }

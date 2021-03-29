@@ -19,8 +19,6 @@ use GraphQL\Type\Definition\ResolveInfo;
 use WPGraphQL\AppContext;
 use WPGraphQLGravityForms\DataManipulators\EntryDataManipulator;
 use WPGraphQLGravityForms\DataManipulators\DraftEntryDataManipulator;
-use WPGraphQLGravityForms\Interfaces\Hookable;
-use WPGraphQLGravityForms\Interfaces\Mutation;
 use WPGraphQLGravityForms\Types\Entry\Entry;
 use WPGraphQLGravityForms\Types\FieldError\FieldError;
 use WPGraphQLGravityForms\Types\Input\FieldValuesInput;
@@ -29,11 +27,17 @@ use WPGraphQLGravityForms\Types\Enum\EntryStatusEnum;
 /**
  * Class - UpdateEntry
  */
-class UpdateEntry implements Hookable, Mutation {
+class UpdateEntry extends AbstractMutation {
 	/**
 	 * Mutation name.
 	 */
-	const NAME = 'UpdateGravityFormsEntry';
+	const NAME = '';
+	/**
+	 * Mutation Name
+	 *
+	 * @var string
+	 */
+	public static $name = 'updateGravityFormsEntry';
 
 	/**
 	 * EntryDataManipulator instance.
@@ -79,35 +83,12 @@ class UpdateEntry implements Hookable, Mutation {
 		$this->draft_entry_data_manipulator = $instances['draft_entry_data_manipulator'];
 	}
 
-
-
-	/**
-	 * Register hooks to WordPress.
-	 */
-	public function register_hooks() : void {
-		add_action( 'graphql_register_types', [ $this, 'register_mutation' ] );
-	}
-
-	/**
-	 * Registers mutation.
-	 */
-	public function register_mutation() : void {
-		register_graphql_mutation(
-			self::NAME,
-			[
-				'inputFields'         => $this->get_input_fields(),
-				'outputFields'        => $this->get_output_fields(),
-				'mutateAndGetPayload' => $this->mutate_and_get_payload(),
-			]
-		);
-	}
-
 	/**
 	 * Defines the input field configuration.
 	 *
 	 * @return array
 	 */
-	public static function get_input_fields() : array {
+	public function get_input_fields() : array {
 		return [
 			'entryId'     => [
 				'type'        => 'String',

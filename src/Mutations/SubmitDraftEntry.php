@@ -19,20 +19,19 @@ use GFFormsModel;
 use GraphQL\Error\UserError;
 use GraphQL\Type\Definition\ResolveInfo;
 use WPGraphQL\AppContext;
-use WPGraphQLGravityForms\Interfaces\Hookable;
-use WPGraphQLGravityForms\Interfaces\Mutation;
 use WPGraphQLGravityForms\Types\Entry\Entry;
 use WPGraphQLGravityForms\DataManipulators\EntryDataManipulator;
 
 /**
  * Class - SubmitDraftEntry
  */
-class SubmitDraftEntry implements Hookable, Mutation {
+class SubmitDraftEntry extends AbstractMutation {
 	/**
-	 * Mutation name.
+	 * Mutation Name
+	 *
+	 * @var string
 	 */
-	const NAME = 'submitGravityFormsDraftEntry';
-
+	public static $name = 'submitGravityFormsDraftEntry';
 	/**
 	 * EntryDataManipulator instance.
 	 *
@@ -58,25 +57,11 @@ class SubmitDraftEntry implements Hookable, Mutation {
 	}
 
 	/**
-	 * Registers mutation.
-	 */
-	public function register_mutation() : void {
-		register_graphql_mutation(
-			self::NAME,
-			[
-				'inputFields'         => $this->get_input_fields(),
-				'outputFields'        => $this->get_output_fields(),
-				'mutateAndGetPayload' => $this->mutate_and_get_payload(),
-			]
-		);
-	}
-
-	/**
 	 * Defines the input field configuration.
 	 *
 	 * @return array
 	 */
-	public static function get_input_fields() : array {
+	public function get_input_fields() : array {
 		return [
 			'forceCreate'          => [
 				'type'        => 'Boolean',
@@ -315,7 +300,7 @@ class SubmitDraftEntry implements Hookable, Mutation {
 	 */
 	public function ensure_required_fields_are_set( $source, array $args, AppContext $context, ResolveInfo $info, $field_resolver, string $type_name, string $field_key ) : void {
 		// Make sure this is the submitGravityFormsDraftEntry field on the RootMutation.
-		if ( 'RootMutation' !== $type_name || self::NAME !== $field_key ) {
+		if ( 'RootMutation' !== $type_name || self::$name !== $field_key ) {
 			return;
 		}
 		$draft_entry      = $this->get_draft_entry( $args['input']['resumeToken'] );

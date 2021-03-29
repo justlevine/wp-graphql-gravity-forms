@@ -17,11 +17,13 @@ use WPGraphQLGravityForms\Types\Input\ListInput;
 /**
  * Class - UpdateDraftEntryListFieldValue
  */
-class UpdateDraftEntryListFieldValue extends DraftEntryUpdater {
+class UpdateDraftEntryListFieldValue extends AbstractDraftEntryUpdater {
 	/**
-	 * Mutation name.
+	 * Mutation Name
+	 *
+	 * @var string
 	 */
-	const NAME = 'updateDraftEntryListFieldValue';
+	public static $name = 'updateDraftEntryListFieldValue';
 
 	/**
 	 * Defines the input field value configuration.
