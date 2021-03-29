@@ -52,7 +52,7 @@ class SubmitDraftEntry extends AbstractMutation {
 	 * Register hooks to WordPress.
 	 */
 	public function register_hooks() : void {
-		add_action( 'graphql_register_types', [ $this, 'register_mutation' ] );
+		parent::register_hooks();
 		add_action( 'graphql_before_resolve_field', [ $this, 'ensure_required_fields_are_set' ], 10, 7 );
 	}
 
