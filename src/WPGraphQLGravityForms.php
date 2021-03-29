@@ -142,6 +142,7 @@ final class WPGraphQLGravityForms {
 		$this->instances['entries_date_fiters_input']  = new Input\EntriesDateFiltersInput();
 		$this->instances['entries_field_fiters_input'] = new Input\EntriesFieldFiltersInput();
 		$this->instances['entries_sorting_input']      = new Input\EntriesSortingInput();
+		$this->instances['field_values_input']         = new Input\FieldValuesInput();
 
 		// Unions.
 		$this->instances['object_field_value_union'] = new Union\ObjectFieldValueUnion( $this->instances );
@@ -222,8 +223,8 @@ final class WPGraphQLGravityForms {
 		$this->instances['update_draft_entry_text_field_value']           = new Mutations\UpdateDraftEntryTextFieldValue( $this->instances['draft_entry_data_manipulator'] );
 		$this->instances['update_draft_entry_time_field_value']           = new Mutations\UpdateDraftEntryTimeFieldValue( $this->instances['draft_entry_data_manipulator'] );
 		$this->instances['update_draft_entry_website_field_value']        = new Mutations\UpdateDraftEntryWebsiteFieldValue( $this->instances['draft_entry_data_manipulator'] );
+		$this->instances['submit_form']                                   = new Mutations\SubmitForm( $this->instances );
 	}
-
 
 	/**
 	 * Returns Gravity Forms Field types to be exposed to the GraphQL schema.

@@ -33,6 +33,10 @@ class FieldError implements Hookable, Type {
 			[
 				'description' => __( 'Field error.', 'wp-graphql-gravity-forms' ),
 				'fields'      => [
+					'id'      => [
+						'type'        => 'Float',
+						'description' => __( 'The field with the associated error message', 'wp-graphql-gravity-forms' ),
+					],
 					'message' => [
 						'type'        => 'String',
 						'description' => __( 'Error message.', 'wp-graphql-gravity-forms' ),
