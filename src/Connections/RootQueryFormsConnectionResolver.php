@@ -44,7 +44,6 @@ class RootQueryFormsConnectionResolver {
 			$forms                 = array_map( fn( $form ) => $form_data_manipulator->manipulate( $form ), $forms );
 		}
 
-
 		/**
 		 * "wp_graphql_gf_form_object" filter
 		 *
