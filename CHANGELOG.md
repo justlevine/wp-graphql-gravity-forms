@@ -1,79 +1,45 @@
 # Changelog
+
 ## v0.4.0 - DOGFOOD @TODO
 
-- Adds `idType` to `GravityFormsForm` and `GravityFormsEntry`, so you can now query them using the database ID, instead of generating a global id first.
-- Adds support for updating existing entries. Specifically:
-  - `createGravityFormsDraftEntry` now has an optional `fromEntryId` input field. If set, the draft entry will use the id to clone a new draft entry.
-  - `submitGravityFormsDraftEntry` now has an optional `forceCreate` input field. If `true`, a new entry will be created. If `false` or unset, the mutation will check if the draft entry was created from an existing entry and replace it. Draft entries created without `fromEntryId` will continue to generate new Gravity Forms Entries.
-- Converts all Gravity Forms `fields` to an interface. That means your queries can now look like this:
+- Adds `submitGravityFormsForm` mutation to bypass the existing draft entry flow. E.g. :
 ```graphql
-query{
-	gravityFormsForms {
-			nodes {
-				fields {
-					nodes {
-						formId
-						type
-						id
-						... on AddressField {
-							inputs {
-								defaultValue
-							}
-						}
-						... on TextField {
-							defaultValue
-						}
+  submitGravityFormsForm(
+		input: {
+			formId: 50, 
+			clientMutationId: "uniqueMutationId", 
+			fieldValues: [
+				{	# simple values
+					id: 1,
+					value: "a"
+				},
+				{ # NameField value
+					id: 9,
+					nameValues: {
+						first: "David",
+						last: "Levine"
 					}
+				},
+				{ # ListField value
+					id: 20,
+					listValues: [
+						{ rowValues: ["a", "b", "c"] }
+					]
 				}
-			}
+			],
+			saveAsDraft: true
 		}
+	) {
+		entryId
+    errors {
+      id
+      message
+    }
+    resumeToken
+    resumeUrl
 	}
+
 ```
-@TODO: consider making certain properties global to the interface, even if they return null for most fields.
-
-- Switch many field types from `String` to `Enum`: 
-  - `AddressField.addressType`
-  - `Button.type`
-  - `CaptchaField.captchaTheme`
-  - `CaptchaField.captchaType`
-  - `CaptchaField.simpleCaptchaSize`
-  - `ChainedSelectField.chainedSelectsAlignment`
-  - `ConditionalLogic.actionType`
-  - `ConditionalLogic.logicType`
-  - `ConditionalLogicRule.operator`
-  - `DateField.calendarIconType`
-  - `DateField.dateFormat`
-  - `DateField.dateType`
-  - `EntriesFieldFilterInput.operator`
-  - `EntriesSortingInput.direction`
-  - `Form.descriptionPlacement`
-  - `Form.labelPlacement`
-  - `Form.limitEntriesPeriod`
-  - `Form.subLabelPlacement`
-  - `FormConfirmation.type`
-  - `FormNotification.toType`
-  - `FormNotificationRouting.operator`
-  - `FormPagination.style`
-  - `FormPagination.type`
-  - `GravityFormsEntry.fieldFiltersNode`
-  - `GravityFormsEntry.status`
-  - `NumberField.numberFormat`
-  - `PasswordField.minPasswordStrength`
-  - `PhoneField.phoneFormat`
-  - `RootQueryToGravityFormsFormConnection.status`
-  - `SignatureField.borderStyle`
-  - `SignatureField.borderWidth`
-  - `TimeField.timeFormat`
-  - `visibilityProperty`
-  - FieldProperty: `descriptionPlacement`
-  - FieldProperty: `labelPlacement`
-  - FieldProperty: `sizeProperty`
-- Fix ConsentFieldValue conflict. `value` now returns a `String` with the consent message, or `null` if false.
-- Deprecated `url` in favor of `value` on `FileUploadFieldValue` and `SignatureFieldValue`.
-
-
-## v0.4.0 - DOGFOOD @TODO
-
 - Adds `idType` to `GravityFormsForm` and `GravityFormsEntry`, so you can now query them using the database ID, instead of generating a global id first.
 - Adds support for updating existing entries. Specifically:
  - `createGravityFormsDraftEntry` now has an optional `fromEntryId` input field. If set, the draft entry will use the id to clone a new draft entry.
@@ -143,6 +109,7 @@ query{
  - FieldProperty: `sizeProperty`
 - Fix ConsentFieldValue conflict. `value` now returns a `String` with the consent message, or `null` if false.
 - Deprecated `url` in favor of `value` on `FileUploadFieldValue` and `SignatureFieldValue`.
+- Add basic codeception tests.
 
 ## v0.3.1 - Bugfixes
  - Removes `abstract` class definition from FieldProperty classes. (#79)
