@@ -31,12 +31,12 @@
 		}
 	) {
 		entryId
-    errors {
-      id
-      message
-    }
-    resumeToken
-    resumeUrl
+		errors {
+			id
+			message
+		}
+		resumeToken
+		resumeUrl
 	}
 
 ```
