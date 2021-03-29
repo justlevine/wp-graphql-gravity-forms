@@ -1,6 +1,5 @@
 # Changelog
 
-
 ## v0.4.0 - DOGFOOD @TODO
 
 - Adds `idType` to `GravityFormsForm` and `GravityFormsEntry`, so you can now query them using the database ID, instead of generating a global id first.
@@ -72,12 +71,6 @@ query{
   - FieldProperty: `sizeProperty`
 - Fix ConsentFieldValue conflict. `value` now returns a `String` with the consent message, or `null` if false.
 - Deprecated `url` in favor of `value` on `FileUploadFieldValue` and `SignatureFieldValue`.
-
-## v0.3.1 - Bugfixes
- - Removes `abstract` class definition from FieldProperty classes. (#79)
- - `ConsentFieldValue`: The `value` field was a conflicting type `Boolean`. Now it correctly returns a `String` with the consent message. ( #80 )
- - `FormNotificationRouting`: The `fieldId` now correctly returns an `Int` instead of a `String`. (#81)
- - When checking for missing `GravityFormsForm` values, `limitEntriesCount`, `scheduleEndHour` and `scheduleEndMinute` now correctly return as type `Int` (#83)
 
 ## v0.3.0 - Add Missing Mutations, the Consent Field, and more!
 
