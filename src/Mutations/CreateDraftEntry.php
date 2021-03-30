@@ -160,7 +160,4 @@ class CreateDraftEntry extends AbstractMutation {
 			'currency'     => gf_apply_filters( [ 'gform_currency_pre_save_entry', $form['id'] ], GFCommon::get_currency(), $form ),
 		];
 	}
-
-
-
 }
