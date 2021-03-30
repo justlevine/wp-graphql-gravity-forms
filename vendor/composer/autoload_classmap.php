@@ -163,6 +163,7 @@ return array(
     'WPGraphQLGravityForms\\Types\\Field\\FieldProperty\\SizeProperty' => $baseDir . '/src/Types/Field/FieldProperty/SizeProperty.php',
     'WPGraphQLGravityForms\\Types\\Field\\FieldProperty\\SubLabelPlacementProperty' => $baseDir . '/src/Types/Field/FieldProperty/SubLabelPlacementProperty.php',
     'WPGraphQLGravityForms\\Types\\Field\\FieldProperty\\VisibilityProperty' => $baseDir . '/src/Types/Field/FieldProperty/VisibilityProperty.php',
+    'WPGraphQLGravityForms\\Types\\Field\\FieldValue\\AbstractFieldValue' => $baseDir . '/src/Types/Field/FieldValue/AbstractFieldValue.php',
     'WPGraphQLGravityForms\\Types\\Field\\FieldValue\\AddressFieldValue' => $baseDir . '/src/Types/Field/FieldValue/AddressFieldValue.php',
     'WPGraphQLGravityForms\\Types\\Field\\FieldValue\\ChainedSelectFieldValue' => $baseDir . '/src/Types/Field/FieldValue/ChainedSelectFieldValue.php',
     'WPGraphQLGravityForms\\Types\\Field\\FieldValue\\CheckboxFieldValue' => $baseDir . '/src/Types/Field/FieldValue/CheckboxFieldValue.php',

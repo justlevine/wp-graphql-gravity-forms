@@ -13,43 +13,38 @@ namespace WPGraphQLGravityForms\Types\Field\FieldValue;
 
 use GF_Field;
 use GraphQL\Error\UserError;
-use WPGraphQLGravityForms\Interfaces\Hookable;
-use WPGraphQLGravityForms\Interfaces\Type;
-use WPGraphQLGravityForms\Interfaces\FieldValue;
 use WPGraphQLGravityForms\Types\Field\ListField;
 
 /**
  * Class - ListFieldValue
  */
-class ListFieldValue implements Hookable, Type, FieldValue {
+class ListFieldValue extends AbstractFieldValue {
 	/**
 	 * Type registered in WPGraphQL.
+	 *
+	 * @var string
 	 */
-	const TYPE = ListField::TYPE . 'Value';
+	public static $type = ListField::TYPE . 'Value';
 
 	/**
-	 * Register hooks to WordPress.
+	 * Sets the field type description.
 	 */
-	public function register_hooks() : void {
-			add_action( 'graphql_register_types', [ $this, 'register_type' ] );
+	public function get_type_description() : string {
+		return __( 'List field values.', 'wp-graphql-gravity-forms' );
 	}
 
 	/**
-	 * Register Object type to GraphQL schema.
+	 * Gets the properties for the Field.
+	 *
+	 * @return array
 	 */
-	public function register_type() : void {
-			register_graphql_object_type(
-				self::TYPE,
-				[
-					'description' => __( 'List field values.', 'wp-graphql-gravity-forms' ),
-					'fields'      => [
-						'listValues' => [
-							'type'        => [ 'list_of' => ListInputValue::TYPE ],
-							'description' => __( 'Field values.', 'wp-graphql-gravity-forms' ),
-						],
-					],
-				]
-			);
+	public function get_properties() : array {
+		return [
+			'listValues' => [
+				'type'        => [ 'list_of' => ListInputValue::$type ],
+				'description' => __( 'Field values.', 'wp-graphql-gravity-forms' ),
+			],
+		];
 	}
 
 	/**

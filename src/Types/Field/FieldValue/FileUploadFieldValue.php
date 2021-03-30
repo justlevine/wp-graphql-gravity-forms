@@ -10,53 +10,48 @@
 namespace WPGraphQLGravityForms\Types\Field\FieldValue;
 
 use GF_Field;
-use WPGraphQLGravityForms\Interfaces\Hookable;
-use WPGraphQLGravityForms\Interfaces\Type;
-use WPGraphQLGravityForms\Interfaces\FieldValue;
 use WPGraphQLGravityForms\Types\Field\FileUploadField;
 
 /**
  * Class - FileUploadFieldValue
  */
-class FileUploadFieldValue implements Hookable, Type, FieldValue {
+class FileUploadFieldValue extends AbstractFieldValue {
 	/**
 	 * Type registered in WPGraphQL.
+	 *
+	 * @var string
 	 */
-	const TYPE = FileUploadField::TYPE . 'Value';
+	public static $type = FileUploadField::TYPE . 'Value';
 
 	/**
-	 * Register hooks to WordPress.
+	 * Sets the field type description.
 	 */
-	public function register_hooks() : void {
-		add_action( 'graphql_register_types', [ $this, 'register_type' ] );
+	public function get_type_description() : string {
+		return __( 'File upload field value.', 'wp-graphql-gravity-forms' );
 	}
 
 	/**
-	 * Register Object type to GraphQL schema.
+	 * Gets the properties for the Field.
+	 *
+	 * @return array
 	 */
-	public function register_type() : void {
-		register_graphql_object_type(
-			self::TYPE,
-			[
-				'description' => __( 'File upload field value.', 'wp-graphql-gravity-forms' ),
-				'fields'      => [
-					'value' => [
-						'type'        => 'String',
-						'description' => __( 'URL to the uploaded file.', 'wp-graphql-gravity-forms' ),
-					],
-					/**
-					 * Deprecated properties.
-					 *
-					 * @since 0.4.0
-					 */
-					'url'   => [
-						'type'              => 'String',
-						'description'       => __( 'URL to the uploaded file.', 'wp-graphql-gravity-forms' ),
-						'deprecationReason' => __( 'Please use `value` instead.', 'wp-graphql-gravity-forms' ),
-					],
-				],
-			]
-		);
+	public function get_properties() : array {
+		return [
+			'value' => [
+				'type'        => 'String',
+				'description' => __( 'URL to the uploaded file.', 'wp-graphql-gravity-forms' ),
+			],
+			/**
+			 * Deprecated properties.
+			 *
+			 * @since 0.4.0
+			 */
+			'url'   => [
+				'type'              => 'String',
+				'description'       => __( 'URL to the uploaded file.', 'wp-graphql-gravity-forms' ),
+				'deprecationReason' => __( 'Please use `value` instead.', 'wp-graphql-gravity-forms' ),
+			],
+		];
 	}
 
 	/**

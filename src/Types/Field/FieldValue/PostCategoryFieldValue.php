@@ -10,43 +10,38 @@
 namespace WPGraphQLGravityForms\Types\Field\FieldValue;
 
 use GF_Field;
-use WPGraphQLGravityForms\Interfaces\Hookable;
-use WPGraphQLGravityForms\Interfaces\Type;
-use WPGraphQLGravityForms\Interfaces\FieldValue;
 use WPGraphQLGravityForms\Types\Field\PostCategoryField;
 
 /**
  * Class - PostCategoryFieldValue
  */
-class PostCategoryFieldValue implements Hookable, Type, FieldValue {
+class PostCategoryFieldValue extends AbstractFieldValue {
 	/**
 	 * Type registered in WPGraphQL.
+	 *
+	 * @var string
 	 */
-	const TYPE = PostCategoryField::TYPE . 'Value';
+	public static $type = PostCategoryField::TYPE . 'Value';
 
 	/**
-	 * Register hooks to WordPress.
+	 * Sets the field type description.
 	 */
-	public function register_hooks() : void {
-		add_action( 'graphql_register_types', [ $this, 'register_type' ] );
+	public function get_type_description() : string {
+		return __( 'Post category field value.', 'wp-graphql-gravity-forms' );
 	}
 
 	/**
-	 * Register Object type to GraphQL schema.
+	 * Gets the properties for the Field.
+	 *
+	 * @return array
 	 */
-	public function register_type() : void {
-		register_graphql_object_type(
-			self::TYPE,
-			[
-				'description' => __( 'Post category field value.', 'wp-graphql-gravity-forms' ),
-				'fields'      => [
-					'values' => [
-						'type'        => [ 'list_of' => 'String' ],
-						'description' => __( 'The values.', 'wp-graphql-gravity-forms' ),
-					],
-				],
-			]
-		);
+	public function get_properties() : array {
+		return [
+			'values' => [
+				'type'        => [ 'list_of' => 'String' ],
+				'description' => __( 'The values.', 'wp-graphql-gravity-forms' ),
+			],
+		];
 	}
 
 	/**

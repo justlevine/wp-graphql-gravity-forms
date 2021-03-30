@@ -178,6 +178,7 @@ class ComposerStaticInit87c4913e01e527b1d65725d26d58ba74
         'WPGraphQLGravityForms\\Types\\Field\\FieldProperty\\SizeProperty' => __DIR__ . '/../..' . '/src/Types/Field/FieldProperty/SizeProperty.php',
         'WPGraphQLGravityForms\\Types\\Field\\FieldProperty\\SubLabelPlacementProperty' => __DIR__ . '/../..' . '/src/Types/Field/FieldProperty/SubLabelPlacementProperty.php',
         'WPGraphQLGravityForms\\Types\\Field\\FieldProperty\\VisibilityProperty' => __DIR__ . '/../..' . '/src/Types/Field/FieldProperty/VisibilityProperty.php',
+        'WPGraphQLGravityForms\\Types\\Field\\FieldValue\\AbstractFieldValue' => __DIR__ . '/../..' . '/src/Types/Field/FieldValue/AbstractFieldValue.php',
         'WPGraphQLGravityForms\\Types\\Field\\FieldValue\\AddressFieldValue' => __DIR__ . '/../..' . '/src/Types/Field/FieldValue/AddressFieldValue.php',
         'WPGraphQLGravityForms\\Types\\Field\\FieldValue\\ChainedSelectFieldValue' => __DIR__ . '/../..' . '/src/Types/Field/FieldValue/ChainedSelectFieldValue.php',
         'WPGraphQLGravityForms\\Types\\Field\\FieldValue\\CheckboxFieldValue' => __DIR__ . '/../..' . '/src/Types/Field/FieldValue/CheckboxFieldValue.php',

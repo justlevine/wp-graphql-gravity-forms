@@ -18,8 +18,10 @@ use WPGraphQLGravityForms\Interfaces\Type;
 class CheckboxInputValue implements Hookable, Type {
 	/**
 	 * Type registered in WPGraphQL.
+	 *
+	 * @var string
 	 */
-	const TYPE = 'CheckboxInputValue';
+	public static $type = 'CheckboxInputValue';
 
 	/**
 	 * Register hooks to WordPress.
@@ -33,7 +35,7 @@ class CheckboxInputValue implements Hookable, Type {
 	 */
 	public function register_type() : void {
 		register_graphql_object_type(
-			self::TYPE,
+			self::$type,
 			[
 				'description' => __( 'Value for a single input within a checkbox field.', 'wp-graphql-gravity-forms' ),
 				'fields'      => [
