@@ -25,7 +25,7 @@ class CaptchaThemeEnum extends AbstractEnum {
 	 *
 	 * @return string Enum type description.
 	 */
-	public function set_type_description() : string {
+	public function get_type_description() : string {
 		return __( 'The theme to be used for the reCAPTCHA field.', 'wp-graphql-gravity-forms' );
 	}
 

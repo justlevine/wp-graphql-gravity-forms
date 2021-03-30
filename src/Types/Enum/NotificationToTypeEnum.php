@@ -25,7 +25,7 @@ class NotificationToTypeEnum extends AbstractEnum {
 	 *
 	 * @return string Enum type description.
 	 */
-	public function set_type_description() : string {
+	public function get_type_description() : string {
 		return __( 'What to use for the notification "to".', 'wp-graphql-gravity-forms' );
 	}
 

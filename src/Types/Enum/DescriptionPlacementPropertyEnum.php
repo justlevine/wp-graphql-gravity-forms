@@ -23,7 +23,7 @@ class DescriptionPlacementPropertyEnum extends AbstractEnum {
 	 *
 	 * @return string Enum type description.
 	 */
-	public function set_type_description() : string {
+	public function get_type_description() : string {
 		return __( 'Determines where the field description is displayed relative to the field.', 'wp-graphql-gravity-forms' );
 	}
 

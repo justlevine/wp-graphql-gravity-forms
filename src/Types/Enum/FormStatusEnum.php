@@ -25,7 +25,7 @@ class FormStatusEnum extends AbstractEnum {
 	 *
 	 * @return string Enum type description.
 	 */
-	public function set_type_description() : string {
+	public function get_type_description() : string {
 		return __( 'Status of forms to get. Default is ACTIVE.', 'wp-graphql-gravity-forms' );
 	}
 

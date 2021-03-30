@@ -25,7 +25,7 @@ class FormLimitEntriesPeriodEnum extends AbstractEnum {
 	 *
 	 * @return string Enum type description.
 	 */
-	public function set_type_description() : string {
+	public function get_type_description() : string {
 		return __( 'When limitEntries is set to 1, this property specifies the time period during which submissions are allowed.', 'wp-graphql-gravity-forms' );
 	}
 

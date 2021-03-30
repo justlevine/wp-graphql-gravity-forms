@@ -24,7 +24,7 @@ class SizePropertyEnum extends AbstractEnum {
 	 *
 	 * @return string Enum type description.
 	 */
-	public function set_type_description() : string {
+	public function get_type_description() : string {
 		return __( 'The size of the field when displayed on the page.', 'wp-graphql-gravity-forms' );
 	}
 

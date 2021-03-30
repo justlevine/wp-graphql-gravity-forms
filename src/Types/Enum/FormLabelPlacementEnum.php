@@ -24,7 +24,7 @@ class FormLabelPlacementEnum extends AbstractEnum {
 	 *
 	 * @return string Enum type description.
 	 */
-	public function set_type_description() : string {
+	public function get_type_description() : string {
 		return __( 'Determines where the field labels should be placed in relation to the field.', 'wp-graphql-gravity-forms' );
 	}
 

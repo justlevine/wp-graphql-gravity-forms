@@ -25,7 +25,7 @@ class SignatureBorderWidthEnum extends AbstractEnum {
 	 *
 	 * @return string Enum type description.
 	 */
-	public function set_type_description() : string {
+	public function get_type_description() : string {
 		return __( 'Width of the border around the signature area.', 'wp-graphql-gravity-forms' );
 	}
 

@@ -23,7 +23,7 @@ class PhoneFieldFormatEnum extends AbstractEnum {
 	 *
 	 * @return string Enum type description.
 	 */
-	public function set_type_description() : string {
+	public function get_type_description() : string {
 		return __( 'Tthe allowed format for phone numbers.', 'wp-graphql-gravity-forms' );
 	}
 

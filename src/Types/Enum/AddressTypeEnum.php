@@ -24,7 +24,7 @@ class AddressTypeEnum extends AbstractEnum {
 	 *
 	 * @return string Enum type description.
 	 */
-	public function set_type_description() : string {
+	public function get_type_description() : string {
 		return __( 'Determines the type of address to be displayed.', 'wp-graphql-gravity-forms' );
 	}
 

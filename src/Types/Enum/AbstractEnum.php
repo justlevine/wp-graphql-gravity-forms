@@ -31,7 +31,7 @@ abstract class AbstractEnum implements Hookable, Enum {
 		register_graphql_enum_type(
 			static::TYPE,
 			[
-				'description' => $this->set_type_description(),
+				'description' => $this->get_type_description(),
 				'values'      => $this->prepare_values(),
 			],
 		);

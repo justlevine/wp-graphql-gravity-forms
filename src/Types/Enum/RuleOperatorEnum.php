@@ -28,7 +28,7 @@ class RuleOperatorEnum extends AbstractEnum {
 	 *
 	 * @return string Enum type description.
 	 */
-	public function set_type_description() : string {
+	public function get_type_description() : string {
 		return __( 'Operator to be used when evaluating logic rules.', 'wp-graphql-gravity-forms' );
 	}
 
