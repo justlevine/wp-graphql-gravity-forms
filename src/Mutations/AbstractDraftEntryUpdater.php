@@ -125,7 +125,7 @@ abstract class AbstractDraftEntryUpdater extends AbstractMutation {
 			$this->submission = $this->get_draft_submission( $resume_token );
 			$form             = GFUtils::get_form( $this->submission['partial_entry']['form_id'] );
 			$field_id         = absint( $input['fieldId'] );
-			$this->field      = $this->get_field_by_id( $form, $field_id );
+			$this->field      = GFUtils::get_field_by_id( $form, $field_id );
 
 			if ( ! method_exists( $this, 'prepare_field_value' ) ) {
 				throw new UserError( __( 'Mutation not processed. Field values could not be prepared', 'wp-graphql-gravity-forms' ) );
@@ -187,32 +187,6 @@ abstract class AbstractDraftEntryUpdater extends AbstractMutation {
 	 * @return mixed The prepared and sanitized field value.
 	 */
 
-	/**
-	 * Returns Gravity Forms Field object for given field id.
-	 *
-	 * @param array $form     The form.
-	 * @param int   $field_id Field ID.
-	 *
-	 * @return GF_Field
-	 *
-	 * @throws UserError .
-	 */
-	private function get_field_by_id( array $form, int $field_id ) : GF_Field {
-		$matching_fields = array_values(
-			array_filter(
-				$form['fields'],
-				function( GF_Field $field ) use ( $field_id ) : bool {
-					return $field['id'] === $field_id;
-				}
-			)
-		);
-
-		if ( ! $matching_fields ) {
-			throw new UserError( __( 'The form associated with this entry does not contain a field with the field ID provided.', 'wp-graphql-gravity-forms' ) );
-		}
-
-		return $matching_fields[0];
-	}
 
 	/**
 	 * Mimics Gravity Forms' GFFormsModel::save_draft_submission() method.

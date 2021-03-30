@@ -10,6 +10,7 @@
 
 namespace WPGraphQLGravityForms\Utils;
 
+use GF_Field;
 use GFAPI;
 use GFFormsModel;
 use GraphQL\Error\UserError;
@@ -122,5 +123,35 @@ class GFUtils {
 				''
 			)
 		);
+	}
+
+	/**
+	 * Returns Gravity Forms Field object for given field id.
+	 *
+	 * @param array $form     The form.
+	 * @param int   $field_id Field ID.
+	 *
+	 * @return GF_Field
+	 *
+	 * @throws UserError .
+	 */
+	public static function get_field_by_id( array $form, int $field_id ) : GF_Field {
+		$matching_fields = array_values(
+			array_filter(
+				$form['fields'],
+				function( GF_Field $field ) use ( $field_id ) : bool {
+					return $field['id'] === $field_id;
+				}
+			)
+		);
+
+		if ( ! $matching_fields ) {
+			throw new UserError(
+				// translators: Gravity Forms form id and field id.
+				sprintf( __( 'The Form (ID %n) does not not contain a field with the field ID %n.', 'wp-graphql-gravity-forms' ), $form['id'], $field_id )
+			);
+		}
+
+		return $matching_fields[0];
 	}
 }

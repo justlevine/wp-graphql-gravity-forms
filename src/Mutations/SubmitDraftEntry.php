@@ -292,7 +292,7 @@ class SubmitDraftEntry extends AbstractMutation {
 		foreach ( $fields as $field ) {
 			if ( 'captcha' === $field['type'] ) {
 				$field_id          = absint( $field['id'] );
-				$field_to_validate = $this->get_field_by_id( $form, $field_id );
+				$field_to_validate = GFUtils::get_field_by_id( $form, $field_id );
 				$field_value       = $submitted_values[ $field_id ];
 
 				$field_to_validate->validate( $field_value, $form );
@@ -306,32 +306,6 @@ class SubmitDraftEntry extends AbstractMutation {
 				}
 			}
 		}
-	}
-
-	/**
-	 * Returns the Gravity Forms field object for a given field id.
-	 *
-	 * @param array $form     The form.
-	 * @param int   $field_id Field ID.
-	 *
-	 * @return GF_Field
-	 * @throws UserError .
-	 */
-	private function get_field_by_id( array $form, int $field_id ) : GF_Field {
-		$matching_fields = array_values(
-			array_filter(
-				$form['fields'],
-				function( GF_Field $field ) use ( $field_id ) : bool {
-					return $field['id'] === $field_id;
-				}
-			)
-		);
-
-		if ( ! $matching_fields ) {
-			throw new UserError( __( 'The form associated with this entry does not contain a field with the field ID provided.', 'wp-graphql-gravity-forms' ) );
-		}
-
-		return $matching_fields[0];
 	}
 
 	/**

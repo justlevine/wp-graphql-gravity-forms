@@ -352,7 +352,7 @@ class SubmitForm extends AbstractMutation {
 		$formatted_values = [];
 
 		foreach ( $field_values as $values ) {
-			$field = $this->get_field_by_id( $values['id'] );
+			$field = GFUtils::get_field_by_id( $this->form, $values['id'] );
 
 			$this->validate_field_value_type( $field, $values );
 
@@ -583,31 +583,6 @@ class SubmitForm extends AbstractMutation {
 		if ( empty( $input['fieldValues'] ) ) {
 			throw new UserError( __( 'Mutation not processed. Field values not provided.', 'wp-graphql-gravity-forms' ) );
 		}
-	}
-
-
-	/**
-	 * Get the Gravity Forms field object for the given id.
-	 *
-	 * @param integer $field_id .
-	 * @return GF_Field
-	 * @throws UserError .
-	 */
-	private function get_field_by_id( int $field_id ) : GF_Field {
-		$matching_fields = array_values(
-			array_filter(
-				$this->form['fields'],
-				function( GF_Field $field ) use ( $field_id ) : bool {
-					return $field['id'] === $field_id;
-				}
-			)
-		);
-
-		if ( ! $matching_fields ) {
-			throw new UserError( __( 'The form associated with this entry does not contain a field with the field ID provided.', 'wp-graphql-gravity-forms' ) );
-		}
-
-		return $matching_fields[0];
 	}
 
 	/**
