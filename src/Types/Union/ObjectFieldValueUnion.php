@@ -57,7 +57,7 @@ class ObjectFieldValueUnion implements Hookable, Type {
 			[
 				'typeNames'   => $this->get_field_value_type_names(),
 				'resolveType' => function( $object ) use ( $type_registry ) {
-					return $type_registry->get_type( $object['value_class']::TYPE );
+					return $type_registry->get_type( $object['value_class']::$type );
 				},
 			]
 		);
@@ -69,7 +69,7 @@ class ObjectFieldValueUnion implements Hookable, Type {
 	 * @return array
 	 */
 	private function get_field_value_type_names() : array {
-		return array_values( array_map( fn( $class ) => $class::TYPE, $this->get_field_value_classes() ) );
+		return array_values( array_map( fn( $class ) => $class::$type, $this->get_field_value_classes() ) );
 	}
 
 	/**

@@ -15,10 +15,10 @@ use GraphQLRelay\Relay;
 use WPGraphQL\AppContext;
 use WPGraphQLGravityForms\DataManipulators\FieldsDataManipulator;
 use WPGraphQLGravityForms\Interfaces\Connection;
-use WPGraphQLGravityForms\Interfaces\FieldValue as FieldValueInterface;
 use WPGraphQLGravityForms\Interfaces\Hookable;
 use WPGraphQLGravityForms\Types\Entry\Entry;
 use WPGraphQLGravityForms\Types\Field\AbstractField;
+use WPGraphQLGravityForms\Types\Field\FieldValue\AbstractFieldValue;
 use WPGraphQLGravityForms\Types\GraphQLInterface\FieldInterface;
 use WPGraphQLGravityForms\Types\Union\ObjectFieldValueUnion;
 use WPGraphQLGravityForms\Utils\GFUtils;
@@ -144,10 +144,10 @@ class EntryFieldConnection implements Hookable, Connection {
 	 *
 	 * @param  AbstractField $field The field class.
 	 *
-	 * @return string|FieldValueInterface|null The field value class or null if not found.
+	 * @return string|AbstractFieldValue|null The field value class or null if not found.
 	 */
 	private function get_field_value_class( AbstractField $field ) {
-		$field_values = array_filter( $this->instances, fn( $instance ) => $instance instanceof FieldValueInterface );
+		$field_values = array_filter( $this->instances, fn( $instance ) => $instance instanceof AbstractFieldValue );
 
 		/**
 		 * Filter for adding custom field value class instances.
@@ -161,7 +161,7 @@ class EntryFieldConnection implements Hookable, Connection {
 		$value_class_array = array_filter(
 			$field_values,
 			function( $instance ) use ( $field ) {
-				return $instance instanceof FieldValueInterface && $instance::TYPE === $field::TYPE . 'Value';
+				return $instance instanceof AbstractFieldValue && $instance::$type === $field::TYPE . 'Value';
 			}
 		);
 
