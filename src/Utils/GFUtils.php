@@ -154,4 +154,50 @@ class GFUtils {
 
 		return $matching_fields[0];
 	}
+
+	/**
+	 * Returns draft entry array from a given resume token.
+	 * Uses GFFormsModel::get_draft_submission_values().
+	 *
+	 * @param string $resume_token .
+	 * @return array
+	 *
+	 * @throws UserError .
+	 */
+	public static function get_draft_entry( string $resume_token ) : array {
+		$draft_entry = GFFormsModel::get_draft_submission_values( $resume_token );
+
+		if ( ! is_array( $draft_entry ) || empty( $draft_entry ) ) {
+			throw new UserError(
+				// translators: Gravity Forms form id and field id.
+				sprintf( __( 'A draft entry with the resume token %s could not be found', 'wp-graphql-gravity-forms' ), $resume_token )
+			);
+		}
+
+		return $draft_entry;
+	}
+
+	/**
+	 * Returns draft entry submittion data.
+	 *
+	 * @param string $resume_token Draft entry resume token.
+	 *
+	 * @return array
+	 *
+	 * @throws UserError .
+	 */
+	public static function get_draft_submission( string $resume_token ) : array {
+		$draft_entry = self::get_draft_entry( $resume_token );
+
+		$submission = json_decode( $draft_entry['submission'], true );
+
+		if ( ! $submission ) {
+			throw new UserError(
+					// translators: Gravity Forms form id and field id.
+				sprintf( __( 'The draft entry submission data for the resume token %s could not be read', 'wp-graphql-gravity-forms' ), $resume_token )
+			);
+		}
+
+		return $submission;
+	}
 }

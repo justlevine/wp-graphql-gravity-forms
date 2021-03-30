@@ -99,7 +99,7 @@ abstract class AbstractDraftEntryUpdater extends AbstractMutation {
 				'type'        => Entry::TYPE,
 				'description' => __( 'The draft entry after the update mutation has been applied. If a validation error occurred, the draft entry will NOT have been updated with the invalid value provided.', 'wp-graphql-gravity-forms' ),
 				'resolve'     => function( array $payload ) : array {
-					$submission = $this->get_draft_submission( $payload['resumeToken'] );
+					$submission = GFUtils::get_draft_submission( $payload['resumeToken'] );
 					return $this->draft_entry_data_manipulator->manipulate( $submission['partial_entry'], $payload['resumeToken'] );
 				},
 			],
@@ -122,7 +122,7 @@ abstract class AbstractDraftEntryUpdater extends AbstractMutation {
 			}
 
 			$resume_token     = sanitize_text_field( $input['resumeToken'] );
-			$this->submission = $this->get_draft_submission( $resume_token );
+			$this->submission = GFUtils::get_draft_submission( $resume_token );
 			$form             = GFUtils::get_form( $this->submission['partial_entry']['form_id'] );
 			$field_id         = absint( $input['fieldId'] );
 			$this->field      = GFUtils::get_field_by_id( $form, $field_id );
@@ -153,30 +153,6 @@ abstract class AbstractDraftEntryUpdater extends AbstractMutation {
 		};
 	}
 
-	/**
-	 * Returns draft entry submittion data.
-	 *
-	 * @param string $resume_token Draft entry resume token.
-	 *
-	 * @return array
-	 *
-	 * @throws UserError .
-	 */
-	private function get_draft_submission( string $resume_token ) : array {
-		$draft_entry = GFFormsModel::get_draft_submission_values( $resume_token );
-
-		if ( ! is_array( $draft_entry ) || empty( $draft_entry ) ) {
-			throw new UserError( __( 'A draft with this resume token could not be found.', 'wp-graphql-gravity-forms' ) );
-		}
-
-		$submission = json_decode( $draft_entry['submission'], true );
-
-		if ( ! $submission ) {
-			throw new UserError( __( 'The submission data for this draft entry could not be read.', 'wp-graphql-gravity-forms' ) );
-		}
-
-		return $submission;
-	}
 
 	/**
 	 * Implement this method in child classes.

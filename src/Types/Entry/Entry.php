@@ -23,6 +23,7 @@ use WPGraphQLGravityForms\Interfaces\Hookable;
 use WPGraphQLGravityForms\Interfaces\Type;
 use WPGraphQLGravityForms\Types\Enum\EntryStatusEnum;
 use WPGraphQLGravityForms\Types\Enum\IdTypeEnum;
+use WPGraphQLGravityForms\Utils\GFUtils;
 
 /**
  * Class - Entry
@@ -136,7 +137,6 @@ class Entry implements Hookable, Type, Field {
 						'type'        => 'Integer',
 						'description' => __( 'ID of the user that submitted of the form if a logged in user submitted the form.', 'wp-graphql-gravity-forms' ),
 					],
-					// @TODO: Convert to an enum.
 					'status'      => [
 						'type'        => EntryStatusEnum::TYPE,
 						'description' => __( 'The current status of the entry.', 'wp-graphql-gravity-forms' ),
@@ -205,17 +205,8 @@ class Entry implements Hookable, Type, Field {
 						return $this->entry_data_manipulator->manipulate( $entry );
 					}
 
-					$draft_entry = GFFormsModel::get_draft_submission_values( $id );
-
-					if ( ! $draft_entry || ! is_array( $draft_entry ) ) {
-						throw new UserError( __( 'An entry with this ID was not found.', 'wp-graphql-gravity-forms' ) );
-					}
-
-					$submission = json_decode( $draft_entry['submission'], true );
-
-					if ( ! $submission ) {
-						throw new UserError( __( 'The submission data for this draft entry could not be read.', 'wp-graphql-gravity-forms' ) );
-					}
+					// TODO: Test if draft entry actually gets returned.
+					$submission = GFUtils::get_draft_submission( (string) $id );
 
 					// @TODO: Evaluate if resume_token is actually needed.
 					return $this->draft_entry_data_manipulator->manipulate( $submission['partial_entry'], (string) $id );

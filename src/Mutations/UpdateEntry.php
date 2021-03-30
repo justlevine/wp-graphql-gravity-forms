@@ -148,7 +148,7 @@ class UpdateEntry extends AbstractMutation {
 					}
 
 					if ( $payload['resumeToken'] ) {
-						$submission = $this->get_draft_submission( $payload['resumeToken'] );
+						$submission = GFUtils::get_draft_submission( $payload['resumeToken'] );
 
 						return $this->draft_entry_data_manipulator->manipulate( $submission['partial_entry'], $payload['resumeToken'] );
 					}
@@ -544,30 +544,5 @@ class UpdateEntry extends AbstractMutation {
 				}
 				break;
 		}
-	}
-
-	/**
-	 * Returns draft entry submittion data.
-	 *
-	 * @param string $resume_token Draft entry resume token.
-	 *
-	 * @return array
-	 *
-	 * @throws UserError .
-	 */
-	private function get_draft_submission( string $resume_token ) : array {
-		$draft_entry = GFFormsModel::get_draft_submission_values( $resume_token );
-
-		if ( ! is_array( $draft_entry ) || empty( $draft_entry ) ) {
-			throw new UserError( __( 'A draft with this resume token could not be found.', 'wp-graphql-gravity-forms' ) );
-		}
-
-		$submission = json_decode( $draft_entry['submission'], true );
-
-		if ( ! $submission ) {
-			throw new UserError( __( 'The submission data for this draft entry could not be read.', 'wp-graphql-gravity-forms' ) );
-		}
-
-		return $submission;
 	}
 }

@@ -126,7 +126,7 @@ class SubmitDraftEntry extends AbstractMutation {
 			}
 
 			$resume_token = sanitize_text_field( $input['resumeToken'] );
-			$draft_entry  = $this->get_draft_entry( $resume_token );
+			$draft_entry  = GFUtils::get_draft_entry( $resume_token );
 			$form_id      = $draft_entry['form_id'];
 
 			$this->form = GFUtils::get_form( $form_id );
@@ -157,24 +157,6 @@ class SubmitDraftEntry extends AbstractMutation {
 
 			return [ 'entryId' => $entry_id ];
 		};
-	}
-
-	/**
-	 * Returns draft entry from a given resume token.
-	 *
-	 * @param string $resume_token .
-	 * @return array
-	 *
-	 * @throws UserError .
-	 */
-	private function get_draft_entry( string $resume_token ) : array {
-		$draft_entry = GFFormsModel::get_draft_submission_values( $resume_token );
-
-		if ( ! is_array( $draft_entry ) || empty( $draft_entry['form_id'] ) ) {
-			throw new UserError( __( 'A draft with this resume token could not be found.', 'wp-graphql-gravity-forms' ) );
-		}
-
-		return $draft_entry;
 	}
 
 	/**
@@ -251,6 +233,8 @@ class SubmitDraftEntry extends AbstractMutation {
 	/**
 	 * Gets draft submission data.
 	 *
+	 * @TODO: use GFUtils::get_draft_submission().
+	 *
 	 * @param array $draft_entry .
 	 * @return array
 	 * @throws UserError .
@@ -283,7 +267,7 @@ class SubmitDraftEntry extends AbstractMutation {
 		if ( 'RootMutation' !== $type_name || self::$name !== $field_key ) {
 			return;
 		}
-		$draft_entry      = $this->get_draft_entry( $args['input']['resumeToken'] );
+		$draft_entry      = GFUtils::get_draft_entry( $args['input']['resumeToken'] );
 		$submission       = $this->get_draft_submission( $draft_entry );
 		$submitted_values = $submission['submitted_values'];
 		$form             = GFUtils::get_form( $submission['partial_entry']['form_id'] );
