@@ -231,7 +231,7 @@ abstract class AbstractDraftEntryUpdater extends AbstractMutation {
 			$this->submission['field_values'] ?? '',
 			$this->submission['page_number'] ?? 1, // TODO: Maybe get from request.
 			$this->submission['files'] ?? [], // TODO: Maybe get from request.
-			$this->submission['gform_unique_id'] ?? $this->get_form_unique_id( $form_id ),
+			$this->submission['gform_unique_id'] ?? GFUtils::get_form_unique_id( $form_id ),
 			$this->submission['partial_entry']['ip'] ?? '',
 			$this->submission['partial_entry']['source_url'] ?? '',
 			$resume_token
@@ -242,21 +242,6 @@ abstract class AbstractDraftEntryUpdater extends AbstractMutation {
 		}
 
 		return $resume_token ? (string) $resume_token : '';
-	}
-
-	/**
-	 * Mimics Gravity Forms' GFFormsModel::get_form_unique_id() method.
-	 *
-	 * @param int $form_id Form ID.
-	 *
-	 * @return string Unique ID.
-	 */
-	private function get_form_unique_id( int $form_id ) : string {
-		if ( ! isset( GFFormsModel::$unique_ids[ $form_id ] ) ) {
-			GFFormsModel::$unique_ids[ $form_id ] = uniqid();
-		}
-
-		return GFFormsModel::$unique_ids[ $form_id ];
 	}
 
 	/**

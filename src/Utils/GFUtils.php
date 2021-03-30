@@ -11,6 +11,7 @@
 namespace WPGraphQLGravityForms\Utils;
 
 use GFAPI;
+use GFFormsModel;
 use GraphQL\Error\UserError;
 
 /**
@@ -71,5 +72,21 @@ class GFUtils {
 		}
 
 		return $entry;
+	}
+
+
+	/**
+	 * Mimics Gravity Forms' GFFormsModel::get_form_unique_id() method.
+	 *
+	 * @param int $form_id Form ID.
+	 *
+	 * @return string Unique ID.
+	 */
+	public static function get_form_unique_id( int $form_id ) : string {
+		if ( ! isset( GFFormsModel::$unique_ids[ $form_id ] ) ) {
+			GFFormsModel::$unique_ids[ $form_id ] = uniqid();
+		}
+
+		return GFFormsModel::$unique_ids[ $form_id ];
 	}
 }

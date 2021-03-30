@@ -120,7 +120,7 @@ class CreateDraftEntry extends AbstractMutation {
 		$field_values   = '';
 		$page_number    = isset( $input['pageNumber'] ) ? absint( $input['pageNumber'] ) : 1;
 		$files          = []; // TODO: Get from Request.
-		$form_unique_id = $this->get_form_unique_id( $form['id'] );
+		$form_unique_id = GFUtils::get_form_unique_id( $form['id'] );
 
 		$resume_token = GFFormsModel::save_draft_submission(
 			$form,
@@ -162,20 +162,6 @@ class CreateDraftEntry extends AbstractMutation {
 	}
 
 
-	/**
-	 * Mimics Gravity Forms' GFFormsModel::get_form_unique_id() method.
-	 *
-	 * @param int $form_id Form ID.
-	 *
-	 * @return string Unique ID.
-	 */
-	private function get_form_unique_id( int $form_id ) : string {
-		if ( ! isset( GFFormsModel::$unique_ids[ $form_id ] ) ) {
-			GFFormsModel::$unique_ids[ $form_id ] = uniqid();
-		}
-
-		return GFFormsModel::$unique_ids[ $form_id ];
-	}
 
 	/**
 	 * Get the draft resume URL.
