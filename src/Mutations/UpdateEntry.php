@@ -594,39 +594,4 @@ class UpdateEntry extends AbstractMutation {
 
 		return $submission;
 	}
-
-	/**
-	 * Get the draft resume URL.
-	 *
-	 * @param string     $source_url   Source URL.
-	 * @param string     $resume_token Resume token.
-	 * @param array|null $form         Form object.
-	 *
-	 * @return string Resume URL, or empty string if no source URL was provided.
-	 */
-	private function get_resume_url( string $source_url, string $resume_token, $form = [] ) : string {
-		if ( ! $source_url ) {
-			return '';
-		}
-
-		/**
-		 * Filters the 'Save and Continue' URL to be used with a partial entry submission.
-		 *
-		 * @param string $resume_url   The URL to be used to resume the partial entry.
-		 * @param array  $form         The Form Object.
-		 * @param string $resume_token The token that is used within the URL.
-		 * @param string $unused       Unused parameter. Included for consistency with the native
-		 *                             Gravity Forms gform_save_and_continue_resume_url hook.
-		 */
-		return esc_url(
-			apply_filters(
-				'gform_save_and_continue_resume_url',
-				add_query_arg( [ 'gf_token' => $resume_token ], $source_url ),
-				$form,
-				$resume_token,
-				''
-			)
-		);
-	}
-
 }
