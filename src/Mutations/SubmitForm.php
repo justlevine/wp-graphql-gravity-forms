@@ -25,6 +25,7 @@ use WPGraphQLGravityForms\Types\Entry\Entry;
 use WPGraphQLGravityForms\Types\FieldError\FieldError;
 use WPGraphQLGravityForms\Types\Input\FieldValuesInput;
 use WPGraphQLGravityForms\Utils\GFUtils;
+use WPGraphQLGravityForms\Utils\Utils;
 
 /**
  * Class - SubmitForm
@@ -175,7 +176,7 @@ class SubmitForm extends AbstractMutation {
 			$this->save_as_draft = $input['saveAsDraft'] ?? false;
 			$ip                  = isset( $input['ip'] ) && ! empty( $form['personalData']['preventIP'] ) ? sanitize_text_field( $input['ip'] ) : null;
 			$created_by          = isset( $input['createdBy'] ) ? absint( $input['createdBy'] ) : null;
-			$source_url          = esc_url_raw( $this->truncate( $_SERVER['HTTP_REFERER'] ?? '', 250 ) );
+			$source_url          = esc_url_raw( Utils::truncate( $_SERVER['HTTP_REFERER'] ?? '', 250 ) );
 
 			$this->form = GFUtils::get_form( $input['formId'] );
 
@@ -716,21 +717,4 @@ class SubmitForm extends AbstractMutation {
 			)
 		);
 	}
-
-	/**
-	 * Mimics Gravity Forms' GFFormsModel::truncate() method.
-	 *
-	 * @param string $str Original string.
-	 * @param int    $length The maximum length of the string.
-	 *
-	 * @return string The string, possibly truncated.
-	 */
-	private function truncate( string $str, int $length ) : string {
-		if ( strlen( $str ) > $length ) {
-			$str = substr( $str, 0, $length );
-		}
-
-		return $str;
-	}
-
 }

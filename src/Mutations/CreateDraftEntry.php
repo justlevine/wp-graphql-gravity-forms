@@ -16,6 +16,7 @@ use GraphQL\Error\UserError;
 use GraphQL\Type\Definition\ResolveInfo;
 use WPGraphQL\AppContext;
 use WPGraphQLGravityForms\Utils\GFUtils;
+use WPGraphQLGravityForms\Utils\Utils;
 
 /**
  * Class - CreateDraftEntry
@@ -87,7 +88,7 @@ class CreateDraftEntry extends AbstractMutation {
 			$form_id = absint( $input['formId'] );
 			$form    = GFUtils::get_form( $form_id );
 
-			$source_url   = esc_url_raw( $this->truncate( $_SERVER['HTTP_REFERER'] ?? '', 250 ) );
+			$source_url   = esc_url_raw( Utils::truncate( $_SERVER['HTTP_REFERER'] ?? '', 250 ) );
 			$resume_token = $this->save_draft_submission( $input, $form, $source_url );
 
 			if ( ! $resume_token ) {
@@ -154,27 +155,12 @@ class CreateDraftEntry extends AbstractMutation {
 			'form_id'      => $form['id'],
 			'ip'           => $ip,
 			'source_url'   => $source_url,
-			'user_agent'   => sanitize_text_field( $this->truncate( $_SERVER['HTTP_USER_AGENT'] ?? '', 250 ) ),
+			'user_agent'   => sanitize_text_field( Utils::truncate( $_SERVER['HTTP_USER_AGENT'] ?? '', 250 ) ),
 			'created_by'   => get_current_user_id() ?: 'NULL',
 			'currency'     => gf_apply_filters( [ 'gform_currency_pre_save_entry', $form['id'] ], GFCommon::get_currency(), $form ),
 		];
 	}
 
-	/**
-	 * Mimics Gravity Forms' GFFormsModel::truncate() method.
-	 *
-	 * @param string $str Original string.
-	 * @param int    $length The maximum length of the string.
-	 *
-	 * @return string The string, possibly truncated.
-	 */
-	private function truncate( string $str, int $length ) : string {
-		if ( strlen( $str ) > $length ) {
-			$str = substr( $str, 0, $length );
-		}
-
-		return $str;
-	}
 
 	/**
 	 * Mimics Gravity Forms' GFFormsModel::get_form_unique_id() method.
