@@ -114,7 +114,7 @@ class CreateDraftEntry extends AbstractMutation {
 		$ip = isset( $input['ip'] ) && ! empty( $form['personalData']['preventIP'] ) ? sanitize_text_field( $input['ip'] ) : '';
 
 		// Get existing entry if `fromEntryId` is set, otherwise create new draft entry.
-		$entry = isset( $input['fromEntryId'] ) ? $this->get_existing_entry_data( $input['fromEntryId'] ) : $this->get_draft_entry_data( $form, $ip, $source_url );
+		$entry = isset( $input['fromEntryId'] ) ? GFUtils::get_entry( $input['fromEntryId'] ) : $this->get_draft_entry_data( $form, $ip, $source_url );
 
 		$field_values   = '';
 		$page_number    = isset( $input['pageNumber'] ) ? absint( $input['pageNumber'] ) : 1;
@@ -158,24 +158,6 @@ class CreateDraftEntry extends AbstractMutation {
 			'created_by'   => get_current_user_id() ?: 'NULL',
 			'currency'     => gf_apply_filters( [ 'gform_currency_pre_save_entry', $form['id'] ], GFCommon::get_currency(), $form ),
 		];
-	}
-
-	/**
-	 * Calls Gravity Forms' GFFormsModel:get_lead() method to populate existing entry.
-	 *
-	 * @param integer $entry_id The entry id.
-	 *
-	 * @return array .
-	 * @throws UserError .
-	 */
-	private function get_existing_entry_data( int $entry_id ) : array {
-		$entry = GFFormsModel::get_lead( $entry_id );
-
-		if ( is_wp_error( $entry ) ) {
-			throw new UserError( sprintf( __( 'Error retrieving the form entry. No entry with the id %n found. Error: ', 'wp-graphql-gravity-forms' ), $entry_id ) . $entry->get_error_message() );
-		}
-
-		return $entry;
 	}
 
 	/**
