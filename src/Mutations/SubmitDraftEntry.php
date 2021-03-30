@@ -106,10 +106,7 @@ class SubmitDraftEntry extends AbstractMutation {
 				'type'        => Entry::TYPE,
 				'description' => __( 'The entry that was created.', 'wp-graphql-gravity-forms' ),
 				'resolve'     => function( array $payload ) : array {
-					$entry = GFAPI::get_entry( $payload['entryId'] );
-					if ( is_wp_error( $entry ) ) {
-						throw new UserError( __( 'Error retrieving the output fields. Entry was not resolved. Error: ', 'wp-graphql-gravity-forms' ) . $entry->get_error_message() );
-					}
+					$entry = GFUtils::get_entry( $payload['entryId'] );
 
 					return $this->entry_data_manipulator->manipulate( $entry );
 				},
@@ -234,11 +231,7 @@ class SubmitDraftEntry extends AbstractMutation {
 	 * @throws UserError .
 	 */
 	private function create_post( int $entry_id ) : void {
-		$entry = GFAPI::get_entry( $entry_id );
-
-		if ( ! $entry || is_wp_error( $entry ) ) {
-			throw new UserError( __( 'An error occurred while trying to send notifications, form or entry not found.', 'wp-graphql-gravity-forms' ) );
-		}
+		$entry = GFUtils::get_entry( $entry_id );
 
 		GFCommon::create_post( $this->form, $entry );
 	}
@@ -250,11 +243,7 @@ class SubmitDraftEntry extends AbstractMutation {
 	 * @throws UserError .
 	 */
 	private function send_notifications( int $entry_id ) : void {
-		$entry = GFAPI::get_entry( $entry_id );
-
-		if ( ! $entry || is_wp_error( $entry ) ) {
-			throw new UserError( __( 'An error occurred while trying to send notifications, form or entry not found.', 'wp-graphql-gravity-forms' ) );
-		}
+		$entry = GFUtils::get_entry( $entry_id );
 
 		GFAPI::send_notifications( $this->form, $entry );
 	}

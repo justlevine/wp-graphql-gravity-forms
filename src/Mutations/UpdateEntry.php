@@ -142,10 +142,7 @@ class UpdateEntry extends AbstractMutation {
 					}
 
 					if ( $payload['entryId'] ) {
-						$entry = GFAPI::get_entry( $payload['entryId'] );
-						if ( is_wp_error( $entry ) ) {
-							throw new UserError( __( 'Error retrieving the output fields. Entry was not resolved. Error: ', 'wp-graphql-gravity-forms' ) . $entry->get_error_message() );
-						}
+						$entry = GFUtils::get_entry( $payload['entryId'] );
 
 						return $this->entry_data_manipulator->manipulate( $entry );
 					}
@@ -184,7 +181,7 @@ class UpdateEntry extends AbstractMutation {
 
 			// Set default values.
 
-			$this->entry = $this->get_entry( (int) $input['entryId'] );
+			$this->entry = GFUtils::get_entry( (int) $input['entryId'] );
 			$this->form  = GFUtils::get_form( $this->entry['form_id'] );
 
 			$entry_data = $this->prepare_entry_data( $input );
@@ -498,28 +495,6 @@ class UpdateEntry extends AbstractMutation {
 		if ( empty( $input['fieldValues'] ) ) {
 			throw new UserError( __( 'Mutation not processed. Field values not provided.', 'wp-graphql-gravity-forms' ) );
 		}
-	}
-
-	/**
-	 * Gets the Gravity Form array for the given form id.
-	 * Uses GFAPI::get_entry().
-	 *
-	 * @param integer $entry_id .
-	 * @return array
-	 * @throws UserError .
-	 */
-	private function get_entry( int $entry_id ) : array {
-		$entry = GFAPI::get_entry( $entry_id );
-
-		if ( ! $entry ) {
-			throw new UserError( __( 'The entry is nonexistent', 'wp-graphql-gravity-forms' ) );
-		}
-
-		if ( is_wp_error( $entry ) ) {
-			throw new UserError( __( 'There was an error while retreiving the entry. Error: ', 'wp-graphql-gravity-forms' ) . $entry->get_error_message() );
-		}
-
-		return $entry;
 	}
 
 	/**

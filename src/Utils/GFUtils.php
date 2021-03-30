@@ -18,7 +18,7 @@ use GraphQL\Error\UserError;
  */
 class GFUtils {
 	/**
-	 * Gets the Gravity Form object for the given form ID.
+	 * Gets the Gravity Form form object for the given form ID.
 	 * Uses GFAPI::get_form().
 	 *
 	 * @see https://docs.gravityforms.com/api-functions/#get-form
@@ -47,5 +47,29 @@ class GFUtils {
 		}
 
 		return $form;
+	}
+
+	/**
+	 * Gets the Gravity Form entry object for the given form ID.
+	 * Uses GFAPI::get_entry().
+	 *
+	 * @see https://docs.gravityforms.com/api-functions/#get-entry
+	 *
+	 * @param integer $entry_id .
+	 * @return array
+	 *
+	 * @throws UserError .
+	 */
+	public static function get_entry( int $entry_id ) : array {
+		$entry = GFAPI::get_entry( $entry_id );
+
+		if ( is_wp_error( $entry ) ) {
+			throw new UserError(
+				// translators: Gravity Forms form id.
+				sprintf( __( 'The entry the given ID %n was not found. Error: ', 'wp-graphql-gravity-forms' ), $entry_id ) . $entry->get_error_message()
+			);
+		}
+
+		return $entry;
 	}
 }
