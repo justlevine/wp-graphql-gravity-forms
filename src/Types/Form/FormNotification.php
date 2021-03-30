@@ -62,7 +62,7 @@ class FormNotification implements Hookable, Type {
 						'description' => __( 'The ID of an email field, an email address or merge tag to be used as the email to address.', 'wp-graphql-gravity-forms' ),
 					],
 					'toType'            => [
-						'type'        => NotificationToTypeEnum::TYPE,
+						'type'        => NotificationToTypeEnum::$type,
 						'description' => __( 'Identifies what to use for the notification "to".', 'wp-graphql-gravity-forms' ),
 					],
 					'bcc'               => [

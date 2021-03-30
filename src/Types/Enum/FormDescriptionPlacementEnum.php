@@ -12,7 +12,12 @@ namespace WPGraphQLGravityForms\Types\Enum;
  * Class - FormDescriptionPlacementEnum
  */
 class FormDescriptionPlacementEnum extends AbstractEnum {
-	const TYPE = 'FormDescriptionPlacementEnum';
+	/**
+	 * Type registered in WPGraphQL.
+	 *
+	 * @var string
+	 */
+	public static $type = 'FormDescriptionPlacementEnum';
 
 	// Individual elements.
 	const ABOVE = 'above';

@@ -17,7 +17,5 @@ parameters:
 		ignoreErrors:
 			- '#^Function apply_filters(_ref_array)? invoked with ([1-9]|1[0-2]) parameters, 2 required\.$#'
 			- '#^Function gf_apply_filters(_ref_array)? invoked with ([1-9]|1[0-2]) parameters, 2 required\.$#'
-			- "#^Access to undefined constant WPGraphQLGravityForms\\\\Interfaces\\\\FieldValue\\:\\:TYPE\\.$#"
-			- "#^Access to undefined constant WPGraphQLGravityForms\\\\Types\\\\Enum\\\\AbstractEnum\\:\\:TYPE\\.$#"
 			- "#^Access to undefined constant WPGraphQLGravityForms\\\\Types\\\\Field\\\\AbstractField\\:\\:GF_TYPE\\.$#"
 			- "#^Access to undefined constant WPGraphQLGravityForms\\\\Types\\\\Field\\\\AbstractField\\:\\:TYPE\\.$#"

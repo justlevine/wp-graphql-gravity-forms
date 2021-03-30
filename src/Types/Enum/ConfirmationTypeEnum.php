@@ -12,7 +12,12 @@ namespace WPGraphQLGravityForms\Types\Enum;
  * Class - ConfirmationTypeEnum
  */
 class ConfirmationTypeEnum extends AbstractEnum {
-	const TYPE = 'ConfirmationTypeEnum';
+	/**
+	 * Type registered in WPGraphQL.
+	 *
+	 * @var string
+	 */
+	public static $type = 'ConfirmationTypeEnum';
 
 	// Individual elements.
 	const MESSAGE  = 'message';

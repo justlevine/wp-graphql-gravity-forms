@@ -12,7 +12,12 @@ namespace WPGraphQLGravityForms\Types\Enum;
  * Class - FieldFiltersOperatorInputEnum
  */
 class FieldFiltersOperatorInputEnum extends AbstractEnum {
-	const TYPE = 'FieldFiltersOperatorInputEnum';
+	/**
+	 * Type registered in WPGraphQL.
+	 *
+	 * @var string
+	 */
+	public static $type = 'FieldFiltersOperatorInputEnum';
 
 	// Individual elements.
 	const IN           = 'in';

@@ -12,7 +12,12 @@ namespace WPGraphQLGravityForms\Types\Enum;
  * Class - NumberFieldFormatEnum
  */
 class NumberFieldFormatEnum extends AbstractEnum {
-	const TYPE = 'NumberFieldFormatEnum';
+	/**
+	 * Type registered in WPGraphQL.
+	 *
+	 * @var string
+	 */
+	public static $type = 'NumberFieldFormatEnum';
 
 	// Individual elements.
 	const CURRENCY      = 'currency';

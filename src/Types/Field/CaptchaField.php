@@ -60,15 +60,15 @@ class CaptchaField extends AbstractField {
 					'description' => __( 'The language used when the captcha is displayed. This property is available when the captchaType is “captcha”, the default. The possible values are the language codes used by WordPress.', 'wp-graphql-gravity-forms' ),
 				],
 				'captchaTheme'                 => [
-					'type'        => CaptchaThemeEnum::TYPE,
+					'type'        => CaptchaThemeEnum::$type,
 					'description' => __( 'Determines the theme to be used for the reCAPTCHA field. Only applicable to the recaptcha captcha type.', 'wp-graphql-gravity-forms' ),
 				],
 				'captchaType'                  => [
-					'type'        => CaptchaTypeEnum::TYPE,
+					'type'        => CaptchaTypeEnum::$type,
 					'description' => __( 'Determines the type of CAPTCHA field to be used.', 'wp-graphql-gravity-forms' ),
 				],
 				'simpleCaptchaSize'            => [
-					'type'        => SizePropertyEnum::TYPE,
+					'type'        => SizePropertyEnum::$type,
 					'description' => __( 'Determines the CAPTCHA image size. Only applicable to simple_captcha and math captcha types.', 'wp-graphql-gravity-forms' ),
 				],
 				'simpleCaptchaFontColor'       => [

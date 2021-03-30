@@ -12,7 +12,12 @@ namespace WPGraphQLGravityForms\Types\Enum;
  * Class - FormLimitEntriesPeriodEnum
  */
 class FormLimitEntriesPeriodEnum extends AbstractEnum {
-	const TYPE = 'FormLimitEntriesPeriodEnum';
+	/**
+	 * Type registered in WPGraphQL.
+	 *
+	 * @var string
+	 */
+	public static $type = 'FormLimitEntriesPeriodEnum';
 
 	// Individual elements.
 	const DAY   = 'day';

@@ -137,7 +137,7 @@ class Entry implements Hookable, Type, Field {
 						'description' => __( 'ID of the user that submitted of the form if a logged in user submitted the form.', 'wp-graphql-gravity-forms' ),
 					],
 					'status'      => [
-						'type'        => EntryStatusEnum::TYPE,
+						'type'        => EntryStatusEnum::$type,
 						'description' => __( 'The current status of the entry.', 'wp-graphql-gravity-forms' ),
 					],
 					'isDraft'     => [
@@ -174,7 +174,7 @@ class Entry implements Hookable, Type, Field {
 						'description' => __( 'Unique identifier for the object.', 'wp-graphql-gravity-forms' ),
 					],
 					'idType' => [
-						'type'        => IdTypeEnum::TYPE,
+						'type'        => IdTypeEnum::$type,
 						'description' => __( 'Type of unique identifier to fetch a content node by. Default is Global ID', 'wp-graphql-gravity-forms' ),
 					],
 				],

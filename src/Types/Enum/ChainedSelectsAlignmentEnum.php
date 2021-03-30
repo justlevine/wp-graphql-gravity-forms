@@ -12,7 +12,12 @@ namespace WPGraphQLGravityForms\Types\Enum;
  * Class - ChainedSelectsAlignmentEnum
  */
 class ChainedSelectsAlignmentEnum extends AbstractEnum {
-	const TYPE = 'ChainedSelectsAlignmentEnum';
+	/**
+	 * Type registered in WPGraphQL.
+	 *
+	 * @var string
+	 */
+	public static $type = 'ChainedSelectsAlignmentEnum';
 
 	// Individual elements.
 	const HORIZONTAL = 'horizontal';

@@ -66,7 +66,7 @@ class SignatureField extends AbstractField {
 					'description' => __( 'Width of the signature field in pixels.', 'wp-graphql-gravity-forms' ),
 				],
 				'borderWidth'     => [
-					'type'        => SignatureBorderWidthEnum::TYPE,
+					'type'        => SignatureBorderWidthEnum::$type,
 					'description' => __( 'Width of the border around the signature area.', 'wp-graphql-gravity-forms' ),
 				],
 				'backgroundColor' => [
@@ -78,7 +78,7 @@ class SignatureField extends AbstractField {
 					'description' => __( 'Color to be used for the border around the signature area. Can be any valid CSS color value.', 'wp-graphql-gravity-forms' ),
 				],
 				'borderStyle'     => [
-					'type'        => SignatureBorderStyleEnum::TYPE,
+					'type'        => SignatureBorderStyleEnum::$type,
 					'description' => __( 'Border style to be used around the signature area.', 'wp-graphql-gravity-forms' ),
 				],
 				'penColor'        => [

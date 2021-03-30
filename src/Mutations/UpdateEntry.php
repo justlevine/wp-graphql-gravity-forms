@@ -116,7 +116,7 @@ class UpdateEntry extends AbstractMutation {
 				'description' => __( 'ID of the user that submitted of the form if a logged in user submitted the form.', 'wp-graphql-gravity-forms' ),
 			],
 			'status'      => [
-				'type'        => EntryStatusEnum::TYPE,
+				'type'        => EntryStatusEnum::$type,
 				'description' => __( 'The current status of the entry.', 'wp-graphql-gravity-forms' ),
 			],
 		];

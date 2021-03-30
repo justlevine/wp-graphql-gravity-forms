@@ -12,7 +12,12 @@ namespace WPGraphQLGravityForms\Types\Enum;
  * Class - RuleOperatorEnum
  */
 class RuleOperatorEnum extends AbstractEnum {
-	const TYPE = 'RuleOperatorEnum';
+	/**
+	 * Type registered in WPGraphQL.
+	 *
+	 * @var string
+	 */
+	public static $type = 'RuleOperatorEnum';
 
 	// Individual elements.
 	const IS           = 'is';

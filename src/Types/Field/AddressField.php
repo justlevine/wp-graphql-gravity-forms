@@ -61,7 +61,7 @@ class AddressField extends AbstractField {
 			FieldProperty\VisibilityProperty::get(),
 			[
 				'addressType'             => [
-					'type'        => AddressTypeEnum::TYPE,
+					'type'        => AddressTypeEnum::$type,
 					'description' => __( 'Determines the type of address to be displayed.', 'wp-graphql-gravity-forms' ),
 				],
 				'copyValuesOptionDefault' => [

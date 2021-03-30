@@ -12,7 +12,12 @@ namespace WPGraphQLGravityForms\Types\Enum;
  * Class - AddressTypeEnum
  */
 class AddressTypeEnum extends AbstractEnum {
-	const TYPE = 'AddressTypeEnum';
+	/**
+	 * Type registered in WPGraphQL.
+	 *
+	 * @var string
+	 */
+	public static $type = 'AddressTypeEnum';
 
 	// Individual elements.
 	const INTERNATIONAL = 'international';

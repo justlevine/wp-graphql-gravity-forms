@@ -12,7 +12,12 @@ namespace WPGraphQLGravityForms\Types\Enum;
  * Class - ConditionalLogicLogicTypeEnum
  */
 class ConditionalLogicLogicTypeEnum extends AbstractEnum {
-	const TYPE = 'ConditionalLogicLogicTypeEnum';
+	/**
+	 * Type registered in WPGraphQL.
+	 *
+	 * @var string
+	 */
+	public static $type = 'ConditionalLogicLogicTypeEnum';
 
 	// Individual elements.
 	const ALL = 'all';

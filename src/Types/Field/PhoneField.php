@@ -61,7 +61,7 @@ class PhoneField extends AbstractField {
 			FieldProperty\VisibilityProperty::get(),
 			[
 				'phoneFormat' => [
-					'type'        => PhoneFieldFormatEnum::TYPE,
+					'type'        => PhoneFieldFormatEnum::$type,
 					'description' => __( 'Determines the allowed format for phones. If the phone value does not conform with the specified format, the field will fail validation.', 'wp-graphql-gravity-forms' ),
 				],
 			]

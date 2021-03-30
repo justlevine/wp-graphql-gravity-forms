@@ -65,7 +65,7 @@ class DateField extends AbstractField {
 			FieldProperty\VisibilityProperty::get(),
 			[
 				'calendarIconType' => [
-					'type'        => CalendarIconTypeEnum::TYPE,
+					'type'        => CalendarIconTypeEnum::$type,
 					'description' => __( 'Determines how the date field displays it’s calendar icon.', 'wp-graphql-gravity-forms' ),
 				],
 				'calendarIconUrl'  => [
@@ -73,11 +73,11 @@ class DateField extends AbstractField {
 					'description' => __( 'Contains the URL to the custom calendar icon. Only applicable when calendarIconType is set to custom.', 'wp-graphql-gravity-forms' ),
 				],
 				'dateFormat'       => [
-					'type'        => DateFieldFormatEnum::TYPE,
+					'type'        => DateFieldFormatEnum::$type,
 					'description' => __( 'Determines how the date is displayed.', 'wp-graphql-gravity-forms' ),
 				],
 				'dateType'         => [
-					'type'        => DateTypeEnum::TYPE,
+					'type'        => DateTypeEnum::$type,
 					'description' => __( 'The type of date field to display.', 'wp-graphql-gravity-forms' ),
 				],
 			]

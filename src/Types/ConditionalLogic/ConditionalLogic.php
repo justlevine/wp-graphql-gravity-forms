@@ -38,11 +38,11 @@ class ConditionalLogic implements Hookable, Type {
 				'description' => __( 'Gravity Forms conditional logic.', 'wp-graphql-gravity-forms' ),
 				'fields'      => [
 					'actionType' => [
-						'type'        => ConditionalLogicActionTypeEnum::TYPE,
+						'type'        => ConditionalLogicActionTypeEnum::$type,
 						'description' => __( 'The type of action the conditional logic will perform.', 'wp-graphql-gravity-forms' ),
 					],
 					'logicType'  => [
-						'type'        => ConditionalLogicLogicTypeEnum::TYPE,
+						'type'        => ConditionalLogicLogicTypeEnum::$type,
 						'description' => __( 'Determines how to the rules should be evaluated.', 'wp-graphql-gravity-forms' ),
 					],
 					'rules'      => [

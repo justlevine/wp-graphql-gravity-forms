@@ -12,7 +12,12 @@ namespace WPGraphQLGravityForms\Types\Enum;
  * Class - SignatureBorderStyleEnum
  */
 class SignatureBorderStyleEnum extends AbstractEnum {
-	const TYPE = 'SignatureBorderStyleEnum';
+	/**
+	 * Type registered in WPGraphQL.
+	 *
+	 * @var string
+	 */
+	public static $type = 'SignatureBorderStyleEnum';
 
 	// Individual elements.
 	const DOTTED = 'dotted';

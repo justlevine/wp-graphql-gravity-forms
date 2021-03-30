@@ -12,7 +12,12 @@ namespace WPGraphQLGravityForms\Types\Enum;
  * Class - SortingInputEnum
  */
 class SortingInputEnum extends AbstractEnum {
-	const TYPE = 'SortingInputEnum';
+	/**
+	 * Type registered in WPGraphQL.
+	 *
+	 * @var string
+	 */
+	public static $type = 'SortingInputEnum';
 
 	// Individual elements.
 	const ASC  = 'ASC';

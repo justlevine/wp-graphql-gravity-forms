@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => '7cbb33862b344796b131ce261eee3bd5547e6a3e',
+    'reference' => 'a7aad7fa767d2a758b5f93a6fbf08da96b16a4a8',
     'name' => 'harness-software/wp-graphql-gravity-forms',
   ),
   'versions' => 
@@ -237,7 +237,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => '7cbb33862b344796b131ce261eee3bd5547e6a3e',
+      'reference' => 'a7aad7fa767d2a758b5f93a6fbf08da96b16a4a8',
     ),
     'hautelook/phpass' => 
     array (

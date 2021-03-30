@@ -25,7 +25,7 @@ class VisibilityProperty implements FieldProperty {
 	public static function get() : array {
 		return [
 			'visibility' => [
-				'type'        => VisibilityPropertyEnum::TYPE,
+				'type'        => VisibilityPropertyEnum::$type,
 				'description' => __( 'Field visibility.', 'wp-graphql-gravity-forms' ),
 			],
 		];

@@ -38,7 +38,7 @@ class Button implements Hookable, Type {
 				'description' => __( 'Gravity Forms button.', 'wp-graphql-gravity-forms' ),
 				'fields'      => [
 					'type'             => [
-						'type'        => ButtonTypeEnum::TYPE,
+						'type'        => ButtonTypeEnum::$type,
 						'description' => __( 'Specifies the type of button to be displayed. Defaults to TEXT.', 'wp-graphql-gravity-forms' ),
 					],
 					'text'             => [

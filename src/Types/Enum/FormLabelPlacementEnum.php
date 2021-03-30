@@ -12,7 +12,12 @@ namespace WPGraphQLGravityForms\Types\Enum;
  * Class - FormLabelPlacementEnum
  */
 class FormLabelPlacementEnum extends AbstractEnum {
-	const TYPE = 'FormLabelPlacementEnum';
+	/**
+	 * Type registered in WPGraphQL.
+	 *
+	 * @var string
+	 */
+	public static $type = 'FormLabelPlacementEnum';
 
 	// Individual elements.
 	const TOP   = 'top_label';
