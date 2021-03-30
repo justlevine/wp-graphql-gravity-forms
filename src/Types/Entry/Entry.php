@@ -11,7 +11,6 @@
 namespace WPGraphQLGravityForms\Types\Entry;
 
 use GFAPI;
-use GFFormsModel;
 use GraphQL\Error\UserError;
 use GraphQL\Type\Definition\ResolveInfo;
 use GraphQLRelay\Relay;
