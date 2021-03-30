@@ -41,10 +41,6 @@ class UpdateDraftEntryConsentFieldValue extends AbstractDraftEntryUpdater {
 	 * @return array
 	 */
 	protected function prepare_field_value( bool $value ) : array {
-		return [
-			$this->field->inputs[0]['id'] => (bool) $value,
-			$this->field->inputs[1]['id'] => isset( $this->field->checkboxLabel ) ? sanitize_text_field( $this->field->checkboxLabel ) : null,
-			$this->field->inputs[2]['id'] => isset( $this->field->descriptiom ) ? sanitize_text_field( $this->field->description ) : null,
-		];
+		return $this->prepare_consent_field_value( $this->field, $value );
 	}
 }

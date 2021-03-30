@@ -41,6 +41,6 @@ class UpdateDraftEntryPostContentFieldValue extends AbstractDraftEntryUpdater {
 	 * @return string
 	 */
 	protected function prepare_field_value( string $value ) : string {
-		return wp_kses_post( $value );
+		return $this->prepare_post_content_field_value( $value );
 	}
 }

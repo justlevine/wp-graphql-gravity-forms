@@ -41,6 +41,6 @@ class UpdateDraftEntryWebsiteFieldValue extends AbstractDraftEntryUpdater {
 	 * @return string
 	 */
 	protected function prepare_field_value( string $value ) : string {
-		return esc_url_raw( $value );
+		return $this->prepare_website_field_value( $value );
 	}
 }

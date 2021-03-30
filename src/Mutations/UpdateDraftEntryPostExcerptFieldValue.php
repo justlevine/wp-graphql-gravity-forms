@@ -41,6 +41,6 @@ class UpdateDraftEntryPostExcerptFieldValue extends AbstractDraftEntryUpdater {
 	 * @return string
 	 */
 	protected function prepare_field_value( string $value ) : string {
-		return sanitize_text_field( $value );
+		return $this->prepare_string_value( $value );
 	}
 }

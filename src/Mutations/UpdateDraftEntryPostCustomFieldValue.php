@@ -41,6 +41,6 @@ class UpdateDraftEntryPostCustomFieldValue extends AbstractDraftEntryUpdater {
 	 * @return string
 	 */
 	protected function prepare_field_value( array $value ) : string {
-		return (string) wp_json_encode( array_map( 'sanitize_text_field', $value ) );
+		return $this->prepare_string_array_value( $value );
 	}
 }

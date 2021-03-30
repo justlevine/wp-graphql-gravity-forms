@@ -19,8 +19,6 @@ use GraphQL\Type\Definition\ResolveInfo;
 use WPGraphQL\AppContext;
 use WPGraphQLGravityForms\DataManipulators\EntryDataManipulator;
 use WPGraphQLGravityForms\DataManipulators\DraftEntryDataManipulator;
-use WPGraphQLGravityForms\Interfaces\Hookable;
-use WPGraphQLGravityForms\Interfaces\Mutation;
 use WPGraphQLGravityForms\Types\Entry\Entry;
 use WPGraphQLGravityForms\Types\FieldError\FieldError;
 use WPGraphQLGravityForms\Types\Input\FieldValuesInput;
@@ -170,15 +168,15 @@ class SubmitForm extends AbstractMutation {
 			// Check for required fields.
 			$this->validate_required_inputs( $input );
 
+			$this->form = GFUtils::get_form( $input['formId'] );
+
 			// Set default values.
 			$target_page         = $input['targetPage'] ?? 0;
 			$source_page         = $input['sourcePage'] ?? 1;
 			$this->save_as_draft = $input['saveAsDraft'] ?? false;
-			$ip                  = isset( $input['ip'] ) && ! empty( $form['personalData']['preventIP'] ) ? sanitize_text_field( $input['ip'] ) : null;
+			$ip                  = isset( $input['ip'] ) && ! empty( $this->form['personalData']['preventIP'] ) ? sanitize_text_field( $input['ip'] ) : null;
 			$created_by          = isset( $input['createdBy'] ) ? absint( $input['createdBy'] ) : null;
 			$source_url          = esc_url_raw( Utils::truncate( $_SERVER['HTTP_REFERER'] ?? '', 250 ) );
-
-			$this->form = GFUtils::get_form( $input['formId'] );
 
 			$field_values = $this->get_field_values( $input['fieldValues'] );
 
@@ -368,6 +366,10 @@ class SubmitForm extends AbstractMutation {
 				case 'email':
 					$formatted_values[ $values['id'] ] = $this->prepare_email_field_value( $value );
 					break;
+				case 'fileupload':
+				case 'post_image':
+					$formatted_values[ $values['id'] ] = $this->prepare_fileupload_field_value( $field, $value );
+					break;
 				case 'list':
 					$formatted_values[ $values['id'] ] = $this->prepare_list_field_value( $field, $value );
 					break;
@@ -380,18 +382,19 @@ class SubmitForm extends AbstractMutation {
 				case 'name':
 					$formatted_values += $this->prepare_name_field_value( $field, $value );
 					break;
+				case 'post_content':
+					$formatted_values[ $values['id'] ] = $this->prepare_post_content_field_value( $value );
+					break;
+				case 'signature':
+					$formatted_values[ $values['id'] ] = $this->prepare_signature_field_value( $value );
+					break;
 				case 'website':
 					$formatted_values[ $values['id'] ] = $this->prepare_website_field_value( $value );
-					break;
-				case 'fileupload':
-				case 'post_image':
-					$formatted_values [ $values['id'] ] = $this->prepare_fileupload_field_value( $field, $value );
 					break;
 				case 'date':
 				case 'hidden':
 				case 'number':
 				case 'phone':
-				case 'post_content':
 				case 'post_excerpt':
 				case 'post_title':
 				case 'radio':
@@ -406,82 +409,6 @@ class SubmitForm extends AbstractMutation {
 		}
 
 		return $formatted_values;
-	}
-
-	/**
-	 * Formats and sanitizes the AddressField value.
-	 *
-	 * @param GF_Field $field .
-	 * @param array    $value .
-	 * @return array
-	 */
-	private function prepare_address_field_value( GF_Field $field, array $value ) : array {
-			return [
-				$field['inputs'][0]['id'] => array_key_exists( 'street', $value ) ? sanitize_text_field( $value['street'] ) : null,
-				$field['inputs'][1]['id'] => array_key_exists( 'lineTwo', $value ) ? sanitize_text_field( $value['lineTwo'] ) : null,
-				$field['inputs'][2]['id'] => array_key_exists( 'city', $value ) ? sanitize_text_field( $value['city'] ) : null,
-				$field['inputs'][3]['id'] => array_key_exists( 'state', $value ) ? sanitize_text_field( $value['state'] ) : null,
-				$field['inputs'][4]['id'] => array_key_exists( 'zip', $value ) ? sanitize_text_field( $value['zip'] ) : null,
-				$field['inputs'][5]['id'] => array_key_exists( 'country', $value ) ? sanitize_text_field( $value['country'] ) : null,
-			];
-	}
-
-	/**
-	 * Formats and sanitizes complex field values that are comprised of several input fields.
-	 *
-	 * @param GF_Field $field .
-	 * @param array    $value .
-	 * @return array
-	 */
-	private function prepare_complex_field_value( GF_Field $field, array $value ) : array {
-		$values_to_save = array_reduce(
-			$field->inputs,
-			function( array $values_to_save, array $input ) : array {
-				$values_to_save[ $input['id'] ] = ''; // Initialize all inputs to an empty string.
-				return $values_to_save;
-			},
-			[]
-		);
-
-		foreach ( $value as $single_value ) {
-			$input_id    = sanitize_text_field( $single_value['inputId'] );
-			$input_value = sanitize_text_field( $single_value['value'] );
-
-			// Make sure the input ID passed in exists.
-			if ( ! isset( $values_to_save[ $input_id ] ) ) {
-				continue;
-			}
-
-			// Overwrite initial empty string with the value passed in.
-			$values_to_save[ $input_id ] = $input_value;
-		}
-
-		return $values_to_save;
-	}
-
-	/**
-	 * Formats and sanitizes the ConsentField value.
-	 *
-	 * @param GF_Field $field .
-	 * @param array    $value .
-	 * @return array
-	 */
-	private function prepare_consent_field_value( GF_Field $field, array $value ) : array {
-		return [
-			$field->inputs[0]['id'] => (bool) $value,
-			$field->inputs[1]['id'] => isset( $field->checkboxLabel ) ? sanitize_text_field( $field->checkboxLabel ) : null,
-			$field->inputs[2]['id'] => isset( $field->descriptiom ) ? sanitize_text_field( $field->description ) : null,
-		];
-	}
-
-	/**
-	 * Sanitizes the EmailField value.
-	 *
-	 * @param string $value .
-	 * @return string
-	 */
-	private function prepare_email_field_value( string $value ) : string {
-		return sanitize_email( $value );
 	}
 
 	/**
@@ -514,53 +441,6 @@ class SubmitForm extends AbstractMutation {
 		}
 
 		return $values_to_save; //phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_serialize
-	}
-
-	/**
-	 * Formats and sanitizes the NameField value.
-	 *
-	 * @param GF_Field $field .
-	 * @param array    $value .
-	 * @return array
-	 */
-	private function prepare_name_field_value( GF_Field $field, array $value ) : array {
-		return [
-			$field['inputs'][0]['id'] => array_key_exists( 'prefix', $value ) ? sanitize_text_field( $value['prefix'] ) : null,
-			$field['inputs'][1]['id'] => array_key_exists( 'first', $value ) ? sanitize_text_field( $value['first'] ) : null,
-			$field['inputs'][2]['id'] => array_key_exists( 'middle', $value ) ? sanitize_text_field( $value['middle'] ) : null,
-			$field['inputs'][3]['id'] => array_key_exists( 'last', $value ) ? sanitize_text_field( $value['last'] ) : null,
-			$field['inputs'][4]['id'] => array_key_exists( 'suffix', $value ) ? sanitize_text_field( $value['suffix'] ) : null,
-		];
-	}
-
-	/**
-	 * Sanitizes string field values.
-	 *
-	 * @param string $value .
-	 * @return string
-	 */
-	private function prepare_string_value( string $value ) : string {
-		return sanitize_text_field( $value );
-	}
-
-	/**
-	 * Formats and sanitizes field string array field values.
-	 *
-	 * @param array $value .
-	 * @return string
-	 */
-	private function prepare_string_array_value( array $value ) : string {
-		return (string) wp_json_encode( array_map( 'sanitize_text_field', $value ) );
-	}
-
-	/**
-	 * Sanitizes the WebsiteField value.
-	 *
-	 * @param string $value .
-	 * @return string
-	 */
-	private function prepare_website_field_value( string $value ) : string {
-		return esc_url_raw( $value );
 	}
 
 	/**
