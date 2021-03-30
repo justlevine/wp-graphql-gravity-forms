@@ -190,14 +190,10 @@ class UpdateEntry extends AbstractMutation {
 				return [ 'errors' => $this->errors ];
 			}
 
-			$submission = GFAPI::update_entry( $entry_data );
-
-			if ( is_wp_error( $submission ) ) {
-				throw new UserError( __( 'There was an error while updating the entry. Error: ', 'wp-graphql-gravity-forms' ) . $submission->get_error_message() );
-			}
+			$updated_entry_id = GFUtils::update_entry( $entry_data );
 
 			return [
-				'entryId' => $this->entry['id'],
+				'entryId' => $updated_entry_id,
 			];
 		};
 	}

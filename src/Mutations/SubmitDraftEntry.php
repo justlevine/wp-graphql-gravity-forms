@@ -167,7 +167,7 @@ class SubmitDraftEntry extends AbstractMutation {
 	 */
 	private function maybe_update_entry( array $partial_entry ) : int {
 		if ( $partial_entry['id'] ) {
-			return $this->update_entry( $partial_entry );
+			return GFUtils::update_entry( $partial_entry );
 		}
 		return $this->create_entry( $partial_entry );
 	}
@@ -187,23 +187,6 @@ class SubmitDraftEntry extends AbstractMutation {
 		}
 
 		return $entry_id;
-	}
-
-	/**
-	 * Updates the existing Gravity Forms entry from the current draft entry.
-	 *
-	 * @param array $partial_entry .
-	 * @return integer
-	 * @throws UserError .
-	 */
-	private function update_entry( array $partial_entry ) : int {
-		$is_entry_updated = GFAPI::update_entry( $partial_entry );
-
-		if ( is_wp_error( ( $is_entry_updated ) ) ) {
-			throw new UserError( __( 'An error occured while trying to update the entry.', 'wp-graphql-gravity-forms' ) . ' ' . $is_entry_updated->get_error_message() );
-		}
-
-		return $partial_entry['id'];
 	}
 
 	/**

@@ -200,4 +200,31 @@ class GFUtils {
 
 		return $submission;
 	}
+
+	/**
+	 * Updates the existing Gravity Form entry.
+	 * Uses GFAPI::update_entry().
+	 *
+	 * @see https://docs.gravityforms.com/api-functions/#update-entry
+	 *
+	 * @param array $entry_data .
+	 * @param int   $entry_id .
+	 * @return integer
+	 *
+	 * @throws UserError .
+	 */
+	public static function update_entry( array $entry_data, int $entry_id = null ) : int {
+		$entry_id = $entry_id ?? $entry_data['id'];
+
+		$is_entry_updated = GFAPI::update_entry( $entry_data, $entry_id );
+
+		if ( is_wp_error( ( $is_entry_updated ) ) ) {
+			throw new UserError(
+				// translators: Gravity Forms entry id.
+				sprintf( __( 'An error occured while trying to update the entry (ID: %n). Error: ', 'wp-graphql-gravity-forms' ), $entry_data['id'] ) . $is_entry_updated->get_error_message()
+			);
+		}
+
+		return $entry_id;
+	}
 }
