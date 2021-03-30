@@ -23,13 +23,17 @@ use WPGraphQLGravityForms\Types\GraphQLInterface\FieldInterface;
 class SignatureField extends AbstractField {
 	/**
 	 * Type registered in WPGraphQL.
+	 *
+	 * @var string
 	 */
-	const TYPE = 'SignatureField';
+	public static $type = 'SignatureField';
 
 	/**
 	 * Type registered in Gravity Forms.
+	 *
+	 * @var string
 	 */
-	const GF_TYPE = 'signature';
+	public static $gf_type = 'signature';
 
 	/**
 	 * Sets the field type description.

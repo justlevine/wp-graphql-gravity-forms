@@ -21,7 +21,7 @@ class PostContentFieldValue extends AbstractFieldValue {
 	 *
 	 * @var string
 	 */
-	public static $type = PostContentField::TYPE . 'Value';
+	public static $type = 'PostContentFieldValue';
 
 	/**
 	 * Sets the field type description.

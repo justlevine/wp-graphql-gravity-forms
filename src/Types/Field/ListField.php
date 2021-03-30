@@ -20,13 +20,17 @@ use WPGraphQLGravityForms\Types\GraphQLInterface\FieldInterface;
 class ListField extends AbstractField {
 	/**
 	 * Type registered in WPGraphQL.
+	 *
+	 * @var string
 	 */
-	const TYPE = 'ListField';
+	public static $type = 'ListField';
 
 	/**
 	 * Type registered in Gravity Forms.
+	 *
+	 * @var string
 	 */
-	const GF_TYPE = 'list';
+	public static $gf_type = 'list';
 
 	/**
 	 * Sets the field type description.

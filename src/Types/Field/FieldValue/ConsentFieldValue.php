@@ -22,7 +22,7 @@ class ConsentFieldValue extends AbstractFieldValue {
 	 *
 	 * @var string
 	 */
-	public static $type = ConsentField::TYPE . 'Value';
+	public static $type = 'ConsentFieldValue';
 
 	/**
 	 * Sets the field type description.

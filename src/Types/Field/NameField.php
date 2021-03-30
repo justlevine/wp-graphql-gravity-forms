@@ -21,13 +21,17 @@ use WPGraphQLGravityForms\Utils\Utils;
 class NameField extends AbstractField {
 	/**
 	 * Type registered in WPGraphQL.
+	 *
+	 * @var string
 	 */
-	const TYPE = 'NameField';
+	public static $type = 'NameField';
 
 	/**
 	 * Type registered in Gravity Forms.
+	 *
+	 * @var string
 	 */
-	const GF_TYPE = 'name';
+	public static $gf_type = 'name';
 
 	/**
 	 * Sets the field type description.
@@ -74,7 +78,7 @@ class NameField extends AbstractField {
 			*/
 
 			// translators: Gravity Forms Field type.
-			Utils::deprecate_property( FieldProperty\InputNameProperty::get(), sprintf( __( 'This property is not associated with the Gravity Forms %s type. Please use `inputs { name }` instead.', 'wp-graphql-gravity-forms' ), self::TYPE ) ),
+			Utils::deprecate_property( FieldProperty\InputNameProperty::get(), sprintf( __( 'This property is not associated with the Gravity Forms %s type. Please use `inputs { name }` instead.', 'wp-graphql-gravity-forms' ), self::$type ) ),
 		);
 	}
 }

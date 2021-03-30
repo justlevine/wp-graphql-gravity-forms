@@ -20,13 +20,17 @@ use WPGraphQLGravityForms\Types\GraphQLInterface\FieldInterface;
 class PostTitleField extends AbstractField {
 	/**
 	 * Type registered in WPGraphQL.
+	 *
+	 * @var string
 	 */
-	const TYPE = 'PostTitleField';
+	public static $type = 'PostTitleField';
 
 	/**
 	 * Type registered in Gravity Forms.
+	 *
+	 * @var string
 	 */
-	const GF_TYPE = 'post_title';
+	public static $gf_type = 'post_title';
 
 	/**
 	 * Sets the field type description.

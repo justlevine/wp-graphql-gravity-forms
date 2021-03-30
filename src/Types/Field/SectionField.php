@@ -20,13 +20,17 @@ use WPGraphQLGravityForms\Utils\Utils;
 class SectionField extends AbstractField {
 	/**
 	 * Type registered in WPGraphQL.
+	 *
+	 * @var string
 	 */
-	const TYPE = 'SectionField';
+	public static $type = 'SectionField';
 
 	/**
 	 * Type registered in Gravity Forms.
+	 *
+	 * @var string
 	 */
-	const GF_TYPE = 'section';
+	public static $gf_type = 'section';
 
 	/**
 	 * Sets the field type description.
@@ -56,11 +60,11 @@ class SectionField extends AbstractField {
 			 */
 
 			// translators: Gravity Forms Field type.
-			Utils::deprecate_property( FieldProperty\AdminLabelProperty::get(), sprintf( __( 'This property is not associated with the Gravity Forms %s type.', 'wp-graphql-gravity-forms' ), self::TYPE ) ),
+			Utils::deprecate_property( FieldProperty\AdminLabelProperty::get(), sprintf( __( 'This property is not associated with the Gravity Forms %s type.', 'wp-graphql-gravity-forms' ), self::$type ) ),
 			// translators: Gravity Forms Field type.
-			Utils::deprecate_property( FieldProperty\AdminOnlyProperty::get(), sprintf( __( 'This property is not associated with the Gravity Forms %s type.', 'wp-graphql-gravity-forms' ), self::TYPE ) ),
+			Utils::deprecate_property( FieldProperty\AdminOnlyProperty::get(), sprintf( __( 'This property is not associated with the Gravity Forms %s type.', 'wp-graphql-gravity-forms' ), self::$type ) ),
 			// translators: Gravity Forms Field type.
-			Utils::deprecate_property( FieldProperty\AllowsPrepopulateProperty::get(), sprintf( __( 'This property is not associated with the Gravity Forms %s type.', 'wp-graphql-gravity-forms' ), self::TYPE ) ),
+			Utils::deprecate_property( FieldProperty\AllowsPrepopulateProperty::get(), sprintf( __( 'This property is not associated with the Gravity Forms %s type.', 'wp-graphql-gravity-forms' ), self::$type ) ),
 		);
 	}
 }

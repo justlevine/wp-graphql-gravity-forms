@@ -21,7 +21,7 @@ class SelectFieldValue extends AbstractFieldValue {
 	 *
 	 * @var string
 	 */
-	public static $type = SelectField::TYPE . 'Value';
+	public static $type = 'SelectFieldValue';
 
 	/**
 	 * Sets the field type description.

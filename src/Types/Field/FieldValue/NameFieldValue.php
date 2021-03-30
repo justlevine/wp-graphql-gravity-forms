@@ -21,7 +21,7 @@ class NameFieldValue extends AbstractFieldValue {
 	 *
 	 * @var string
 	 */
-	public static $type = NameField::TYPE . 'Value';
+	public static $type = 'NameFieldValue';
 
 	/**
 	 * Sets the field type description.

@@ -21,7 +21,7 @@ class DateFieldValue extends AbstractFieldValue {
 	 *
 	 * @var string
 	 */
-	public static $type = DateField::TYPE . 'Value';
+	public static $type = 'DateFieldValue';
 
 	/**
 	 * Sets the field type description.

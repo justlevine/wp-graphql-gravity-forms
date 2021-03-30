@@ -21,7 +21,7 @@ class ChainedSelectFieldValue extends AbstractFieldValue {
 	 *
 	 * @var string
 	 */
-	public static $type = ChainedSelectField::TYPE . 'Value';
+	public static $type = 'ChainedSelectValue';
 
 	/**
 	 * Sets the field type description.

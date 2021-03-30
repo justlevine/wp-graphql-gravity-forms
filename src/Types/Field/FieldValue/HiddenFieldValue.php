@@ -21,7 +21,7 @@ class HiddenFieldValue extends AbstractFieldValue {
 	 *
 	 * @var string
 	 */
-	public static $type = HiddenField::TYPE . 'Value';
+	public static $type = 'HiddenFieldValue';
 
 	/**
 	 * Sets the field type description.

@@ -21,7 +21,7 @@ class TextFieldValue extends AbstractFieldValue {
 	 *
 	 * @var string
 	 */
-	public static $type = TextField::TYPE . 'Value';
+	public static $type = 'TextFieldValue';
 
 	/**
 	 * Sets the field type description.

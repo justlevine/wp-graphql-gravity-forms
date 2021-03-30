@@ -20,13 +20,17 @@ use WPGraphQLGravityForms\Types\GraphQLInterface\FieldInterface;
 class WebsiteField extends AbstractField {
 	/**
 	 * Type registered in WPGraphQL.
+	 *
+	 * @var string
 	 */
-	const TYPE = 'WebsiteField';
+	public static $type = 'WebsiteField';
 
 	/**
 	 * Type registered in Gravity Forms.
+	 *
+	 * @var string
 	 */
-	const GF_TYPE = 'website';
+	public static $gf_type = 'website';
 
 	/**
 	 * Sets the field type description.

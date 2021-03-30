@@ -21,7 +21,7 @@ class RadioFieldValue extends AbstractFieldValue {
 	 *
 	 * @var string
 	 */
-	public static $type = RadioField::TYPE . 'Value';
+	public static $type = 'RadioFieldValue';
 
 	/**
 	 * Sets the field type description.

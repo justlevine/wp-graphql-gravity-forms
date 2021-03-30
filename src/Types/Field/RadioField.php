@@ -20,13 +20,17 @@ use WPGraphQLGravityForms\Types\GraphQLInterface\FieldInterface;
 class RadioField extends AbstractField {
 	/**
 	 * Type registered in WPGraphQL.
+	 *
+	 * @var string
 	 */
-	const TYPE = 'RadioField';
+	public static $type = 'RadioField';
 
 	/**
 	 * Type registered in Gravity Forms.
+	 *
+	 * @var string
 	 */
-	const GF_TYPE = 'radio';
+	public static $gf_type = 'radio';
 
 	/**
 	 * Sets the field type description.

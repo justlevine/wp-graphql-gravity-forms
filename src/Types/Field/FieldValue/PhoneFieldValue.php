@@ -21,7 +21,7 @@ class PhoneFieldValue extends AbstractFieldValue {
 	 *
 	 * @var string
 	 */
-	public static $type = PhoneField::TYPE . 'Value';
+	public static $type = 'PhoneFieldValue';
 
 	/**
 	 * Sets the field type description.

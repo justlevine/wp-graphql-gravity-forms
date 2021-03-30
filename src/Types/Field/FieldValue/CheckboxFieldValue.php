@@ -21,7 +21,7 @@ class CheckboxFieldValue extends AbstractFieldValue {
 	 *
 	 * @var string
 	 */
-	public static $type = CheckboxField::TYPE . 'Value';
+	public static $type = 'CheckboxFieldValue';
 
 	/**
 	 * Sets the field type description.

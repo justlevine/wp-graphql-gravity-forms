@@ -20,13 +20,17 @@ use WPGraphQLGravityForms\Types\GraphQLInterface\FieldInterface;
 class PostContentField extends AbstractField {
 	/**
 	 * Type registered in WPGraphQL.
+	 *
+	 * @var string
 	 */
-	const TYPE = 'PostContentField';
+	public static $type = 'PostContentField';
 
 	/**
 	 * Type registered in Gravity Forms.
+	 *
+	 * @var string
 	 */
-	const GF_TYPE = 'post_content';
+	public static $gf_type = 'post_content';
 
 	/**
 	 * Sets the field type description.

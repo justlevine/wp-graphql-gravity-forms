@@ -21,7 +21,7 @@ class AddressFieldValue extends AbstractFieldValue {
 	 *
 	 * @var string
 	 */
-	public static $type = AddressField::TYPE . 'Value';
+	public static $type = 'AddressFieldValue';
 
 	/**
 	 * Sets the field type description.

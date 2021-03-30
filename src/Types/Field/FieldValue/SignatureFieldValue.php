@@ -23,7 +23,7 @@ class SignatureFieldValue extends AbstractFieldValue {
 	 *
 	 * @var string
 	 */
-	public static $type = SignatureField::TYPE . 'Value';
+	public static $type = 'SignatureFieldValue';
 
 	/**
 	 * Sets the field type description.

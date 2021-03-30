@@ -21,7 +21,7 @@ class PostTagsFieldValue extends AbstractFieldValue {
 	 *
 	 * @var string
 	 */
-	public static $type = PostTagsField::TYPE . 'Value';
+	public static $type = 'PostTagsFieldValue';
 
 	/**
 	 * Sets the field type description.

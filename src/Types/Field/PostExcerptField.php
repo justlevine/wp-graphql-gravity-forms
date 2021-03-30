@@ -20,13 +20,17 @@ use WPGraphQLGravityForms\Types\GraphQLInterface\FieldInterface;
 class PostExcerptField extends AbstractField {
 	/**
 	 * Type registered in WPGraphQL.
+	 *
+	 * @var string
 	 */
-	const TYPE = 'PostExcerptField';
+	public static $type = 'PostExcerptField';
 
 	/**
 	 * Type registered in Gravity Forms.
+	 *
+	 * @var string
 	 */
-	const GF_TYPE = 'post_excerpt';
+	public static $gf_type = 'post_excerpt';
 
 	/**
 	 * Sets the field type description.

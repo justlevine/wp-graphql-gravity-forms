@@ -22,13 +22,17 @@ use WPGraphQLGravityForms\Types\GraphQLInterface\FieldInterface;
 class MultiSelectField extends AbstractField {
 	/**
 	 * Type registered in WPGraphQL.
+	 *
+	 * @var string
 	 */
-	const TYPE = 'MultiSelectField';
+	public static $type = 'MultiSelectField';
 
 	/**
 	 * Type registered in Gravity Forms.
+	 *
+	 * @var string
 	 */
-	const GF_TYPE = 'multiselect';
+	public static $gf_type = 'multiselect';
 
 	/**
 	 * Sets the field type description.

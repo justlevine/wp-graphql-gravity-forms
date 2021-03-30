@@ -24,7 +24,7 @@ class ListFieldValue extends AbstractFieldValue {
 	 *
 	 * @var string
 	 */
-	public static $type = ListField::TYPE . 'Value';
+	public static $type = 'ListFieldValue';
 
 	/**
 	 * Sets the field type description.

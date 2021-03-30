@@ -21,7 +21,7 @@ class EmailFieldValue extends AbstractFieldValue {
 	 *
 	 * @var string
 	 */
-	public static $type = EmailField::TYPE . 'Value';
+	public static $type = 'EmailFieldValue';
 
 	/**
 	 * Sets the field type description.

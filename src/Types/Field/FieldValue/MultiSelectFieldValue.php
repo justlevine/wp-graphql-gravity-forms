@@ -21,7 +21,7 @@ class MultiSelectFieldValue extends AbstractFieldValue {
 	 *
 	 * @var string
 	 */
-	public static $type = MultiSelectField::TYPE . 'Value';
+	public static $type = 'MultiSelectFieldValue';
 
 	/**
 	 * Sets the field type description.

@@ -22,13 +22,17 @@ use WPGraphQLGravityForms\Types\GraphQLInterface\FieldInterface;
 class NumberField extends AbstractField {
 	/**
 	 * Type registered in WPGraphQL.
+	 *
+	 * @var string
 	 */
-	const TYPE = 'NumberField';
+	public static $type = 'NumberField';
 
 	/**
 	 * Type registered in Gravity Forms.
+	 *
+	 * @var string
 	 */
-	const GF_TYPE = 'number';
+	public static $gf_type = 'number';
 
 	/**
 	 * Sets the field type description.

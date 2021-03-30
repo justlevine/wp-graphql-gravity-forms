@@ -19,13 +19,17 @@ use WPGraphQLGravityForms\Types\GraphQLInterface\FieldInterface;
 class ConsentField extends AbstractField {
 	/**
 	 * Type registered in WPGraphQL.
+	 *
+	 * @var string
 	 */
-	const TYPE = 'ConsentField';
+	public static $type = 'ConsentField';
 
 	/**
 	 * Type registered in Gravity Forms.
+	 *
+	 * @var string
 	 */
-	const GF_TYPE = 'consent';
+	public static $gf_type = 'consent';
 
 	/**
 	 * Sets the field type description.

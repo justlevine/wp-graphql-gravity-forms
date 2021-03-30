@@ -21,7 +21,7 @@ class WebsiteFieldValue extends AbstractFieldValue {
 	 *
 	 * @var string
 	 */
-	public static $type = WebsiteField::TYPE . 'Value';
+	public static $type = 'WebsiteFieldValue';
 
 	/**
 	 * Sets the field type description.

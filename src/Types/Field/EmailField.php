@@ -19,14 +19,18 @@ use WPGraphQLGravityForms\Types\GraphQLInterface\FieldInterface;
  */
 class EmailField extends AbstractField {
 	/**
-	 * Type registred in WPGraphQL.
+	 * Type registered in WPGraphQL.
+	 *
+	 * @var string
 	 */
-	const TYPE = 'EmailField';
+	public static $type = 'EmailField';
 
 	/**
 	 * Type registered in Gravity Forms.
+	 *
+	 * @var string
 	 */
-	const GF_TYPE = 'email';
+	public static $gf_type = 'email';
 
 	/**
 	 * Sets the field type description.

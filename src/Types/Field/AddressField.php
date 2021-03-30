@@ -23,13 +23,17 @@ use WPGraphQLGravityForms\Utils\Utils;
 class AddressField extends AbstractField {
 	/**
 	 * Type registered in WPGraphQL.
+	 *
+	 * @var string
 	 */
-	const TYPE = 'AddressField';
+	public static $type = 'AddressField';
 
 	/**
 	 * Type registered in Gravity Forms.
+	 *
+	 * @var string
 	 */
-	const GF_TYPE = 'address';
+	public static $gf_type = 'address';
 
 	/**
 	 * Sets the field type description.
@@ -104,7 +108,7 @@ class AddressField extends AbstractField {
 			 */
 
 			// translators: Gravity Forms Field type.
-			Utils::deprecate_property( FieldProperty\InputNameProperty::get(), sprintf( __( 'This property is not associated with the Gravity Forms %s type. Please use `inputs { name }` instead.', 'wp-graphql-gravity-forms' ), self::TYPE ) ),
+			Utils::deprecate_property( FieldProperty\InputNameProperty::get(), sprintf( __( 'This property is not associated with the Gravity Forms %s type. Please use `inputs { name }` instead.', 'wp-graphql-gravity-forms' ), self::$type ) ),
 		);
 	}
 }

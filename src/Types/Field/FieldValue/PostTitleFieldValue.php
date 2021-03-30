@@ -21,7 +21,7 @@ class PostTitleFieldValue extends AbstractFieldValue {
 	 *
 	 * @var string
 	 */
-	public static $type = PostTitleField::TYPE . 'Value';
+	public static $type = 'PostTitleFieldValue';
 
 	/**
 	 * Sets the field type description.

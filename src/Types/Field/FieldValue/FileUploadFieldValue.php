@@ -21,7 +21,7 @@ class FileUploadFieldValue extends AbstractFieldValue {
 	 *
 	 * @var string
 	 */
-	public static $type = FileUploadField::TYPE . 'Value';
+	public static $type = 'FileUploadFieldValue';
 
 	/**
 	 * Sets the field type description.

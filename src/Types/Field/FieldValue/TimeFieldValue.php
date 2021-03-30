@@ -21,7 +21,7 @@ class TimeFieldValue extends AbstractFieldValue {
 	 *
 	 * @var string
 	 */
-	public static $type = TimeField::TYPE . 'Value';
+	public static $type = 'TimeFieldValue';
 
 	/**
 	 * Sets the field type description.

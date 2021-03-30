@@ -21,13 +21,17 @@ use WPGraphQLGravityForms\Types\GraphQLInterface\FieldInterface;
 class FileUploadField extends AbstractField {
 	/**
 	 * Type registered in WPGraphQL.
+	 *
+	 * @var string
 	 */
-	const TYPE = 'FileUploadField';
+	public static $type = 'FileUploadField';
 
 	/**
 	 * Type registered in Gravity Forms.
+	 *
+	 * @var string
 	 */
-	const GF_TYPE = 'fileupload';
+	public static $gf_type = 'fileupload';
 
 	/**
 	 * Sets the field type description.
@@ -79,9 +83,9 @@ class FileUploadField extends AbstractField {
 			*/
 
 				// translators: Gravity Forms Field type.
-				Utils::deprecate_property( FieldProperty\AllowsPrepopulateProperty::get(), sprintf( __( 'This property is not associated with the Gravity Forms %s type.', 'wp-graphql-gravity-forms' ), self::TYPE ) ),
+				Utils::deprecate_property( FieldProperty\AllowsPrepopulateProperty::get(), sprintf( __( 'This property is not associated with the Gravity Forms %s type.', 'wp-graphql-gravity-forms' ), self::$type ) ),
 			// translators: Gravity Forms Field type.
-				Utils::deprecate_property( FieldProperty\InputNameProperty::get(), sprintf( __( 'This property is not associated with the Gravity Forms %s type.', 'wp-graphql-gravity-forms' ), self::TYPE ) ),
+				Utils::deprecate_property( FieldProperty\InputNameProperty::get(), sprintf( __( 'This property is not associated with the Gravity Forms %s type.', 'wp-graphql-gravity-forms' ), self::$type ) ),
 		);
 	}
 }

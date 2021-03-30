@@ -20,6 +20,20 @@ use WPGraphQLGravityForms\Types\GraphQLInterface\FieldInterface;
  */
 abstract class AbstractField implements Hookable, Type {
 	/**
+	 * Type registered in WPGraphQL.
+	 *
+	 * @var string
+	 */
+	public static $type;
+
+	/**
+	 * Type registered in Gravity Forms.
+	 *
+	 * @var string
+	 */
+	public static $gf_type;
+
+	/**
 	 * Register hooks to WordPress.
 	 */
 	public function register_hooks() : void {
@@ -31,7 +45,7 @@ abstract class AbstractField implements Hookable, Type {
 	 */
 	public function register_type() : void {
 		register_graphql_object_type(
-			static::TYPE,
+			static::$type,
 			[
 				'description' => $this->get_type_description(),
 				'interfaces'  => [ FieldInterface::TYPE ],
@@ -75,6 +89,6 @@ abstract class AbstractField implements Hookable, Type {
 		 * @param array Additional GraphQL field definitions.
 		 * @param array The type of Gravity Forms field.
 		 */
-		return apply_filters( 'wp_graphql_gf_custom_properties', [], static::GF_TYPE );
+		return apply_filters( 'wp_graphql_gf_custom_properties', [], static::$gf_type );
 	}
 }

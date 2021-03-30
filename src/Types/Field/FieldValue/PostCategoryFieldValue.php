@@ -21,7 +21,7 @@ class PostCategoryFieldValue extends AbstractFieldValue {
 	 *
 	 * @var string
 	 */
-	public static $type = PostCategoryField::TYPE . 'Value';
+	public static $type = 'PostCategoryFieldValue';
 
 	/**
 	 * Sets the field type description.

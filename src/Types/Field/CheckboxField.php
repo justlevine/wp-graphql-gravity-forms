@@ -21,13 +21,17 @@ use WPGraphQLGravityForms\Types\GraphQLInterface\FieldInterface;
 class CheckboxField extends AbstractField {
 	/**
 	 * Type registered in WPGraphQL.
+	 *
+	 * @var string
 	 */
-	const TYPE = 'CheckboxField';
+	public static $type = 'CheckboxField';
 
 	/**
 	 * Type registered in Gravity Forms.
+	 *
+	 * @var string
 	 */
-	const GF_TYPE = 'checkbox';
+	public static $gf_type = 'checkbox';
 
 	/**
 	 * Sets the field type description.

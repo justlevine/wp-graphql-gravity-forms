@@ -21,13 +21,17 @@ use WPGraphQLGravityForms\Types\GraphQLInterface\FieldInterface;
 class TimeField extends AbstractField {
 	/**
 	 * Type registered in WPGraphQL.
+	 *
+	 * @var string
 	 */
-	const TYPE = 'TimeField';
+	public static $type = 'TimeField';
 
 	/**
 	 * Type registered in Gravity Forms.
+	 *
+	 * @var string
 	 */
-	const GF_TYPE = 'time';
+	public static $gf_type = 'time';
 
 	/**
 	 * Sets the field type description.

@@ -123,7 +123,7 @@ class EntryFieldConnection implements Hookable, Connection {
 		/**
 		 * Filter for adding custom field class instances.
 		 * Classes must extend the WPGraphQLGravityForms\Types\Field\AbstractField class and
-		 * contain a "GF_TYPE" class constant specifying the Gravity Forms field type.
+		 * contain a "$gf_type" class variable specifying the Gravity Forms field type.
 		 *
 		 * @param array $fields Gravity Forms field class instances.
 		 */
@@ -132,7 +132,7 @@ class EntryFieldConnection implements Hookable, Connection {
 		$field_array = array_filter(
 			$fields,
 			function( $instance ) use ( $gf_field_type ) {
-				return $instance instanceof AbstractField && $instance::GF_TYPE === $gf_field_type;
+				return $instance instanceof AbstractField && $instance::$gf_type === $gf_field_type;
 			}
 		);
 
@@ -161,7 +161,7 @@ class EntryFieldConnection implements Hookable, Connection {
 		$value_class_array = array_filter(
 			$field_values,
 			function( $instance ) use ( $field ) {
-				return $instance instanceof AbstractFieldValue && $instance::$type === $field::TYPE . 'Value';
+				return $instance instanceof AbstractFieldValue && $instance::$type === $field::$type . 'Value';
 			}
 		);
 

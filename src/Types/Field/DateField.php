@@ -23,13 +23,17 @@ use WPGraphQLGravityForms\Types\GraphQLInterface\FieldInterface;
 class DateField extends AbstractField {
 	/**
 	 * Type registered in WPGraphQL.
+	 *
+	 * @var string
 	 */
-	const TYPE = 'DateField';
+	public static $type = 'DateField';
 
 	/**
 	 * Type registered in Gravity Forms.
+	 *
+	 * @var string
 	 */
-	const GF_TYPE = 'date';
+	public static $gf_type = 'date';
 
 	/**
 	 * Sets the field type description.

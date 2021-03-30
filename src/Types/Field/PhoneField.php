@@ -21,13 +21,17 @@ use WPGraphQLGravityForms\Types\GraphQLInterface\FieldInterface;
 class PhoneField extends AbstractField {
 	/**
 	 * Type registered in WPGraphQL.
+	 *
+	 * @var string
 	 */
-	const TYPE = 'PhoneField';
+	public static $type = 'PhoneField';
 
 	/**
 	 * Type registered in Gravity Forms.
+	 *
+	 * @var string
 	 */
-	const GF_TYPE = 'phone';
+	public static $gf_type = 'phone';
 
 	/**
 	 * Sets the field type description.

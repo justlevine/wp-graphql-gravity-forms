@@ -21,7 +21,7 @@ class PostExcerptFieldValue extends AbstractFieldValue {
 	 *
 	 * @var string
 	 */
-	public static $type = PostExcerptField::TYPE . 'Value';
+	public static $type = 'PostExcerptFieldValue';
 
 	/**
 	 * Sets the field type description.

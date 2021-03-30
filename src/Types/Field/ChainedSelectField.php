@@ -22,13 +22,17 @@ use WPGraphQLGravityForms\Types\Enum\ChainedSelectsAlignmentEnum;
 class ChainedSelectField extends AbstractField {
 	/**
 	 * Type registered in WPGraphQL.
+	 *
+	 * @var string
 	 */
-	const TYPE = 'ChainedSelectField';
+	public static $type = 'ChainedSelectField';
 
 	/**
 	 * Type registered in Gravity Forms.
+	 *
+	 * @var string
 	 */
-	const GF_TYPE = 'chainedselect';
+	public static $gf_type = 'chainedselect';
 
 	/**
 	 * Sets the field type description.

@@ -21,7 +21,7 @@ class NumberFieldValue extends AbstractFieldValue {
 	 *
 	 * @var string
 	 */
-	public static $type = NumberField::TYPE . 'Value';
+	public static $type = 'NumberFieldValue';
 
 	/**
 	 * Sets the field type description.
