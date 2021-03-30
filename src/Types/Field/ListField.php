@@ -17,7 +17,7 @@ use WPGraphQLGravityForms\Types\GraphQLInterface\FieldInterface;
 /**
  * Class - ListField
  */
-class ListField extends Field {
+class ListField extends AbstractField {
 	/**
 	 * Type registered in WPGraphQL.
 	 */
@@ -29,60 +29,55 @@ class ListField extends Field {
 	const GF_TYPE = 'list';
 
 	/**
-	 * Register hooks to WordPress.
+	 * Sets the field type description.
 	 */
-	public function register_hooks() : void {
-		add_action( 'graphql_register_types', [ $this, 'register_type' ] );
+	protected function get_type_description() : string {
+		return __( 'Gravity Forms List field.', 'wp-graphql-gravity-forms' );
 	}
 
 	/**
-	 * Register Object type to GraphQL schema.
+	 * Gets the properties for the Field.
+	 *
+	 * @return array
 	 */
-	public function register_type() : void {
-		register_graphql_object_type(
-			self::TYPE,
+	protected function get_properties() : array {
+		return array_merge(
+			$this->get_global_properties(),
+			$this->get_custom_properties(),
+			FieldProperty\AdminLabelProperty::get(),
+			FieldProperty\AdminOnlyProperty::get(),
+			FieldProperty\AllowsPrepopulateProperty::get(),
+			FieldProperty\DescriptionPlacementProperty::get(),
+			FieldProperty\DescriptionProperty::get(),
+			FieldProperty\ErrorMessageProperty::get(),
+			FieldProperty\InputNameProperty::get(),
+			FieldProperty\IsRequiredProperty::get(),
+			FieldProperty\LabelProperty::get(),
+			FieldProperty\LabelPlacementProperty::get(),
+			FieldProperty\PageNumberProperty::get(),
+			FieldProperty\SizeProperty::get(),
+			FieldProperty\VisibilityProperty::get(),
 			[
-				'description' => __( 'Gravity Forms List field.', 'wp-graphql-gravity-forms' ),
-				'interfaces'  => [ FieldInterface::TYPE ],
-				'fields'      => array_merge(
-					$this->get_global_properties(),
-					$this->get_custom_properties(),
-					FieldProperty\AdminLabelProperty::get(),
-					FieldProperty\AdminOnlyProperty::get(),
-					FieldProperty\AllowsPrepopulateProperty::get(),
-					FieldProperty\DescriptionPlacementProperty::get(),
-					FieldProperty\DescriptionProperty::get(),
-					FieldProperty\ErrorMessageProperty::get(),
-					FieldProperty\InputNameProperty::get(),
-					FieldProperty\IsRequiredProperty::get(),
-					FieldProperty\LabelProperty::get(),
-					FieldProperty\LabelPlacementProperty::get(),
-					FieldProperty\PageNumberProperty::get(),
-					FieldProperty\SizeProperty::get(),
-					FieldProperty\VisibilityProperty::get(),
-					[
-						'addIconUrl'    => [
-							'type'        => 'String',
-							'description' => __( 'The URL of the image to be used for the add row button.', 'wp-graphql-gravity-forms' ),
-						],
-						'choices'       => [
-							'type'        => [ 'list_of' => FieldProperty\ListChoiceProperty::TYPE ],
-							'description' => __( 'The column labels. Only used when enableColumns is true.', 'wp-graphql-gravity-forms' ),
-						],
-						'deleteIconUrl' => [
-							'type'        => 'String',
-							'description' => __( 'The URL of the image to be used for the delete row button.', 'wp-graphql-gravity-forms' ),
-						],
-						'enableColumns' => [
-							'type'        => 'Boolean',
-							'description' => __( 'Determines if the field should use multiple columns. Default is false.', 'wp-graphql-gravity-forms' ),
-						],
-						'maxRows'       => [
-							'type'        => 'Integer',
-							'description' => __( 'The maximum number of rows the user can add to the field.', 'wp-graphql-gravity-forms' ),
-						],
-					]
-				),
+				'addIconUrl'    => [
+					'type'        => 'String',
+					'description' => __( 'The URL of the image to be used for the add row button.', 'wp-graphql-gravity-forms' ),
+				],
+				'choices'       => [
+					'type'        => [ 'list_of' => FieldProperty\ListChoiceProperty::TYPE ],
+					'description' => __( 'The column labels. Only used when enableColumns is true.', 'wp-graphql-gravity-forms' ),
+				],
+				'deleteIconUrl' => [
+					'type'        => 'String',
+					'description' => __( 'The URL of the image to be used for the delete row button.', 'wp-graphql-gravity-forms' ),
+				],
+				'enableColumns' => [
+					'type'        => 'Boolean',
+					'description' => __( 'Determines if the field should use multiple columns. Default is false.', 'wp-graphql-gravity-forms' ),
+				],
+				'maxRows'       => [
+					'type'        => 'Integer',
+					'description' => __( 'The maximum number of rows the user can add to the field.', 'wp-graphql-gravity-forms' ),
+				],
 			]
 		);
 	}

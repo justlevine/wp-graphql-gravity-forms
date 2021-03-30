@@ -17,7 +17,7 @@ use WPGraphQLGravityForms\Types\GraphQLInterface\FieldInterface;
 /**
  * Class - PostImageField
  */
-class PostImageField extends Field {
+class PostImageField extends AbstractField {
 	/**
 	 * Type registered in WPGraphQL.
 	 */
@@ -29,50 +29,45 @@ class PostImageField extends Field {
 	const GF_TYPE = 'post_image';
 
 	/**
-	 * Register hooks to WordPress.
+	 * Sets the field type description.
 	 */
-	public function register_hooks() : void {
-		add_action( 'graphql_register_types', [ $this, 'register_type' ] );
+	protected function get_type_description() : string {
+		return __( 'Gravity Forms Post Image field.', 'wp-graphql-gravity-forms' );
 	}
 
 	/**
-	 * Register hooks to WordPress.
+	 * Gets the properties for the Field.
+	 *
+	 * @return array
 	 */
-	public function register_type() : void {
-		register_graphql_object_type(
-			self::TYPE,
+	protected function get_properties() : array {
+		return array_merge(
+			$this->get_global_properties(),
+			$this->get_custom_properties(),
+			FieldProperty\AdminLabelProperty::get(),
+			FieldProperty\AdminOnlyProperty::get(),
+			FieldProperty\AllowsPrepopulateProperty::get(),
+			FieldProperty\DescriptionPlacementProperty::get(),
+			FieldProperty\DescriptionProperty::get(),
+			FieldProperty\ErrorMessageProperty::get(),
+			FieldProperty\InputNameProperty::get(),
+			FieldProperty\IsRequiredProperty::get(),
+			FieldProperty\LabelProperty::get(),
+			FieldProperty\SizeProperty::get(),
+			FieldProperty\VisibilityProperty::get(),
 			[
-				'description' => __( 'Gravity Forms Post Image field.', 'wp-graphql-gravity-forms' ),
-				'interfaces'  => [ FieldInterface::TYPE ],
-				'fields'      => array_merge(
-					$this->get_global_properties(),
-					$this->get_custom_properties(),
-					FieldProperty\AdminLabelProperty::get(),
-					FieldProperty\AdminOnlyProperty::get(),
-					FieldProperty\AllowsPrepopulateProperty::get(),
-					FieldProperty\DescriptionPlacementProperty::get(),
-					FieldProperty\DescriptionProperty::get(),
-					FieldProperty\ErrorMessageProperty::get(),
-					FieldProperty\InputNameProperty::get(),
-					FieldProperty\IsRequiredProperty::get(),
-					FieldProperty\LabelProperty::get(),
-					FieldProperty\SizeProperty::get(),
-					FieldProperty\VisibilityProperty::get(),
-					[
-						'displayCaption'     => [
-							'type'        => 'Boolean',
-							'description' => __( 'Controls the visibility of the caption metadata for Post Image fields. 1 will display the caption field, 0 will hide it.', 'wp-graphql-gravity-forms' ),
-						],
-						'displayDescription' => [
-							'type'        => 'Boolean',
-							'description' => __( 'Controls the visibility of the description metadata for Post Image fields. 1 will display the description field, 0 will hide it.', 'wp-graphql-gravity-forms' ),
-						],
-						'displayTitle'       => [
-							'type'        => 'Boolean',
-							'description' => __( 'Controls the visibility of the title metadata for Post Image fields. 1 will display the title field, 0 will hide it.', 'wp-graphql-gravity-forms' ),
-						],
-					]
-				),
+				'displayCaption'     => [
+					'type'        => 'Boolean',
+					'description' => __( 'Controls the visibility of the caption metadata for Post Image fields. 1 will display the caption field, 0 will hide it.', 'wp-graphql-gravity-forms' ),
+				],
+				'displayDescription' => [
+					'type'        => 'Boolean',
+					'description' => __( 'Controls the visibility of the description metadata for Post Image fields. 1 will display the description field, 0 will hide it.', 'wp-graphql-gravity-forms' ),
+				],
+				'displayTitle'       => [
+					'type'        => 'Boolean',
+					'description' => __( 'Controls the visibility of the title metadata for Post Image fields. 1 will display the title field, 0 will hide it.', 'wp-graphql-gravity-forms' ),
+				],
 			]
 		);
 	}

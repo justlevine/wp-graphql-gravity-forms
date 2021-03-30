@@ -18,7 +18,7 @@ use WPGraphQLGravityForms\Types\GraphQLInterface\FieldInterface;
 /**
  * Class - PhoneField
  */
-class PhoneField extends Field {
+class PhoneField extends AbstractField {
 	/**
 	 * Type registered in WPGraphQL.
 	 */
@@ -30,45 +30,40 @@ class PhoneField extends Field {
 	const GF_TYPE = 'phone';
 
 	/**
-	 * Register hooks to WordPress.
+	 * Sets the field type description.
 	 */
-	public function register_hooks() : void {
-		add_action( 'graphql_register_types', [ $this, 'register_type' ] );
+	protected function get_type_description() : string {
+		return __( 'Gravity Forms Phone field.', 'wp-graphql-gravity-forms' );
 	}
 
 	/**
-	 * Register Object type to GraphQL schema.
+	 * Gets the properties for the Field.
+	 *
+	 * @return array
 	 */
-	public function register_type() : void {
-		register_graphql_object_type(
-			self::TYPE,
+	protected function get_properties() : array {
+		return array_merge(
+			$this->get_global_properties(),
+			$this->get_custom_properties(),
+			FieldProperty\AdminLabelProperty::get(),
+			FieldProperty\AdminOnlyProperty::get(),
+			FieldProperty\AllowsPrepopulateProperty::get(),
+			FieldProperty\DefaultValueProperty::get(),
+			FieldProperty\DescriptionPlacementProperty::get(),
+			FieldProperty\DescriptionProperty::get(),
+			FieldProperty\ErrorMessageProperty::get(),
+			FieldProperty\InputNameProperty::get(),
+			FieldProperty\IsRequiredProperty::get(),
+			FieldProperty\LabelProperty::get(),
+			FieldProperty\NoDuplicatesProperty::get(),
+			FieldProperty\PlaceholderProperty::get(),
+			FieldProperty\SizeProperty::get(),
+			FieldProperty\VisibilityProperty::get(),
 			[
-				'description' => __( 'Gravity Forms Phone field.', 'wp-graphql-gravity-forms' ),
-				'interfaces'  => [ FieldInterface::TYPE ],
-				'fields'      => array_merge(
-					$this->get_global_properties(),
-					$this->get_custom_properties(),
-					FieldProperty\AdminLabelProperty::get(),
-					FieldProperty\AdminOnlyProperty::get(),
-					FieldProperty\AllowsPrepopulateProperty::get(),
-					FieldProperty\DefaultValueProperty::get(),
-					FieldProperty\DescriptionPlacementProperty::get(),
-					FieldProperty\DescriptionProperty::get(),
-					FieldProperty\ErrorMessageProperty::get(),
-					FieldProperty\InputNameProperty::get(),
-					FieldProperty\IsRequiredProperty::get(),
-					FieldProperty\LabelProperty::get(),
-					FieldProperty\NoDuplicatesProperty::get(),
-					FieldProperty\PlaceholderProperty::get(),
-					FieldProperty\SizeProperty::get(),
-					FieldProperty\VisibilityProperty::get(),
-					[
-						'phoneFormat' => [
-							'type'        => PhoneFieldFormatEnum::TYPE,
-							'description' => __( 'Determines the allowed format for phones. If the phone value does not conform with the specified format, the field will fail validation.', 'wp-graphql-gravity-forms' ),
-						],
-					]
-				),
+				'phoneFormat' => [
+					'type'        => PhoneFieldFormatEnum::TYPE,
+					'description' => __( 'Determines the allowed format for phones. If the phone value does not conform with the specified format, the field will fail validation.', 'wp-graphql-gravity-forms' ),
+				],
 			]
 		);
 	}

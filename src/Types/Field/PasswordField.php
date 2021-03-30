@@ -19,7 +19,7 @@ use WPGraphQLGravityForms\Utils\Utils;
 /**
  * Class - PasswordField
  */
-class PasswordField extends Field {
+class PasswordField extends AbstractField {
 	/**
 	 * Type registered in WPGraphQL.
 	 */
@@ -31,60 +31,55 @@ class PasswordField extends Field {
 	const GF_TYPE = 'password';
 
 	/**
-	 * Register hooks to WordPress.
+	 * Sets the field type description.
 	 */
-	public function register_hooks() : void {
-		add_action( 'graphql_register_types', [ $this, 'register_type' ] );
+	protected function get_type_description() : string {
+		return __( 'Gravity Forms Password field.', 'wp-graphql-gravity-forms' );
 	}
 
 	/**
-	 * Register Object type to GraphQL schema.
+	 * Gets the properties for the Field.
+	 *
+	 * @return array
 	 */
-	public function register_type() : void {
-		register_graphql_object_type(
-			self::TYPE,
+	protected function get_properties() : array {
+		return array_merge(
+			$this->get_global_properties(),
+			$this->get_custom_properties(),
+			FieldProperty\AdminLabelProperty::get(),
+			FieldProperty\AdminOnlyProperty::get(),
+			FieldProperty\DescriptionPlacementProperty::get(),
+			FieldProperty\DescriptionProperty::get(),
+			FieldProperty\ErrorMessageProperty::get(),
+			FieldProperty\IsRequiredProperty::get(),
+			FieldProperty\LabelProperty::get(),
+			FieldProperty\PlaceholderProperty::get(),
+			FieldProperty\SizeProperty::get(),
+			FieldProperty\SubLabelPlacementProperty::get(),
 			[
-				'description' => __( 'Gravity Forms Password field.', 'wp-graphql-gravity-forms' ),
-				'interfaces'  => [ FieldInterface::TYPE ],
-				'fields'      => array_merge(
-					$this->get_global_properties(),
-					$this->get_custom_properties(),
-					FieldProperty\AdminLabelProperty::get(),
-					FieldProperty\AdminOnlyProperty::get(),
-					FieldProperty\DescriptionPlacementProperty::get(),
-					FieldProperty\DescriptionProperty::get(),
-					FieldProperty\ErrorMessageProperty::get(),
-					FieldProperty\IsRequiredProperty::get(),
-					FieldProperty\LabelProperty::get(),
-					FieldProperty\PlaceholderProperty::get(),
-					FieldProperty\SizeProperty::get(),
-					FieldProperty\SubLabelPlacementProperty::get(),
-					[
-						'inputs'                  => [
-							'type'        => [ 'list_of' => FieldProperty\PasswordInputProperty::TYPE ],
-							'description' => __( 'Individual properties for each element of the password field.', 'wp-graphql-gravity-forms' ),
-						],
-						'minPasswordStrength'     => [
-							'type'        => MinPasswordStrengthEnum::TYPE,
-							'description' => __( 'Indicates how strong the password should be.', 'wp-graphql-gravity-forms' ),
-						],
-						'passwordStrengthEnabled' => [
-							'type'        => 'Boolean',
-							'description' => __( 'Indicates whether the field displays the password strength indicator.', 'wp-graphql-gravity-forms' ),
-						],
-					],
-					/**
-					 * Deprecated field properties.
-					 *
-					 * @since 0.2.0
-					 */
+				'inputs'                  => [
+					'type'        => [ 'list_of' => FieldProperty\PasswordInputProperty::TYPE ],
+					'description' => __( 'Individual properties for each element of the password field.', 'wp-graphql-gravity-forms' ),
+				],
+				'minPasswordStrength'     => [
+					'type'        => MinPasswordStrengthEnum::TYPE,
+					'description' => __( 'Indicates how strong the password should be.', 'wp-graphql-gravity-forms' ),
+				],
+				'passwordStrengthEnabled' => [
+					'type'        => 'Boolean',
+					'description' => __( 'Indicates whether the field displays the password strength indicator.', 'wp-graphql-gravity-forms' ),
+				],
+			],
+			/**
+			* Deprecated field properties.
+			*
+			* @since 0.2.0
+			*/
 
-					// translators: Gravity Forms Field type.
-					Utils::deprecate_property( FieldProperty\AllowsPrepopulateProperty::get(), sprintf( __( 'This property is not associated with the Gravity Forms %s type.', 'wp-graphql-gravity-forms' ), self::TYPE ) ),
-					// translators: Gravity Forms Field type.
-					Utils::deprecate_property( FieldProperty\VisibilityProperty::get(), sprintf( __( 'This property is not associated with the Gravity Forms %s type.', 'wp-graphql-gravity-forms' ), self::TYPE ) ),
-				),
-			]
+			// translators: Gravity Forms Field type.
+			Utils::deprecate_property( FieldProperty\AllowsPrepopulateProperty::get(), sprintf( __( 'This property is not associated with the Gravity Forms %s type.', 'wp-graphql-gravity-forms' ), self::TYPE ) ),
+			// translators: Gravity Forms Field type.
+			Utils::deprecate_property( FieldProperty\VisibilityProperty::get(), sprintf( __( 'This property is not associated with the Gravity Forms %s type.', 'wp-graphql-gravity-forms' ), self::TYPE ) ),
 		);
 	}
 }

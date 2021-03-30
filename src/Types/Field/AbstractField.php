@@ -16,9 +16,44 @@ use WPGraphQLGravityForms\Interfaces\Hookable;
 use WPGraphQLGravityForms\Interfaces\Type;
 use WPGraphQLGravityForms\Types\GraphQLInterface\FieldInterface;
 /**
- * Class - Field
+ * Class - AbstractField
  */
-abstract class Field implements Hookable, Type {
+abstract class AbstractField implements Hookable, Type {
+	/**
+	 * Register hooks to WordPress.
+	 */
+	public function register_hooks() : void {
+		add_action( 'graphql_register_types', [ $this, 'register_type' ] );
+	}
+
+	/**
+	 * Register Object type to GraphQL schema.
+	 */
+	public function register_type() : void {
+		register_graphql_object_type(
+			static::TYPE,
+			[
+				'description' => $this->get_type_description(),
+				'interfaces'  => [ FieldInterface::TYPE ],
+				'fields'      => $this->get_properties(),
+			]
+		);
+	}
+
+	/**
+	 * Sets the Field type description.
+	 *
+	 * @return string
+	 */
+	abstract protected function get_type_description() : string;
+
+	/**
+	 * Gets the properties for the Field.
+	 *
+	 * @return array
+	 */
+	abstract protected function get_properties() : array;
+
 	/**
 	 * Get the global properties that apply to all GF field types.
 	 *

@@ -19,9 +19,5 @@ parameters:
 			- '#^Function gf_apply_filters(_ref_array)? invoked with ([1-9]|1[0-2]) parameters, 2 required\.$#'
 			- "#^Access to undefined constant WPGraphQLGravityForms\\\\Interfaces\\\\FieldValue\\:\\:TYPE\\.$#"
 			- "#^Access to undefined constant WPGraphQLGravityForms\\\\Types\\\\Enum\\\\AbstractEnum\\:\\:TYPE\\.$#"
-			- "#^Access to undefined constant WPGraphQLGravityForms\\\\Types\\\\Field\\\\Field\\:\\:GF_TYPE\\.$#"
-			- "#^Access to undefined constant WPGraphQLGravityForms\\\\Types\\\\Field\\\\Field\\:\\:TYPE\\.$#"
-			-
-				message: "#^Parameter \\#1 \\$str of function strtolower expects string, string\\|null given\\.$#"
-				count: 1
-				path: src/Utils/Utils.php
+			- "#^Access to undefined constant WPGraphQLGravityForms\\\\Types\\\\Field\\\\AbstractField\\:\\:GF_TYPE\\.$#"
+			- "#^Access to undefined constant WPGraphQLGravityForms\\\\Types\\\\Field\\\\AbstractField\\:\\:TYPE\\.$#"
