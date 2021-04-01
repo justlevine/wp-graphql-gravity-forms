@@ -51,6 +51,7 @@ class ComposerStaticInit87c4913e01e527b1d65725d26d58ba74
         'WPGraphQLGravityForms\\Mutations\\DeleteEntry' => __DIR__ . '/../..' . '/src/Mutations/DeleteEntry.php',
         'WPGraphQLGravityForms\\Mutations\\SubmitDraftEntry' => __DIR__ . '/../..' . '/src/Mutations/SubmitDraftEntry.php',
         'WPGraphQLGravityForms\\Mutations\\SubmitForm' => __DIR__ . '/../..' . '/src/Mutations/SubmitForm.php',
+        'WPGraphQLGravityForms\\Mutations\\UpdateDraftEntry' => __DIR__ . '/../..' . '/src/Mutations/UpdateDraftEntry.php',
         'WPGraphQLGravityForms\\Mutations\\UpdateDraftEntryAddressFieldValue' => __DIR__ . '/../..' . '/src/Mutations/UpdateDraftEntryAddressFieldValue.php',
         'WPGraphQLGravityForms\\Mutations\\UpdateDraftEntryChainedSelectFieldValue' => __DIR__ . '/../..' . '/src/Mutations/UpdateDraftEntryChainedSelectFieldValue.php',
         'WPGraphQLGravityForms\\Mutations\\UpdateDraftEntryCheckboxFieldValue' => __DIR__ . '/../..' . '/src/Mutations/UpdateDraftEntryCheckboxFieldValue.php',

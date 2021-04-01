@@ -36,6 +36,7 @@ return array(
     'WPGraphQLGravityForms\\Mutations\\DeleteEntry' => $baseDir . '/src/Mutations/DeleteEntry.php',
     'WPGraphQLGravityForms\\Mutations\\SubmitDraftEntry' => $baseDir . '/src/Mutations/SubmitDraftEntry.php',
     'WPGraphQLGravityForms\\Mutations\\SubmitForm' => $baseDir . '/src/Mutations/SubmitForm.php',
+    'WPGraphQLGravityForms\\Mutations\\UpdateDraftEntry' => $baseDir . '/src/Mutations/UpdateDraftEntry.php',
     'WPGraphQLGravityForms\\Mutations\\UpdateDraftEntryAddressFieldValue' => $baseDir . '/src/Mutations/UpdateDraftEntryAddressFieldValue.php',
     'WPGraphQLGravityForms\\Mutations\\UpdateDraftEntryChainedSelectFieldValue' => $baseDir . '/src/Mutations/UpdateDraftEntryChainedSelectFieldValue.php',
     'WPGraphQLGravityForms\\Mutations\\UpdateDraftEntryCheckboxFieldValue' => $baseDir . '/src/Mutations/UpdateDraftEntryCheckboxFieldValue.php',
