@@ -45,9 +45,9 @@ class UpdateDraftEntryPostCategoryFieldValue extends AbstractDraftEntryUpdater {
 	 *
 	 * @param array $value The field value.
 	 *
-	 * @return string
+	 * @return array
 	 */
-	protected function prepare_field_value( array $value ) : string {
+	protected function prepare_field_value( array $value ) : array {
 		return $this->prepare_string_array_value( $value );
 	}
 }

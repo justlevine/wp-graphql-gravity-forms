@@ -53,8 +53,18 @@ class PostCustomFieldValue extends AbstractFieldValue {
 	 * @return array Entry field value.
 	 */
 	public static function get( array $entry, GF_Field $field ) : array {
+		$entry_values = $entry[ $field['id'] ] ?? null;
+
+		if ( empty( $entry_values ) ) {
+			return [ 'values' => null ];
+		}
+
+		if ( is_string( $entry_values ) ) {
+			$entry_values = json_decode( $entry_values );
+		}
+
 		return [
-			'values' => isset( $entry[ $field['id'] ] ) ? json_decode( $entry[ $field['id'] ], true ) : null,
+			'values' => $entry_values,
 		];
 	}
 }

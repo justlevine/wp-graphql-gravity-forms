@@ -61,6 +61,10 @@ class FieldValuesInput implements Hookable, InputType {
 						'type'        => NameInput::TYPE,
 						'description' => __( 'The form field values for Name fields', 'wp-graphql-gravity-forms' ),
 					],
+					'values'              => [
+						'type'        => [ 'list_of' => 'String' ],
+						'description' => __( 'The form field values for fields that accept multiple string values. Used by MultiSelect, Post Category, Post Custom, and Post Tags fields.', 'wp-graphql-gravity-forms' ),
+					],
 					'value'               => [
 						'type'        => 'String',
 						'description' => __( 'The form field values for basic fields', 'wp-graphql-gravity-forms' ),

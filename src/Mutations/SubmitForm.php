@@ -281,7 +281,7 @@ class SubmitForm extends AbstractMutation {
 
 			$this->validate_field_value_type( $field, $values );
 
-			$value = $values['addressValues'] ?? $values['chainedSelectValues'] ?? $values['checkboxValues'] ?? $values['listValues'] ?? $values['nameValues'] ?? $values['value'];
+			$value = $values['addressValues'] ?? $values['chainedSelectValues'] ?? $values['checkboxValues'] ?? $values['listValues'] ?? $values['nameValues'] ?? $values['values'] ?? $values['value'];
 
 			$value = $this->prepare_field_value_by_type( $value, $field );
 

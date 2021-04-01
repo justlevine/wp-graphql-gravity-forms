@@ -78,7 +78,7 @@ abstract class AbstractMutation implements Hookable, Mutation {
 		$array = [];
 
 		// For an array of sub-values, add each to the partial entry individually.
-		if ( is_array( $value ) && 'list' !== $field->type ) {
+		if ( is_array( $value ) && ! in_array( $field->type, [ 'list', 'multiselect', 'post_category', 'post_custom', 'post_tags' ], true ) ) {
 			foreach ( $value as $key => $single_value ) {
 				$array[ $key ] = $single_value;
 			}
@@ -179,37 +179,46 @@ abstract class AbstractMutation implements Hookable, Mutation {
 			case 'address':
 				if ( ! isset( $values['addressValues'] ) ) {
 					// translators: Gravity Forms field id.
-					throw new UserError( sprintf( __( 'Mutation not processed. Field %d requires the use of `addressValues`.', 'wp-graphql-gravity-forms' ), $field->id ) );
+					throw new UserError( sprintf( __( 'Mutation not processed. Field %s requires the use of `addressValues`.', 'wp-graphql-gravity-forms' ), $field->id ) );
 				}
 				break;
 			case 'chainedselect':
 				if ( ! isset( $values['chainedSelectValues'] ) ) {
 					// translators: Gravity Forms field id.
-					throw new UserError( sprintf( __( 'Mutation not processed. Field %d requires the use of `chainedSelectValues`.', 'wp-graphql-gravity-forms' ), $field->id ) );
+					throw new UserError( sprintf( __( 'Mutation not processed. Field %s requires the use of `chainedSelectValues`.', 'wp-graphql-gravity-forms' ), $field->id ) );
 				}
 				break;
 			case 'checkbox':
 				if ( ! isset( $values['checkboxValues'] ) ) {
 					// translators: Gravity Forms field id.
-					throw new UserError( sprintf( __( 'Mutation not processed. Field %d requires the use of `checkboxValues`.', 'wp-graphql-gravity-forms' ), $field->id ) );
+					throw new UserError( sprintf( __( 'Mutation not processed. Field %s requires the use of `checkboxValues`.', 'wp-graphql-gravity-forms' ), $field->id ) );
 				}
 				break;
 			case 'list':
 				if ( ! isset( $values['listValues'] ) ) {
 					// translators: Gravity Forms field id.
-					throw new UserError( sprintf( __( 'Mutation not processed. Field %d requires the use of `listValues`.', 'wp-graphql-gravity-forms' ), $field->id ) );
+					throw new UserError( sprintf( __( 'Mutation not processed. Field %s requires the use of `listValues`.', 'wp-graphql-gravity-forms' ), $field->id ) );
 				}
 				break;
 			case 'name':
 				if ( ! isset( $values['nameValues'] ) ) {
 					// translators: Gravity Forms field id.
-					throw new UserError( sprintf( __( 'Mutation not processed. Field %d requires the use of `nameValues`.', 'wp-graphql-gravity-forms' ), $field->id ) );
+					throw new UserError( sprintf( __( 'Mutation not processed. Field %s requires the use of `nameValues`.', 'wp-graphql-gravity-forms' ), $field->id ) );
+				}
+				break;
+			case 'multiselect':
+			case 'post_category':
+			case 'post_custom':
+			case 'post_tags':
+				if ( ! isset( $values['values'] ) ) {
+					// translators: Gravity Forms field id.
+					throw new UserError( sprintf( __( 'Mutation not processed. Field %s requires the use of `values`.', 'wp-graphql-gravity-forms' ), $field->id ) );
 				}
 				break;
 			default:
 				if ( ! isset( $values['value'] ) ) {
 					// translators: Gravity Forms field id.
-					throw new UserError( sprintf( __( 'Mutation not processed. Field %d requires the use of `value`.', 'wp-graphql-gravity-forms' ), $field->id ) );
+					throw new UserError( sprintf( __( 'Mutation not processed. Field %s requires the use of `value`.', 'wp-graphql-gravity-forms' ), $field->id ) );
 				}
 				break;
 		}
@@ -343,10 +352,10 @@ abstract class AbstractMutation implements Hookable, Mutation {
 	 * Used by MultiSelect, PostCategory, PostCustom, and PostTags fields.
 	 *
 	 * @param array $value .
-	 * @return string
+	 * @return array
 	 */
-	protected function prepare_string_array_value( array $value ) : string {
-		return (string) wp_json_encode( array_map( 'sanitize_text_field', $value ) );
+	protected function prepare_string_array_value( array $value ) : array {
+		return array_map( 'sanitize_text_field', $value );
 	}
 
 	/**
