@@ -22,6 +22,13 @@ class UpdateDraftEntryPostTitleFieldValue extends AbstractDraftEntryUpdater {
 	public static $name = 'updateDraftEntryPostTitleFieldValue';
 
 	/**
+	 * Gravity forms field type for the mutation.
+	 *
+	 * @var string
+	 */
+	protected static $gf_type = 'post_title';
+
+	/**
 	 * Defines the input field value configuration.
 	 *
 	 * @return array

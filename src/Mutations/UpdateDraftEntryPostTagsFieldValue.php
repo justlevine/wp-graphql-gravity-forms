@@ -22,6 +22,13 @@ class UpdateDraftEntryPostTagsFieldValue extends AbstractDraftEntryUpdater {
 	public static $name = 'updateDraftEntryPostTagsFieldValue';
 
 	/**
+	 * Gravity forms field type for the mutation.
+	 *
+	 * @var string
+	 */
+	protected static $gf_type = 'post_tags';
+
+	/**
 	 * Defines the input field value configuration.
 	 *
 	 * @return array

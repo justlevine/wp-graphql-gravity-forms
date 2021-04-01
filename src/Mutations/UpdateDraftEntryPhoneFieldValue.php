@@ -22,6 +22,13 @@ class UpdateDraftEntryPhoneFieldValue extends AbstractDraftEntryUpdater {
 	public static $name = 'updateDraftEntryPhoneFieldValue';
 
 	/**
+	 * Gravity forms field type for the mutation.
+	 *
+	 * @var string
+	 */
+	protected static $gf_type = 'phone';
+
+	/**
 	 * Defines the input field value configuration.
 	 *
 	 * @return array

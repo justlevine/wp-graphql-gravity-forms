@@ -22,6 +22,13 @@ class UpdateDraftEntryDateFieldValue extends AbstractDraftEntryUpdater {
 	public static $name = 'updateDraftEntryDateFieldValue';
 
 	/**
+	 * Gravity forms field type for the mutation.
+	 *
+	 * @var string
+	 */
+	protected static $gf_type = 'date';
+
+	/**
 	 * Defines the input field value configuration.
 	 *
 	 * @return array

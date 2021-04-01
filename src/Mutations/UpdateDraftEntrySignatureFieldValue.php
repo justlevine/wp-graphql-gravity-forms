@@ -23,6 +23,13 @@ class UpdateDraftEntrySignatureFieldValue extends AbstractDraftEntryUpdater {
 	public static $name = 'updateDraftEntrySignatureFieldValue';
 
 	/**
+	 * Gravity forms field type for the mutation.
+	 *
+	 * @var string
+	 */
+	protected static $gf_type = 'signature';
+
+	/**
 	 * Defines the input field value configuration.
 	 *
 	 * @return array

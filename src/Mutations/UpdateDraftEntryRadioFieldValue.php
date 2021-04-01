@@ -22,6 +22,13 @@ class UpdateDraftEntryRadioFieldValue extends AbstractDraftEntryUpdater {
 	public static $name = 'updateDraftEntryRadioFieldValue';
 
 	/**
+	 * Gravity forms field type for the mutation.
+	 *
+	 * @var string
+	 */
+	protected static $gf_type = 'radio';
+
+	/**
 	 * Defines the input field value configuration.
 	 *
 	 * @return array

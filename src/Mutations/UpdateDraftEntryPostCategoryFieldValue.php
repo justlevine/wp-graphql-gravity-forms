@@ -22,6 +22,13 @@ class UpdateDraftEntryPostCategoryFieldValue extends AbstractDraftEntryUpdater {
 	public static $name = 'updateDraftEntryPostCategoryFieldValue';
 
 	/**
+	 * Gravity forms field type for the mutation.
+	 *
+	 * @var string
+	 */
+	protected static $gf_type = 'post_category';
+
+	/**
 	 * Defines the input field value configuration.
 	 *
 	 * @return array

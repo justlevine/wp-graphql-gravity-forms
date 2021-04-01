@@ -22,6 +22,13 @@ class UpdateDraftEntryEmailFieldValue extends AbstractDraftEntryUpdater {
 	public static $name = 'updateDraftEntryEmailFieldValue';
 
 	/**
+	 * Gravity forms field type for the mutation.
+	 *
+	 * @var string
+	 */
+	protected static $gf_type = 'email';
+
+	/**
 	 * Defines the input field value configuration.
 	 *
 	 * @return array

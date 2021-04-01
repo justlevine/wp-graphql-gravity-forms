@@ -24,6 +24,13 @@ class UpdateDraftEntryAddressFieldValue extends AbstractDraftEntryUpdater {
 	public static $name = 'updateDraftEntryAddressFieldValue';
 
 	/**
+	 * Gravity forms field type for the mutation.
+	 *
+	 * @var string
+	 */
+	protected static $gf_type = 'address';
+
+	/**
 	 * Defines the input field value configuration.
 	 *
 	 * @return array
@@ -43,6 +50,6 @@ class UpdateDraftEntryAddressFieldValue extends AbstractDraftEntryUpdater {
 	 * @return array
 	 */
 	protected function prepare_field_value( array $value ) : array {
-		return $this->prepare_address_field_value( $this->field, $value );
+		return $this->prepare_address_field_value( $value, $this->field );
 	}
 }

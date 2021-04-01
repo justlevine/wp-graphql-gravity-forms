@@ -22,6 +22,13 @@ class UpdateDraftEntryPostCustomFieldValue extends AbstractDraftEntryUpdater {
 	public static $name = 'updateDraftEntryPostCustomFieldValue';
 
 	/**
+	 * Gravity forms field type for the mutation.
+	 *
+	 * @var string
+	 */
+	protected static $gf_type = 'post_custom';
+
+	/**
 	 * Defines the input field value configuration.
 	 *
 	 * @return array

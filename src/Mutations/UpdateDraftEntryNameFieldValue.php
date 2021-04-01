@@ -24,6 +24,13 @@ class UpdateDraftEntryNameFieldValue extends AbstractDraftEntryUpdater {
 	public static $name = 'updateDraftEntryNameFieldValue';
 
 	/**
+	 * Gravity forms field type for the mutation.
+	 *
+	 * @var string
+	 */
+	protected static $gf_type = 'name';
+
+	/**
 	 * Defines the input field value configuration.
 	 *
 	 * @return array
@@ -43,6 +50,6 @@ class UpdateDraftEntryNameFieldValue extends AbstractDraftEntryUpdater {
 	 * @return array
 	 */
 	protected function prepare_field_value( array $value ) : array {
-		return $this->prepare_name_field_value( $this->field, $value );
+		return $this->prepare_name_field_value( $value, $this->field );
 	}
 }

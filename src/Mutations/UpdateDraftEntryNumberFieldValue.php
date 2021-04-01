@@ -22,6 +22,13 @@ class UpdateDraftEntryNumberFieldValue extends AbstractDraftEntryUpdater {
 	public static $name = 'updateDraftEntryNumberFieldValue';
 
 	/**
+	 * Gravity forms field type for the mutation.
+	 *
+	 * @var string
+	 */
+	protected static $gf_type = 'number';
+
+	/**
 	 * Defines the input field value configuration.
 	 *
 	 * @return array

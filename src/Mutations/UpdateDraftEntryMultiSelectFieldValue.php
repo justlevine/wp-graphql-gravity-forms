@@ -22,6 +22,13 @@ class UpdateDraftEntryMultiSelectFieldValue extends AbstractDraftEntryUpdater {
 	public static $name = 'updateDraftEntryMultiSelectFieldValue';
 
 	/**
+	 * Gravity forms field type for the mutation.
+	 *
+	 * @var string
+	 */
+	protected static $gf_type = 'multiselect';
+
+	/**
 	 * Defines the input field value configuration.
 	 *
 	 * @return array

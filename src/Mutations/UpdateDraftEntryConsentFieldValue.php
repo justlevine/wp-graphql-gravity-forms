@@ -22,6 +22,13 @@ class UpdateDraftEntryConsentFieldValue extends AbstractDraftEntryUpdater {
 	public static $name = 'updateDraftEntryConsentFieldValue';
 
 	/**
+	 * Gravity forms field type for the mutation.
+	 *
+	 * @var string
+	 */
+	protected static $gf_type = 'consent';
+
+	/**
 	 * Defines the input field value configuration.
 	 *
 	 * @return array
@@ -41,6 +48,6 @@ class UpdateDraftEntryConsentFieldValue extends AbstractDraftEntryUpdater {
 	 * @return array
 	 */
 	protected function prepare_field_value( bool $value ) : array {
-		return $this->prepare_consent_field_value( $this->field, $value );
+		return $this->prepare_consent_field_value( $value, $this->field );
 	}
 }

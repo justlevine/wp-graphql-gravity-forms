@@ -22,6 +22,13 @@ class UpdateDraftEntryHiddenFieldValue extends AbstractDraftEntryUpdater {
 	public static $name = 'updateDraftEntryHiddenFieldValue';
 
 	/**
+	 * Gravity forms field type for the mutation.
+	 *
+	 * @var string
+	 */
+	protected static $gf_type = 'hidden';
+
+	/**
 	 * Defines the input field value configuration.
 	 *
 	 * @return array
