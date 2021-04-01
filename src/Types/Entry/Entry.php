@@ -187,21 +187,26 @@ class Entry implements Hookable, Type, Field {
 					/**
 					 * If global id is used, get the (int) id.
 					 */
-					if ( 'global_id' === $idType ) {
+
+					if ( 'database_id' === $idType ) {
+						$id = (int) sanitize_text_field( $args['id'] );
+					} else {
 						$id_parts = Relay::fromGlobalId( $args['id'] );
 
+						// Check if Global ID or resumeToken .
 						if ( ! is_array( $id_parts ) || empty( $id_parts['id'] ) || empty( $id_parts['type'] ) ) {
-							throw new UserError( __( 'A valid global ID must be provided.', 'wp-graphql-gravity-forms' ) );
+							$id = sanitize_text_field( $args['id'] );
+						} else {
+							$id = (int) sanitize_text_field( $id_parts['id'] );
 						}
-						$id = (int) sanitize_text_field( $id_parts['id'] );
-					} else {
-						$id = (int) sanitize_text_field( $args['id'] );
 					}
 
-					$entry = GFAPI::get_entry( $id );
+					if ( is_int( $id ) ) {
+						$entry = GFAPI::get_entry( $id );
 
-					if ( ! is_wp_error( $entry ) ) {
-						return $this->entry_data_manipulator->manipulate( $entry );
+						if ( ! is_wp_error( $entry ) ) {
+							return $this->entry_data_manipulator->manipulate( $entry );
+						}
 					}
 
 					// TODO: Test if draft entry actually gets returned.
