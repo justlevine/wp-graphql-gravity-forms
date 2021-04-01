@@ -12,8 +12,8 @@
 namespace WPGraphQLGravityForms\Types\Field\FieldValue;
 
 use GF_Field;
+use GF_Field_List;
 use GraphQL\Error\UserError;
-use WPGraphQLGravityForms\Types\Field\ListField;
 
 /**
  * Class - ListFieldValue
@@ -58,17 +58,20 @@ class ListFieldValue extends AbstractFieldValue {
 	 * @throws UserError .
 	 */
 	public static function get( array $entry, GF_Field $field ) : array {
-		$entry_values = isset( $entry[ $field['id'] ] ) ? unserialize( $entry[ $field['id'] ] ) : null; // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize
+		if ( ! $field instanceof GF_Field_List ) {
+			throw new UserError( __( 'Error! Trying to use a non ListField as a ListField!', 'wp-graphql-gravity-forms' ) );
+		}
 
-		// Return null if no value is set, or unserialize creates an empty array.
+		$entry_values = $entry[ $field['id'] ] ?? null;
+
 		if ( empty( $entry_values ) ) {
 			return [];
 		}
 
-		// Check if there are too many rows.
-		if ( $field['maxRows'] < count( $entry_values ) ) {
-			// translators: maximum number of rows.
-			throw new UserError( sprintf( __( 'You may only submit %d rows.', 'wp-graphql-gravity-forms' ), $field['maxRows'] ) );
+		if ( is_string( $entry_values ) ) {
+			$entry_values = maybe_unserialize( $entry_values );
+		} else {
+			$entry_values = $field->create_list_array_recursive( $entry_values );
 		}
 
 		// If columns are enabled, save each row-value pair.
@@ -79,7 +82,7 @@ class ListFieldValue extends AbstractFieldValue {
 				function( $row ) {
 					$row_values = [];
 
-					foreach ( $row as $key => $single_value ) {
+					foreach ( $row as $single_value ) {
 						$row_values[] = $single_value;
 					}
 
@@ -90,7 +93,6 @@ class ListFieldValue extends AbstractFieldValue {
 				},
 				$entry_values
 			);
-
 			return compact( 'listValues' );
 		}
 
