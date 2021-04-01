@@ -12,6 +12,8 @@ namespace WPGraphQLGravityForms\Utils;
 
 use GF_Field;
 use GFAPI;
+use GFCommon;
+use GFFormDisplay;
 use GFFormsModel;
 use GraphQL\Error\UserError;
 
@@ -37,14 +39,14 @@ class GFUtils {
 		if ( ! $form ) {
 			throw new UserError(
 				// translators: Gravity Forms form id.
-				sprintf( __( 'Unable to retrieve the form for the given ID %n', 'wp-graphql-gravity-forms' ), $form_id ),
+				sprintf( __( 'Unable to retrieve the form for the given ID %s', 'wp-graphql-gravity-forms' ), $form_id ),
 			);
 		}
 
 		if ( $is_active && ( ! $form['is_active'] || $form['is_trash'] ) ) {
 			throw new UserError(
 				// translators: Gravity Forms form id.
-				sprintf( __( 'The form for the given ID %n is inactive or trashed.', 'wp-graphql-gravity-forms' ), $form_id ),
+				sprintf( __( 'The form for the given ID %s is inactive or trashed.', 'wp-graphql-gravity-forms' ), $form_id ),
 			);
 		}
 
@@ -68,7 +70,7 @@ class GFUtils {
 		if ( is_wp_error( $entry ) ) {
 			throw new UserError(
 				// translators: Gravity Forms form id.
-				sprintf( __( 'The entry the given ID %n was not found. Error: ', 'wp-graphql-gravity-forms' ), $entry_id ) . $entry->get_error_message()
+				sprintf( __( 'The entry the given ID %s was not found. Error: ', 'wp-graphql-gravity-forms' ), $entry_id ) . $entry->get_error_message()
 			);
 		}
 
@@ -126,6 +128,17 @@ class GFUtils {
 	}
 
 	/**
+	 * Returns IP address.
+	 * Uses GFFormsModel::get_ip()
+	 *
+	 * @param string $ip .
+	 * @return string
+	 */
+	public static function get_ip( string $ip ) : string {
+			return ! empty( $ip ) ? sanitize_text_field( $ip ) : GFFormsModel::get_ip();
+	}
+
+	/**
 	 * Returns Gravity Forms Field object for given field id.
 	 *
 	 * @param array $form     The form.
@@ -148,7 +161,7 @@ class GFUtils {
 		if ( ! $matching_fields ) {
 			throw new UserError(
 				// translators: Gravity Forms form id and field id.
-				sprintf( __( 'The Form (ID %n) does not not contain a field with the field ID %n.', 'wp-graphql-gravity-forms' ), $form['id'], $field_id )
+				sprintf( __( 'The Form (ID %1$s) does not not contain a field with the field ID %2$s.', 'wp-graphql-gravity-forms' ), $form['id'], $field_id )
 			);
 		}
 
@@ -202,6 +215,48 @@ class GFUtils {
 	}
 
 	/**
+	 * Saves Gravity Forms draft entry.
+	 * Uses GFFormsModel::save_draft_submission().
+	 *
+	 * @param array   $form .
+	 * @param array   $entry .
+	 * @param array   $field_values .
+	 * @param integer $page_number .
+	 * @param array   $files .
+	 * @param string  $form_unique_id .
+	 * @param string  $ip .
+	 * @param string  $source_url .
+	 * @param string  $resume_token .
+	 * @return string
+	 *
+	 * @throws UserError .
+	 */
+	public static function save_draft_submission( array $form, array $entry, array $field_values = null, int $page_number = 1, array $files = [], string $form_unique_id = null, string $ip = null, string $source_url = '', string $resume_token = '' ) : string {
+		if ( empty( $form ) || empty( $entry ) ) {
+			throw new UserError( __( 'An error occured while trying to save the draft entry. Form or Entry not set.', 'wp-graphql-gravity-forms' ) );
+		}
+
+		$form_unique_id = $form_unique_id ?? self::get_form_unique_id( $form['id'] );
+
+		$new_resume_token = GFFormsModel::save_draft_submission(
+			$form,
+			$entry,
+			$field_values,
+			$page_number,
+			$files,
+			$form_unique_id,
+			$ip,
+			$source_url,
+			$resume_token,
+		);
+		if ( false === $new_resume_token ) {
+			throw new UserError( __( 'An error occured while trying to save the draft entry.', 'wp-graphql-gravity-forms' ) );
+		}
+
+		return $new_resume_token ? (string) $new_resume_token : $resume_token;
+	}
+
+	/**
 	 * Updates the existing Gravity Form entry.
 	 * Uses GFAPI::update_entry().
 	 *
@@ -221,10 +276,52 @@ class GFUtils {
 		if ( is_wp_error( ( $is_entry_updated ) ) ) {
 			throw new UserError(
 				// translators: Gravity Forms entry id.
-				sprintf( __( 'An error occured while trying to update the entry (ID: %n). Error: ', 'wp-graphql-gravity-forms' ), $entry_data['id'] ) . $is_entry_updated->get_error_message()
+				sprintf( __( 'An error occured while trying to update the entry (ID: %s). Error: ', 'wp-graphql-gravity-forms' ), $entry_data['id'] ) . $is_entry_updated->get_error_message()
 			);
 		}
 
 		return $entry_id;
+	}
+
+	/**
+	 * Submits a Gravity Forms form.
+	 * Uses GFAPI::submit_form().
+	 *
+	 * @see https://docs.gravityforms.com/api-functions/#submit-form
+	 *
+	 * @param integer $form_id .
+	 * @param array   $input_values .
+	 * @param array   $field_values .
+	 * @param integer $target_page .
+	 * @param integer $source_page .
+	 * @return array
+	 *
+	 * @throws UserError .
+	 */
+	public static function submit_form( int $form_id, array $input_values, array $field_values = [], int $target_page = 0, int $source_page = 0 ) : array {
+		$submission = GFAPI::submit_form(
+			$form_id,
+			$input_values,
+			$field_values,
+			$target_page,
+			$source_page,
+		);
+
+		if ( is_wp_error( $submission ) ) {
+			throw new UserError( __( 'There was an error while processing the form. Error: ', 'wp-graphql-gravity-forms' ) . $submission->get_error_message() );
+		}
+
+		return $submission;
+	}
+
+	/**
+	 * Gets the last page of the form. Useful for form submissions.
+	 *
+	 * @param array $form .
+	 */
+	public static function get_last_form_page( array $form ) : int {
+		require_once GFCommon::get_base_path() . '/form_display.php';
+
+		return GFFormDisplay::get_max_page_number( $form );
 	}
 }
