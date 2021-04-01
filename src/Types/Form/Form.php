@@ -158,8 +158,8 @@ class Form implements Hookable, Type, Field {
 						'description' => __( 'String containing the custom CSS classes to be added to the <form> tag.', 'wp-graphql-gravity-forms' ),
 					],
 					'cssClassList'               => [
-						'type'        => [ 'list_of' => 'String' ],
-						'description' => __( 'Array of the custom CSS classes to be added to the <form> tag.', 'wp-graphql-gravity-forms' ),
+						'type'              => [ 'list_of' => 'String' ],
+						'description'       => __( 'Array of the custom CSS classes to be added to the <form> tag.', 'wp-graphql-gravity-forms' ),
 						'deprecationReason' => __( 'Please use `cssClass` instead.', 'wp-graphql-gravity-forms' ),
 					],
 					'enableHoneypot'             => [
