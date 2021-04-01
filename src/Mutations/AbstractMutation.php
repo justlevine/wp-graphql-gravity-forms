@@ -28,6 +28,13 @@ abstract class AbstractMutation implements Hookable, Mutation {
 	public static $name;
 
 	/**
+	 * Gravity Forms field validation errors.
+	 *
+	 * @var array
+	 */
+	protected $errors;
+
+	/**
 	 * Register hooks to WordPress.
 	 */
 	public function register_hooks() : void {
@@ -49,13 +56,173 @@ abstract class AbstractMutation implements Hookable, Mutation {
 	}
 
 	/**
-	 * Formats and sanitizes the AddressField value.
+	 * Checks that necessary WPGraphQL are set.
+	 *
+	 * @param mixed $input .
+	 * @throws UserError .
+	 */
+	protected function check_required_inputs( $input ) : void {
+		if ( empty( $input ) || ! is_array( $input ) ) {
+			throw new UserError( __( 'Mutation not processed. The input data was missing or invalid.', 'wp-graphql-gravity-forms' ) );
+		}
+	}
+
+	/**
+	 * Saves field values have a flat [ $id => $value ] structure.
 	 *
 	 * @param GF_Field $field .
-	 * @param array    $value .
+	 * @param mixed    $value .
 	 * @return array
 	 */
-	protected function prepare_address_field_value( GF_Field $field, array $value ) : array {
+	protected function flatten_field_values( GF_Field $field, $value ) : array {
+		$array = [];
+
+		// For an array of sub-values, add each to the partial entry individually.
+		if ( is_array( $value ) && 'list' !== $field->type ) {
+			foreach ( $value as $key => $single_value ) {
+				$array[ $key ] = $single_value;
+			}
+			return $array;
+		}
+
+		// Else, add the single value to the partial entry.
+		$array[ $field->id ] = $value;
+
+		return $array;
+	}
+
+	/**
+	 * Renames $field_value keys to input_{id}_{sub_id}, so Gravity Forms can read them.
+	 *
+	 * @param array $field_values .
+	 * @return array
+	 */
+	protected function rename_keys_for_field_values( array $field_values ) : array {
+		$formatted = [];
+
+		foreach ( $field_values as $key => $value ) {
+			$formatted[ 'input_' . str_replace( '.', '_', $key ) ] = $value;
+		}
+		return $formatted;
+	}
+
+	/**
+	 * Generates array of field errors from the submission.
+	 *
+	 * @param array $messages The Gravity Forms submission validation messages.
+	 * @return array
+	 */
+	protected function get_submission_errors( array $messages ) : array {
+		return array_map(
+			function( $id, $message ) {
+				return [
+					'id'      => $id,
+					'message' => $message,
+				];
+			},
+			array_keys( $messages ),
+			$messages
+		);
+	}
+
+	/**
+	 * Disables validation for unsupported fields when submitting a form.
+	 * Applied using the 'gform_field_validation' filter.
+	 * Currently unsupported fields: captcha, fileupload, post_image
+	 *
+	 * @param array    $result .
+	 * @param mixed    $value .
+	 * @param array    $form .
+	 * @param GF_Field $field .
+	 * @return array
+	 */
+	public function disable_validation_for_unsupported_fields( array $result, $value, array $form, GF_Field $field ) : array {
+		if ( in_array( $field->type, [ 'captcha', 'fileupload', 'post_image' ], true ) ) {
+			$result = [
+				'is_valid' => true,
+				'message'  => __( 'This field type is not (yet) supported.', 'wp-graphql-gravity-forms' ),
+			];
+		}
+		return $result;
+	}
+
+	/**
+	 * Validates the Gravity Forms field value.
+	 *
+	 * @param array    $form .
+	 * @param GF_Field $field .
+	 * @param mixed    $value .
+	 *
+	 * @return mixed
+	 */
+	protected function validate_field_value( array $form, GF_Field $field, $value ) {
+		$field->validate( $value, $form );
+		if ( $field->failed_validation ) {
+			$this->errors[] = [
+				'id'      => $field->id,
+				'message' => $field->validation_message,
+			];
+		}
+	}
+
+	/**
+	 * Checks that the proper GraphQL input type is used to submit the field values when submitting multiple fields at once.
+	 * Used by SubmitForm and UpdateEntry classes.
+	 *
+	 * @param GF_Field $field .
+	 * @param array    $values the `fieldValues` input array.
+	 *
+	 * @throws UserError .
+	 */
+	protected function validate_field_value_type( GF_Field $field, array $values ) : void {
+		switch ( $field->type ) {
+			case 'address':
+				if ( ! isset( $values['addressValues'] ) ) {
+					// translators: Gravity Forms field id.
+					throw new UserError( sprintf( __( 'Mutation not processed. Field %d requires the use of `addressValues`.', 'wp-graphql-gravity-forms' ), $field->id ) );
+				}
+				break;
+			case 'chainedselect':
+				if ( ! isset( $values['chainedSelectValues'] ) ) {
+					// translators: Gravity Forms field id.
+					throw new UserError( sprintf( __( 'Mutation not processed. Field %d requires the use of `chainedSelectValues`.', 'wp-graphql-gravity-forms' ), $field->id ) );
+				}
+				break;
+			case 'checkbox':
+				if ( ! isset( $values['checkboxValues'] ) ) {
+					// translators: Gravity Forms field id.
+					throw new UserError( sprintf( __( 'Mutation not processed. Field %d requires the use of `checkboxValues`.', 'wp-graphql-gravity-forms' ), $field->id ) );
+				}
+				break;
+			case 'list':
+				if ( ! isset( $values['listValues'] ) ) {
+					// translators: Gravity Forms field id.
+					throw new UserError( sprintf( __( 'Mutation not processed. Field %d requires the use of `listValues`.', 'wp-graphql-gravity-forms' ), $field->id ) );
+				}
+				break;
+			case 'name':
+				if ( ! isset( $values['nameValues'] ) ) {
+					// translators: Gravity Forms field id.
+					throw new UserError( sprintf( __( 'Mutation not processed. Field %d requires the use of `nameValues`.', 'wp-graphql-gravity-forms' ), $field->id ) );
+				}
+				break;
+			default:
+				if ( ! isset( $values['value'] ) ) {
+					// translators: Gravity Forms field id.
+					throw new UserError( sprintf( __( 'Mutation not processed. Field %d requires the use of `value`.', 'wp-graphql-gravity-forms' ), $field->id ) );
+				}
+				break;
+		}
+	}
+
+	/**
+	 * Formats and sanitizes the AddressField value.
+	 *
+	 * @param array    $value .
+	 * @param GF_Field $field .
+	 * @return array
+	 */
+	protected function prepare_address_field_value( array $value, GF_Field $field ) : array {
 			return [
 				$field['inputs'][0]['id'] => array_key_exists( 'street', $value ) ? sanitize_text_field( $value['street'] ) : null,
 				$field['inputs'][1]['id'] => array_key_exists( 'lineTwo', $value ) ? sanitize_text_field( $value['lineTwo'] ) : null,
@@ -70,11 +237,11 @@ abstract class AbstractMutation implements Hookable, Mutation {
 	 * Formats and sanitizes complex field values that are comprised of several input fields.
 	 * Used by ChainedSelect and Checkbox fields.
 	 *
-	 * @param GF_Field $field .
 	 * @param array    $value .
+	 * @param GF_Field $field .
 	 * @return array
 	 */
-	protected function prepare_complex_field_value( GF_Field $field, array $value ) : array {
+	protected function prepare_complex_field_value( array $value, GF_Field $field ) : array {
 		$values_to_save = array_reduce(
 			$field->inputs,
 			function( array $values_to_save, array $input ) : array {
@@ -103,11 +270,11 @@ abstract class AbstractMutation implements Hookable, Mutation {
 	/**
 	 * Formats and sanitizes the ConsentField value.
 	 *
-	 * @param GF_Field $field .
 	 * @param bool     $value .
+	 * @param GF_Field $field .
 	 * @return array
 	 */
-	protected function prepare_consent_field_value( GF_Field $field, bool $value ) : array {
+	protected function prepare_consent_field_value( bool $value, GF_Field $field ) : array {
 		return [
 			$field->inputs[0]['id'] => (bool) $value,
 			$field->inputs[1]['id'] => isset( $field->checkboxLabel ) ? sanitize_text_field( $field->checkboxLabel ) : null,
@@ -125,14 +292,33 @@ abstract class AbstractMutation implements Hookable, Mutation {
 		return sanitize_email( $value );
 	}
 
+
+	/**
+	 * Formats and sanitizes ListField values.
+	 *
+	 * @param array $value .
+	 * @return array
+	 */
+	protected function prepare_list_field_value( array $value ) : array {
+		$values_to_save = [];
+		foreach ( $value as $row ) {
+			foreach ( $row as $row_values ) {
+				foreach ( $row_values as $single_value ) {
+					$values_to_save[] = sanitize_text_field( $single_value );
+				}
+			}
+		}
+		return $values_to_save;
+	}
+
 	/**
 	 * Formats and sanitizes the NameField value.
 	 *
-	 * @param GF_Field $field .
 	 * @param array    $value .
+	 * @param GF_Field $field .
 	 * @return array
 	 */
-	protected function prepare_name_field_value( GF_Field $field, array $value ) : array {
+	protected function prepare_name_field_value( array $value, GF_Field $field ) : array {
 		return [
 			$field['inputs'][0]['id'] => array_key_exists( 'prefix', $value ) ? sanitize_text_field( $value['prefix'] ) : null,
 			$field['inputs'][1]['id'] => array_key_exists( 'first', $value ) ? sanitize_text_field( $value['first'] ) : null,
@@ -320,5 +506,55 @@ abstract class AbstractMutation implements Hookable, Mutation {
 	 */
 	private function does_image_exceed_max_upload_size( string $signature_decoded ) : bool {
 		return strlen( $signature_decoded ) > wp_max_upload_size();
+	}
+
+
+	/**
+	 * Prepares the field value based on the field type.
+	 *
+	 * @param mixed    $value .
+	 * @param GF_Field $field .
+	 * @return mixed
+	 */
+	public function prepare_field_value_by_type( $value, GF_Field $field ) {
+		switch ( $field->type ) {
+			case 'address':
+				return $this->prepare_address_field_value( $value, $field );
+			case 'chainedselect':
+			case 'checkbox':
+				return $this->prepare_complex_field_value( $value, $field );
+			case 'consent':
+				return $this->prepare_consent_field_value( $value, $field );
+			case 'email':
+				return $this->prepare_email_field_value( $value );
+			case 'list':
+				return $this->prepare_list_field_value( $value );
+			case 'multiselect':
+			case 'post_category':
+			case 'post_custom':
+			case 'post_tags':
+				return $this->prepare_string_array_value( $value );
+			case 'name':
+				return $this->prepare_name_field_value( $value, $field );
+			case 'post_content':
+				return $this->prepare_post_content_field_value( $value );
+			case 'signature':
+				return $this->prepare_signature_field_value( $value );
+			case 'website':
+				return $this->prepare_website_field_value( $value );
+			case 'date':
+			case 'hidden':
+			case 'number':
+			case 'phone':
+			case 'post_excerpt':
+			case 'post_title':
+			case 'radio':
+			case 'select':
+			case 'textarea':
+			case 'text':
+			case 'time':
+			default:
+				return $this->prepare_string_value( $value );
+		}
 	}
 }

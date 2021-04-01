@@ -11,14 +11,10 @@
 
 namespace WPGraphQLGravityForms\Mutations;
 
-use GFAPI;
-use GF_Field;
-use GFFormsModel;
 use GraphQL\Error\UserError;
 use GraphQL\Type\Definition\ResolveInfo;
 use WPGraphQL\AppContext;
 use WPGraphQLGravityForms\DataManipulators\EntryDataManipulator;
-use WPGraphQLGravityForms\DataManipulators\DraftEntryDataManipulator;
 use WPGraphQLGravityForms\Types\Entry\Entry;
 use WPGraphQLGravityForms\Types\FieldError\FieldError;
 use WPGraphQLGravityForms\Types\Input\FieldValuesInput;
@@ -29,10 +25,6 @@ use WPGraphQLGravityForms\Utils\GFUtils;
  * Class - UpdateEntry
  */
 class UpdateEntry extends AbstractMutation {
-	/**
-	 * Mutation name.
-	 */
-	const NAME = '';
 	/**
 	 * Mutation Name
 	 *
@@ -46,19 +38,6 @@ class UpdateEntry extends AbstractMutation {
 	 * @var EntryDataManipulator
 	 */
 	private $entry_data_manipulator;
-	/**
-	 * DraftEntryDataManipulator instance.
-	 *
-	 * @var DraftEntryDataManipulator
-	 */
-	private $draft_entry_data_manipulator;
-
-	/**
-	 * The Gravity Forms Entry object.
-	 *
-	 * @var array
-	 */
-	private $entry;
 
 	/**
 	 * The Gravity Forms Form object.
@@ -72,16 +51,15 @@ class UpdateEntry extends AbstractMutation {
 	 *
 	 * @var array
 	 */
-	private $errors = [];
+	protected $errors = [];
 
 	/**
 	 * Constructor
 	 *
-	 * @param array $instances .
+	 * @param EntryDataManipulator $entry_data_manipulator .
 	 */
-	public function __construct( array $instances ) {
-		$this->entry_data_manipulator       = $instances['entry_data_manipulator'];
-		$this->draft_entry_data_manipulator = $instances['draft_entry_data_manipulator'];
+	public function __construct( EntryDataManipulator $entry_data_manipulator ) {
+		$this->entry_data_manipulator = $entry_data_manipulator;
 	}
 
 	/**
@@ -92,8 +70,8 @@ class UpdateEntry extends AbstractMutation {
 	public function get_input_fields() : array {
 		return [
 			'entryId'     => [
-				'type'        => 'String',
-				'description' => __( 'The Gravity Forms entry id. Empty if submitting a new entry, the resume token if submitting a draft entry, or the existing entry id if updating a previously submitted entry.', 'wp-graphql-gravity-forms' ),
+				'type'        => [ 'non_null' => 'Integer' ],
+				'description' => __( 'The Gravity Forms entry id.', 'wp-graphql-gravity-forms' ),
 			],
 			'fieldValues' => [
 				'type'        => [ 'list_of' => FieldValuesInput::TYPE ],
@@ -129,42 +107,26 @@ class UpdateEntry extends AbstractMutation {
 	 */
 	public function get_output_fields() : array {
 		return [
-			'entryId'     => [
+			'entryId' => [
 				'type'        => 'Integer',
 				'description' => __( 'The ID of the entry that was created. Null if the entry was only partially submitted or submitted as a draft.', 'wp-graphql-gravity-forms' ),
 			],
-			'entry'       => [
+			'entry'   => [
 				'type'        => Entry::TYPE,
 				'description' => __( 'The entry that was created.', 'wp-graphql-gravity-forms' ),
 				'resolve'     => function( array $payload ) {
-					if ( ! $payload['entryId'] && ! $payload['resumeToken'] ) {
+					if ( ! empty( $payload['errors'] ) || ! $payload['entryId'] ) {
 						return null;
 					}
 
-					if ( $payload['entryId'] ) {
-						$entry = GFUtils::get_entry( $payload['entryId'] );
+					$entry = GFUtils::get_entry( $payload['entryId'] );
 
-						return $this->entry_data_manipulator->manipulate( $entry );
-					}
-
-					if ( $payload['resumeToken'] ) {
-						$submission = GFUtils::get_draft_submission( $payload['resumeToken'] );
-
-						return $this->draft_entry_data_manipulator->manipulate( $submission['partial_entry'], $payload['resumeToken'] );
-					}
+					return $this->entry_data_manipulator->manipulate( $entry );
 				},
 			],
-			'errors'      => [
+			'errors'  => [
 				'type'        => [ 'list_of' => FieldError::TYPE ],
 				'description' => __( 'Field errors.', 'wp-graphql-gravity-forms' ),
-			],
-			'resumeToken' => [
-				'type'        => 'String',
-				'description' => __( 'Draft resume token.', 'wp-graphql-gravity-forms' ),
-			],
-			'resumeUrl'   => [
-				'type'        => 'String',
-				'description' => __( 'Draft resume URL. If the "Referer" header is not included in the request, this will be an empty string.', 'wp-graphql-gravity-forms' ),
 			],
 		];
 	}
@@ -177,14 +139,13 @@ class UpdateEntry extends AbstractMutation {
 	public function mutate_and_get_payload() : callable {
 		return function( $input, AppContext $context, ResolveInfo $info ) : array {
 			// Check for required fields.
-			$this->validate_required_inputs( $input );
+			$this->check_required_inputs( $input );
 
 			// Set default values.
+			$entry      = GFUtils::get_entry( (int) $input['entryId'] );
+			$this->form = GFUtils::get_form( $entry['form_id'] );
 
-			$this->entry = GFUtils::get_entry( (int) $input['entryId'] );
-			$this->form  = GFUtils::get_form( $this->entry['form_id'] );
-
-			$entry_data = $this->prepare_entry_data( $input );
+			$entry_data = $this->prepare_entry_data( $input, $entry );
 
 			if ( ! empty( $this->errors ) ) {
 				return [ 'errors' => $this->errors ];
@@ -202,12 +163,13 @@ class UpdateEntry extends AbstractMutation {
 	 * Prepares entry object for update.
 	 *
 	 * @param array $input .
+	 * @param array $entry .
 	 * @return array
 	 */
-	private function prepare_entry_data( array $input ) : array {
+	private function prepare_entry_data( array $input, array $entry ) : array {
 			$is_starred = $input['isStarred'] ?? null;
 			$is_read    = $input['isRead'] ?? null;
-			$ip         = isset( $input['ip'] ) && ! empty( $this->form['personalData']['preventIP'] ) ? sanitize_text_field( $input['ip'] ) : null;
+			$ip         = empty( $this->form['personalData']['preventIP'] ) ? GFUtils::get_ip( $input['ip'] ?? '' ) : '';
 			$created_by = isset( $input['createdBy'] ) ? absint( $input['createdBy'] ) : null;
 			$status     = $input['status'] ?? null;
 
@@ -224,30 +186,10 @@ class UpdateEntry extends AbstractMutation {
 			$field_values     = $this->prepare_field_values( $input['fieldValues'] );
 
 			return array_replace(
-				$this->entry,
+				$entry,
 				$entry_properties,
 				$field_values,
 			);
-	}
-
-
-	/**
-	 * Validates the Gravity Forms field value.
-	 *
-	 * @param GF_Field $field .
-	 * @param mixed    $value .
-	 *
-	 * @return mixed
-	 */
-	private function validate_field_value( GF_Field $field, $value ) {
-		$field->validate( $value, $this->form );
-		if ( $field->failed_validation ) {
-			$this->errors[] = [
-				'id'      => $field->id,
-				'message' => $field->validation_message,
-			];
-		}
-		return $value;
 	}
 
 	/**
@@ -266,90 +208,19 @@ class UpdateEntry extends AbstractMutation {
 
 			$value = $values['addressValues'] ?? $values['chainedSelectValues'] ?? $values['checkboxValues'] ?? $values['listValues'] ?? $values['nameValues'] ?? $values['value'];
 
-			switch ( $field->type ) {
-				case 'address':
-					$formatted_values += $this->validate_field_value( $field, $this->prepare_address_field_value( $field, $value ) );
-					break;
-				case 'chainedselect':
-				case 'checkbox':
-					$formatted_values += $this->validate_field_value( $field, $this->prepare_complex_field_value( $field, $value ) );
-					break;
-				case 'consent':
-					$formatted_values += $this->validate_field_value( $field, $this->prepare_consent_field_value( $field, $value ) );
-					break;
-				case 'email':
-					$formatted_values[ $values['id'] ] = $this->validate_field_value( $field, $this->prepare_email_field_value( $value ) );
-					break;
-				case 'list':
-					$formatted_values[ $values['id'] ] = $this->validate_field_value( $field, $this->prepare_list_field_value( $field, $value ) );
-					break;
-				case 'multiselect':
-				case 'post_category':
-				case 'post_custom':
-				case 'post_tags':
-					$formatted_values[ $values['id'] ] = $this->validate_field_value( $field, $this->prepare_string_array_value( $value ) );
-					break;
-				case 'name':
-					$formatted_values += $this->validate_field_value( $field, $this->prepare_name_field_value( $field, $value ) );
-					break;
-				case 'website':
-					$formatted_values[ $values['id'] ] = $this->validate_field_value( $field, $this->prepare_website_field_value( $value ) );
-					break;
-				case 'fileupload':
-				case 'post_image':
-					$formatted_values [ $values['id'] ] = $this->validate_field_value( $field, $this->prepare_fileupload_field_value( $field, $value ) );
-					break;
-				case 'date':
-				case 'hidden':
-				case 'number':
-				case 'phone':
-				case 'post_content':
-				case 'post_excerpt':
-				case 'post_title':
-				case 'radio':
-				case 'select':
-				case 'textarea':
-				case 'text':
-				case 'time':
-				default:
-					$formatted_values[ $values['id'] ] = $this->validate_field_value( $field, $this->prepare_string_value( $value ) );
-					break;
+			$value = $this->prepare_field_value_by_type( $value, $field );
+
+			$this->validate_field_value( $this->form, $field, $value );
+
+			// Add values to array based on field type.
+			if ( in_array( $field->type, [ 'address', 'chainedselect', 'checkbox', 'consent', 'name' ], true ) ) {
+				$formatted_values += $value;
+			} else {
+				$formatted_values[ $values['id'] ] = $value;
 			}
 		}
 
 		return $formatted_values;
-	}
-
-	/**
-	 * Saves the FileUploadField value to $_FILES.
-	 *
-	 * @param GF_Field $field .
-	 * @param string   $value .
-	 * @return string
-	 */
-	private function prepare_fileupload_field_value( GF_Field $field, string $value ) : string {
-		$_FILES[ 'input_' . $field->id ] = $value;
-		return $value;
-	}
-
-	/**
-	 * Formats and sanitizes ListField values.
-	 *
-	 * @param GF_Field $field .
-	 * @param array    $value .
-	 * @return array
-	 */
-	private function prepare_list_field_value( GF_Field $field, array $value ) : array {
-		$values_to_save = [];
-		foreach ( $value as $row ) {
-			foreach ( $row as $row_values ) {
-				foreach ( $row_values as $single_value ) {
-					$values_to_save[] = sanitize_text_field( $single_value );
-				}
-			}
-		}
-
-		return $values_to_save; //phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_serialize
 	}
 
 	/**
@@ -358,64 +229,15 @@ class UpdateEntry extends AbstractMutation {
 	 * @param mixed $input .
 	 * @throws UserError .
 	 */
-	private function validate_required_inputs( $input = null ) : void {
-		if ( empty( $input ) || ! is_array( $input ) ) {
-				throw new UserError( __( 'Mutation not processed. The input data was missing or invalid.', 'wp-graphql-gravity-forms' ) );
-		}
+	protected function check_required_inputs( $input = null ) : void {
+		parent::check_required_inputs( $input );
+
 		if ( ! isset( $input['entryId'] ) ) {
 			throw new UserError( __( 'Mutation not processed. Entry ID not provided.', 'wp-graphql-gravity-forms' ) );
 		}
+
 		if ( empty( $input['fieldValues'] ) ) {
 			throw new UserError( __( 'Mutation not processed. Field values not provided.', 'wp-graphql-gravity-forms' ) );
-		}
-	}
-
-	/**
-	 * Checks that the proper GraphQL input type is used to submit the field values.
-	 *
-	 * @param GF_Field $field .
-	 * @param array    $values the `fieldValues` input array.
-	 *
-	 * @throws UserError .
-	 */
-	private function validate_field_value_type( GF_Field $field, array $values ) : void {
-		switch ( $field->type ) {
-			case 'address':
-				if ( ! isset( $values['addressValues'] ) ) {
-					// translators: Gravity Forms field id.
-					throw new UserError( sprintf( __( 'Mutation not processed. Field %d requires the use of `addressValues`.', 'wp-graphql-gravity-forms' ), $field->id ) );
-				}
-				break;
-			case 'chainedselect':
-				if ( ! isset( $values['chainedSelectValues'] ) ) {
-					// translators: Gravity Forms field id.
-					throw new UserError( sprintf( __( 'Mutation not processed. Field %d requires the use of `chainedSelectValues`.', 'wp-graphql-gravity-forms' ), $field->id ) );
-				}
-				break;
-			case 'checkbox':
-				if ( ! isset( $values['checkboxValues'] ) ) {
-					// translators: Gravity Forms field id.
-					throw new UserError( sprintf( __( 'Mutation not processed. Field %d requires the use of `checkboxValues`.', 'wp-graphql-gravity-forms' ), $field->id ) );
-				}
-				break;
-			case 'list':
-				if ( ! isset( $values['listValues'] ) ) {
-					// translators: Gravity Forms field id.
-					throw new UserError( sprintf( __( 'Mutation not processed. Field %d requires the use of `listValues`.', 'wp-graphql-gravity-forms' ), $field->id ) );
-				}
-				break;
-			case 'name':
-				if ( ! isset( $values['nameValues'] ) ) {
-					// translators: Gravity Forms field id.
-					throw new UserError( sprintf( __( 'Mutation not processed. Field %d requires the use of `nameValues`.', 'wp-graphql-gravity-forms' ), $field->id ) );
-				}
-				break;
-			default:
-				if ( ! isset( $values['value'] ) ) {
-					// translators: Gravity Forms field id.
-					throw new UserError( sprintf( __( 'Mutation not processed. Field %d requires the use of `value`.', 'wp-graphql-gravity-forms' ), $field->id ) );
-				}
-				break;
 		}
 	}
 }

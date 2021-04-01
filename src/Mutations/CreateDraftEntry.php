@@ -81,19 +81,29 @@ class CreateDraftEntry extends AbstractMutation {
 	 */
 	public function mutate_and_get_payload() : callable {
 		return function( $input, AppContext $context, ResolveInfo $info ) : array {
-			if ( empty( $input ) || ! is_array( $input ) || ! isset( $input['formId'] ) ) {
-				throw new UserError( __( 'Mutation not processed. The input data was missing or invalid.', 'wp-graphql-gravity-forms' ) );
-			}
+			$this->check_required_inputs( $input );
 
 			$form_id = absint( $input['formId'] );
 			$form    = GFUtils::get_form( $form_id );
 
-			$source_url   = esc_url_raw( Utils::truncate( $_SERVER['HTTP_REFERER'] ?? '', 250 ) );
-			$resume_token = $this->save_draft_submission( $input, $form, $source_url );
+			$source_url  = esc_url_raw( Utils::truncate( $_SERVER['HTTP_REFERER'] ?? '', 250 ) );
+			$page_number = isset( $input['pageNumber'] ) ? absint( $input['pageNumber'] ) : 1;
 
-			if ( ! $resume_token ) {
-				throw new UserError( __( 'An error occurred while trying to create the draft entry.', 'wp-graphql-gravity-forms' ) );
-			}
+			$ip = empty( $form['personalData']['preventIP'] ) ? GFUtils::get_ip( $input['ip'] ?? '' ) : '';
+
+			// Get existing entry if `fromEntryId` is set, otherwise create new draft entry.
+			$entry = isset( $input['fromEntryId'] ) ? GFUtils::get_entry( $input['fromEntryId'] ) : $this->get_draft_entry_data( $form, $ip, $source_url );
+
+			$resume_token = GFUtils::save_draft_submission(
+				$form,
+				$entry,
+				null,
+				$page_number,
+				[], // @TODO: Get from Request.
+				null,
+				$ip,
+				$source_url
+			);
 
 			return [
 				'resumeToken' => $resume_token,
@@ -103,38 +113,16 @@ class CreateDraftEntry extends AbstractMutation {
 	}
 
 	/**
-	 * Mimics Gravity Forms' GFFormsModel::save_draft_submission() method.
+	 * Checks that necessary WPGraphQL are set.
 	 *
-	 * @param array  $input      Request input.
-	 * @param array  $form       Form object.
-	 * @param string $source_url Source URL.
-	 *
-	 * @return string The resume token, or empty string on failure.
+	 * @param mixed $input .
+	 * @throws UserError .
 	 */
-	private function save_draft_submission( array $input, array $form, string $source_url ) : string {
-		$ip = isset( $input['ip'] ) && ! empty( $form['personalData']['preventIP'] ) ? sanitize_text_field( $input['ip'] ) : '';
-
-		// Get existing entry if `fromEntryId` is set, otherwise create new draft entry.
-		$entry = isset( $input['fromEntryId'] ) ? GFUtils::get_entry( $input['fromEntryId'] ) : $this->get_draft_entry_data( $form, $ip, $source_url );
-
-		$field_values   = '';
-		$page_number    = isset( $input['pageNumber'] ) ? absint( $input['pageNumber'] ) : 1;
-		$files          = []; // TODO: Get from Request.
-		$form_unique_id = GFUtils::get_form_unique_id( $form['id'] );
-
-		$resume_token = GFFormsModel::save_draft_submission(
-			$form,
-			$entry,
-			$field_values,
-			$page_number,
-			$files,
-			$form_unique_id,
-			$ip,
-			$source_url,
-			''
-		);
-
-		return $resume_token ? (string) $resume_token : '';
+	protected function check_required_inputs( $input ) : void {
+		parent::check_required_inputs( $input );
+		if ( ! isset( $input['formId'] ) ) {
+				throw new UserError( __( 'Mutation not processed. The formId must be set.', 'wp-graphql-gravity-forms' ) );
+		}
 	}
 
 	/**

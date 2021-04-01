@@ -61,6 +61,8 @@ class DeleteEntry extends AbstractMutation {
 	 */
 	public function mutate_and_get_payload() : callable {
 		return function( $input, AppContext $context, ResolveInfo $info ) : array {
+			$this->check_required_inputs( $input );
+
 			$entry_id         = (int) $input['entryId'];
 			$does_entry_exist = GFAPI::entry_exists( $entry_id );
 
@@ -76,5 +78,18 @@ class DeleteEntry extends AbstractMutation {
 
 			return [ 'entryId' => $entry_id ];
 		};
+	}
+
+	/**
+	 * Checks that necessary WPGraphQL are set.
+	 *
+	 * @param mixed $input .
+	 * @throws UserError .
+	 */
+	protected function check_required_inputs( $input ) : void {
+		parent::check_required_inputs( $input );
+		if ( ! isset( $input['entryId'] ) ) {
+				throw new UserError( __( 'Mutation not processed. The entryId must be set.', 'wp-graphql-gravity-forms' ) );
+		}
 	}
 }

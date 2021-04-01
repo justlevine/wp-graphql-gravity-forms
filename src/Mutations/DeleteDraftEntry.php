@@ -60,9 +60,7 @@ class DeleteDraftEntry extends AbstractMutation {
 	 */
 	public function mutate_and_get_payload() : callable {
 		return function( $input ) : array {
-			if ( empty( $input ) || ! is_array( $input ) || ! isset( $input['resumeToken'] ) ) {
-				throw new UserError( __( 'Mutation not processed. The input data was missing or invalid.', 'wp-graphql-gravity-forms' ) );
-			}
+			$this->check_required_inputs( $input );
 
 			$resume_token = sanitize_text_field( $input['resumeToken'] );
 			$result       = GFFormsModel::delete_draft_submission( $resume_token );
@@ -75,5 +73,18 @@ class DeleteDraftEntry extends AbstractMutation {
 				'resumeToken' => $resume_token,
 			];
 		};
+	}
+
+	/**
+	 * Checks that necessary WPGraphQL are set.
+	 *
+	 * @param mixed $input .
+	 * @throws UserError .
+	 */
+	protected function check_required_inputs( $input ) : void {
+		parent::check_required_inputs( $input );
+		if ( ! isset( $input['resumeToken'] ) ) {
+				throw new UserError( __( 'Mutation not processed. The resumeToken must be set.', 'wp-graphql-gravity-forms' ) );
+		}
 	}
 }

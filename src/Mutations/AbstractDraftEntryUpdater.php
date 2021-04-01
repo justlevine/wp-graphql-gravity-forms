@@ -9,7 +9,6 @@
 namespace WPGraphQLGravityForms\Mutations;
 
 use GF_Field;
-use GFFormsModel;
 use GraphQL\Error\UserError;
 use GraphQL\Type\Definition\ResolveInfo;
 use WPGraphQL\AppContext;
@@ -22,20 +21,18 @@ use WPGraphQLGravityForms\Utils\GFUtils;
  */
 abstract class AbstractDraftEntryUpdater extends AbstractMutation {
 	/**
+	 * Gravity forms field type for the mutation.
+	 *
+	 * @var string
+	 */
+	protected static $gf_type;
+
+	/**
 	 * DraftEntryDataManipulator instance.
 	 *
 	 * @var DraftEntryDataManipulator
 	 */
 	private $draft_entry_data_manipulator;
-
-	/**
-	 * Constructor.
-	 *
-	 * @param DraftEntryDataManipulator $draft_entry_data_manipulator .
-	 */
-	public function __construct( DraftEntryDataManipulator $draft_entry_data_manipulator ) {
-		$this->draft_entry_data_manipulator = $draft_entry_data_manipulator;
-	}
 
 	/**
 	 * The draft submission.
@@ -57,6 +54,15 @@ abstract class AbstractDraftEntryUpdater extends AbstractMutation {
 	 * @var mixed
 	 */
 	private $value = null;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param DraftEntryDataManipulator $draft_entry_data_manipulator .
+	 */
+	public function __construct( DraftEntryDataManipulator $draft_entry_data_manipulator ) {
+		$this->draft_entry_data_manipulator = $draft_entry_data_manipulator;
+	}
 
 	/**
 	 * Defines the input field configuration.
@@ -117,23 +123,34 @@ abstract class AbstractDraftEntryUpdater extends AbstractMutation {
 	 */
 	public function mutate_and_get_payload() : callable {
 		return function( $input, AppContext $context, ResolveInfo $info ) : array {
-			if ( empty( $input ) || ! is_array( $input ) || ! isset( $input['resumeToken'], $input['fieldId'], $input['value'] ) ) {
-				throw new UserError( __( 'Mutation not processed. The input data was missing or invalid.', 'wp-graphql-gravity-forms' ) );
-			}
+			$this->check_required_inputs( $input );
 
-			$resume_token     = sanitize_text_field( $input['resumeToken'] );
+			$resume_token = sanitize_text_field( $input['resumeToken'] );
+
 			$this->submission = GFUtils::get_draft_submission( $resume_token );
-			$form             = GFUtils::get_form( $this->submission['partial_entry']['form_id'] );
-			$field_id         = absint( $input['fieldId'] );
-			$this->field      = GFUtils::get_field_by_id( $form, $field_id );
+
+			$form = GFUtils::get_form( $this->submission['partial_entry']['form_id'] );
+
+			$field_id    = absint( $input['fieldId'] );
+			$this->field = GFUtils::get_field_by_id( $form, $field_id );
+			if ( $this->field->type !== static::$gf_type ) {
+				throw new UserError(
+					sprintf(
+						// translators: Gravity Forms field id, field type, and expected field type.
+						__( 'Mutation not processed. Field id %1$s is of type %2$s, type %3$s expected.', 'wp-graphql-gravity-forms' ),
+						$field_id,
+						$this->field->type,
+						static::$gf_type
+					)
+				);
+			}
 
 			if ( ! method_exists( $this, 'prepare_field_value' ) ) {
 				throw new UserError( __( 'Mutation not processed. Field values could not be prepared', 'wp-graphql-gravity-forms' ) );
 			}
 			$this->value = $this->prepare_field_value( $input['value'] );
-
+			// Validate the field.
 			$this->field->validate( $this->value, $form );
-
 			if ( $this->field->failed_validation ) {
 				return [
 					'resumeToken' => $resume_token,
@@ -143,9 +160,28 @@ abstract class AbstractDraftEntryUpdater extends AbstractMutation {
 				];
 			}
 
+			// Add the values to the `submitted_values` array in the draft submission.
 			add_filter( 'gform_submission_values_pre_save', [ $this, 'add_field_value_to_submitted_values' ] );
 
-			$resume_token = $this->save_draft_submission( $form['id'], $resume_token );
+			$value_array = $this->flatten_field_values( $this->field, $this->value );
+
+			// Add value to partial entry.
+			$this->submission['partial_entry'] = array_replace( $this->submission['partial_entry'], $value_array );
+
+			// Add value to field values.
+			$this->submission['field_values'] = array_replace( $this->submission['field_values'] ?? [], $this->rename_keys_for_field_values( $value_array ) );
+
+			$resume_token = GFUtils::save_draft_submission(
+				$form,
+				$this->submission['partial_entry'],
+				$this->submission['field_values'],
+				$this->submission['page_number'] ?? 1, // @TODO: Maybe get from request.
+				$this->submission['files'] ?? [],
+				$this->submission['gform_unique_id'] ?? null,
+				$this->submission['partial_entry']['ip'] ?? null,
+				$this->submission['partial_entry']['source_url'] ?? '',
+				$resume_token
+			);
 
 			remove_filter( 'gform_submission_values_pre_save', [ $this, 'add_field_value_to_submitted_values' ] );
 
@@ -153,6 +189,26 @@ abstract class AbstractDraftEntryUpdater extends AbstractMutation {
 		};
 	}
 
+	/**
+	 * Checks that necessary WPGraphQL are set.
+	 *
+	 * @param mixed $input .
+	 * @throws UserError .
+	 */
+	protected function check_required_inputs( $input ) : void {
+		parent::check_required_inputs( $input );
+		if ( ! isset( $input['resumeToken'] ) ) {
+				throw new UserError( __( 'Mutation not processed. The resumeToken must be set.', 'wp-graphql-gravity-forms' ) );
+		}
+
+		if ( ! isset( $input['fieldId'] ) ) {
+			throw new UserError( __( 'Mutation not processed. The fieldId must be set.', 'wp-graphql-gravity-forms' ) );
+		}
+
+		if ( ! isset( $input['value'] ) ) {
+			throw new UserError( __( 'Mutation not processed. The value must be set.', 'wp-graphql-gravity-forms' ) );
+		}
+	}
 
 	/**
 	 * Implement this method in child classes.
@@ -165,63 +221,6 @@ abstract class AbstractDraftEntryUpdater extends AbstractMutation {
 
 
 	/**
-	 * Mimics Gravity Forms' GFFormsModel::save_draft_submission() method.
-	 *
-	 * @param int    $form_id      Form ID.
-	 * @param string $resume_token Resume token.
-	 *
-	 * @return string The resume token, or empty string on failure.
-	 *
-	 * @throws UserError .
-	 */
-	private function save_draft_submission( int $form_id, string $resume_token ) : string {
-		$new_resume_token = GFFormsModel::save_draft_submission(
-			GFFormsModel::get_form_meta( $form_id ),
-			$this->add_field_value_to_partial_entry( $this->submission['partial_entry'] ),
-			$this->submission['field_values'] ?? '',
-			$this->submission['page_number'] ?? 1, // TODO: Maybe get from request.
-			$this->submission['files'] ?? [], // TODO: Maybe get from request.
-			$this->submission['gform_unique_id'] ?? GFUtils::get_form_unique_id( $form_id ),
-			$this->submission['partial_entry']['ip'] ?? '',
-			$this->submission['partial_entry']['source_url'] ?? '',
-			$resume_token
-		);
-
-		if ( ! $new_resume_token ) {
-			throw new UserError( __( 'An error occurred while trying to update the draft entry.', 'wp-graphql-gravity-forms' ) );
-		}
-
-		return $resume_token ? (string) $resume_token : '';
-	}
-
-	/**
-	 * Returns partial entry, with new value added.
-	 *
-	 * @param array $partial_entry Partial form entry.
-	 *
-	 * @return array
-	 */
-	public function add_field_value_to_partial_entry( array $partial_entry ) : array {
-		if ( ! isset( $this->field, $this->value ) ) {
-			return $partial_entry;
-		}
-
-		// For an array of sub-values, add each to the partial entry individually.
-		if ( is_array( $this->value ) ) {
-			foreach ( $this->value as $key => $single_value ) {
-				$partial_entry[ $key ] = $single_value;
-			}
-
-			return $partial_entry;
-		}
-
-		// Else, add the single value to the partial entry.
-		$partial_entry[ $this->field->id ] = $this->value;
-
-		return $partial_entry;
-	}
-
-	/**
 	 * Returns submitted values, with new value added.
 	 *
 	 * @return array
@@ -230,7 +229,6 @@ abstract class AbstractDraftEntryUpdater extends AbstractMutation {
 		if ( isset( $this->field, $this->value ) ) {
 			$this->submission['submitted_values'][ $this->field->id ] = $this->value;
 		}
-
 		return $this->submission['submitted_values'];
 	}
 }

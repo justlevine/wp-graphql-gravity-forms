@@ -11,16 +11,13 @@
 
 namespace WPGraphQLGravityForms\Mutations;
 
-use GFAPI;
-use GFCommon;
-use GF_Field;
-use GFFormDisplay;
 use GFFormsModel;
 use GraphQL\Error\UserError;
 use GraphQL\Type\Definition\ResolveInfo;
 use WPGraphQL\AppContext;
-use WPGraphQLGravityForms\Types\Entry\Entry;
 use WPGraphQLGravityForms\DataManipulators\EntryDataManipulator;
+use WPGraphQLGravityForms\Types\Entry\Entry;
+use WPGraphQLGravityForms\Types\FieldError\FieldError;
 use WPGraphQLGravityForms\Utils\GFUtils;
 
 /**
@@ -42,13 +39,6 @@ class SubmitDraftEntry extends AbstractMutation {
 	private $entry_data_manipulator;
 
 	/**
-	 * Gravity Forms form object.
-	 *
-	 * @var array
-	 */
-	private $form;
-
-	/**
 	 * Constructor
 	 *
 	 * @param EntryDataManipulator $entry_data_manipulator .
@@ -58,35 +48,15 @@ class SubmitDraftEntry extends AbstractMutation {
 	}
 
 	/**
-	 * Register hooks to WordPress.
-	 */
-	public function register_hooks() : void {
-		parent::register_hooks();
-		add_action( 'graphql_before_resolve_field', [ $this, 'ensure_required_fields_are_set' ], 10, 7 );
-	}
-
-	/**
 	 * Defines the input field configuration.
 	 *
 	 * @return array
 	 */
 	public function get_input_fields() : array {
 		return [
-			'forceCreate'          => [
-				'type'        => 'Boolean',
-				'description' => __( 'Optional. If `true`, a new entry will be created even if the draft entry was created from an existing one. Defaults to `false`.', 'wp-graphql-gravity-forms' ),
-			],
-			'resumeToken'          => [
+			'resumeToken' => [
 				'type'        => 'String',
 				'description' => __( 'Draft resume token.', 'wp-graphql-gravity-forms' ),
-			],
-			'triggerNotifications' => [
-				'type'        => 'Boolean',
-				'description' => __( 'Whether GravityForms notifications should be sent. Defaults to `true`.', 'wp-graphql-gravity-forms' ),
-			],
-			'triggerPostCreation'  => [
-				'type'        => 'Boolean',
-				'description' => __( 'Optional. Whether a new post should be created.', 'wp-graphql-gravity-forms' ),
 			],
 		];
 	}
@@ -105,11 +75,19 @@ class SubmitDraftEntry extends AbstractMutation {
 			'entry'   => [
 				'type'        => Entry::TYPE,
 				'description' => __( 'The entry that was created.', 'wp-graphql-gravity-forms' ),
-				'resolve'     => function( array $payload ) : array {
+				'resolve'     => function( array $payload ) {
+					if ( ! empty( $payload['errors'] ) ) {
+						return null;
+					}
+
 					$entry = GFUtils::get_entry( $payload['entryId'] );
 
 					return $this->entry_data_manipulator->manipulate( $entry );
 				},
+			],
+			'errors'  => [
+				'type'        => [ 'list_of' => FieldError::TYPE ],
+				'description' => __( 'Field errors.', 'wp-graphql-gravity-forms' ),
 			],
 		];
 	}
@@ -121,166 +99,46 @@ class SubmitDraftEntry extends AbstractMutation {
 	 */
 	public function mutate_and_get_payload() : callable {
 		return function( $input, AppContext $context, ResolveInfo $info ) : array {
-			if ( empty( $input ) || ! is_array( $input ) || ! isset( $input['resumeToken'] ) ) {
-				throw new UserError( __( 'Mutation not processed. The input data was missing or invalid.', 'wp-graphql-gravity-forms' ) );
-			}
+			$this->check_required_inputs( $input );
 
 			$resume_token = sanitize_text_field( $input['resumeToken'] );
-			$draft_entry  = GFUtils::get_draft_entry( $resume_token );
-			$form_id      = $draft_entry['form_id'];
+			$submission   = GFUtils::get_draft_submission( $resume_token );
+			$form_id      = $submission['partial_entry']['form_id'];
 
-			$this->form = GFUtils::get_form( $form_id );
+			$form = GFUtils::get_form( $form_id );
 
-			// Sets last page.
-			$this->set_form_page_to_last();
+			$submission['page_number'] = GFUtils::get_last_form_page( $form );
 
-			// Force creates new entry if `$input['createNewEntry']` is true.
-			$submission = $this->get_draft_submission( $draft_entry );
-			$entry_id   = $input['createNewEntry'] ?? false ? $this->create_entry( $submission['partial_entry'] ) : $this->maybe_update_entry( $submission['partial_entry'] );
+			add_filter( 'gform_field_validation', [ $this, 'disable_validation_for_unsupported_fields' ], 10, 4 );
+			$result = GFUtils::submit_form(
+				$form_id,
+				$submission['field_values'], // $input_values,
+				$submission['field_values'],
+			);
+			remove_filter( 'gform_field_validation', [ $this, 'disable_validation_for_unsupported_fields' ] );
 
-			/**
-			 * Create a new post if Post Creation fields are in use.
-			 *
-			 * @TODO: Check how GF handles post creation when entries are updated.
-			 */
-			if ( ! isset( $input['triggerPostCreation'] ) || $input['triggerPostCreation'] ) {
-				$this->create_post( $entry_id );
+			if ( $result['entry_id'] ) {
+				GFFormsModel::delete_draft_submission( $resume_token );
+				GFFormsModel::purge_expired_draft_submissions();
 			}
 
-			// Send notifications.
-			if ( ! isset( $input['triggerNotifications'] ) || $input['triggerNotifications'] ) {
-				$this->send_notifications( $entry_id );
-			}
-
-			GFFormsModel::delete_draft_submission( $resume_token );
-			GFFormsModel::purge_expired_draft_submissions();
-
-			return [ 'entryId' => $entry_id ];
+			return [
+				'entryId' => ! empty( $result['entry_id'] ) ? absint( $result['entry_id'] ) : null,
+				'errors'  => isset( $result['validation_messages'] ) ? $this->get_submission_errors( $result['validation_messages'] ) : null,
+			];
 		};
 	}
 
 	/**
-	 * Updates existing Gravity Forms entry if it exists. Otherwise, creates new entry.
+	 * Checks that necessary WPGraphQL are set.
 	 *
-	 * @param array $partial_entry .
-	 * @return integer
-	 */
-	private function maybe_update_entry( array $partial_entry ) : int {
-		if ( $partial_entry['id'] ) {
-			return GFUtils::update_entry( $partial_entry );
-		}
-		return $this->create_entry( $partial_entry );
-	}
-
-	/**
-	 * Creates Gravity Forms entry from draft entry.
-	 *
-	 * @param array $partial_entry .
-	 * @return integer
+	 * @param mixed $input .
 	 * @throws UserError .
 	 */
-	private function create_entry( array $partial_entry ) : int {
-		$entry_id = GFAPI::add_entry( $partial_entry );
-
-		if ( is_wp_error( $entry_id ) ) {
-			throw new UserError( __( 'An error occurred while trying to submit the draft entry.', 'wp-graphql-gravity-forms' ) . ' ' . $entry_id->get_error_message() );
+	protected function check_required_inputs( $input ) : void {
+		parent::check_required_inputs( $input );
+		if ( ! isset( $input['resumeToken'] ) ) {
+				throw new UserError( __( 'Mutation not processed. The resumeToken must be set.', 'wp-graphql-gravity-forms' ) );
 		}
-
-		return $entry_id;
-	}
-
-	/**
-	 * Create WordPress post if the form has any post fields.
-	 *
-	 * @param integer $entry_id .
-	 * @throws UserError .
-	 */
-	private function create_post( int $entry_id ) : void {
-		$entry = GFUtils::get_entry( $entry_id );
-
-		GFCommon::create_post( $this->form, $entry );
-	}
-
-	/**
-	 * Triggers Gravity Forms Notificiations associated with the entry.
-	 *
-	 * @param integer $entry_id .
-	 * @throws UserError .
-	 */
-	private function send_notifications( int $entry_id ) : void {
-		$entry = GFUtils::get_entry( $entry_id );
-
-		GFAPI::send_notifications( $this->form, $entry );
-	}
-
-	/**
-	 * Gets draft submission data.
-	 *
-	 * @TODO: use GFUtils::get_draft_submission().
-	 *
-	 * @param array $draft_entry .
-	 * @return array
-	 * @throws UserError .
-	 */
-	private function get_draft_submission( array $draft_entry ) : array {
-		$submission = json_decode( $draft_entry['submission'], true );
-
-		if ( ! $submission ) {
-			throw new UserError( __( 'The submission data for this draft entry could not be read.', 'wp-graphql-gravity-forms' ) );
-		}
-
-		return $submission;
-	}
-
-	/**
-	 * Fire an action BEFORE the field resolves
-	 *
-	 * @param mixed       $source         Source passed down the Resolve Tree.
-	 * @param array       $args           Args for the field.
-	 * @param AppContext  $context        AppContext passed down the ResolveTree.
-	 * @param ResolveInfo $info           ResolveInfo passed down the ResolveTree.
-	 * @param mixed       $field_resolver Field resolver.
-	 * @param string      $type_name      Name of the type the fields belong to.
-	 * @param string      $field_key      Name of the field.
-	 *
-	 * @throws UserError .
-	 */
-	public function ensure_required_fields_are_set( $source, array $args, AppContext $context, ResolveInfo $info, $field_resolver, string $type_name, string $field_key ) : void {
-		// Make sure this is the submitGravityFormsDraftEntry field on the RootMutation.
-		if ( 'RootMutation' !== $type_name || self::$name !== $field_key ) {
-			return;
-		}
-		$draft_entry      = GFUtils::get_draft_entry( $args['input']['resumeToken'] );
-		$submission       = $this->get_draft_submission( $draft_entry );
-		$submitted_values = $submission['submitted_values'];
-		$form             = GFUtils::get_form( $submission['partial_entry']['form_id'] );
-		$fields           = $form['fields'];
-
-		foreach ( $fields as $field ) {
-			if ( 'captcha' === $field['type'] ) {
-				$field_id          = absint( $field['id'] );
-				$field_to_validate = GFUtils::get_field_by_id( $form, $field_id );
-				$field_value       = $submitted_values[ $field_id ];
-
-				$field_to_validate->validate( $field_value, $form );
-
-				if ( $field->isRequired && empty( $submitted_values[ $field_id ] ) ) {
-					$field->failed_validation = true;
-				}
-
-				if ( $field_to_validate->failed_validation ) {
-					throw new UserError( __( 'Mutation not processed. The input data was missing or invalid.', 'wp-graphql-gravity-forms' ) );
-				}
-			}
-		}
-	}
-
-	/**
-	 * Sets form page to last page so post creation can work.
-	 */
-	private function set_form_page_to_last() : void {
-		require_once GFCommon::get_base_path() . '/form_display.php';
-
-		GFFormDisplay::set_current_page( $this->form['id'], GFFormDisplay::get_max_page_number( $this->form ) );
 	}
 }
