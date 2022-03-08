@@ -208,7 +208,6 @@ setup_plugin() {
 	cd $PLUGIN_DIR
 
 	composer install
-	composer require --dev wp-cli/wp-cli-bundle:*
 
 	cd $WP_CORE_DIR
 
