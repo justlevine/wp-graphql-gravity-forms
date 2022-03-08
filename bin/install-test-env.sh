@@ -147,8 +147,6 @@ install_db() {
 }
 
 configure_wordpress() {
-		composer require --dev -W wp-cli/wp-cli-bundle:*
-
 		cd $WP_CORE_DIR
 		wp config create --dbname="$DB_NAME" --dbuser="$DB_USER" --dbpass="$DB_PASS" --dbhost="$DB_HOST" --skip-check --force=true
 		wp core install --url=$WP_DOMAIN --title=GFTests --admin_user=$ADMIN_USERNAME --admin_password=$ADMIN_PASSWORD --admin_email=$ADMIN_EMAIL
@@ -158,11 +156,7 @@ configure_wordpress() {
 install_gravityforms() {
 	if [ ! -d $WP_CORE_DIR/wp-content/plugins/gravityforms ]; then
 		echo "Cloning Gravity Forms"
-		if [ -n "$GIT_USER" ] && [ -n "$GIT_TOKEN" ] && [ -n "$GF_REPO" ]; then
-		git clone https://$GIT_USER:$GIT_TOKEN@$GF_REPO $WP_CORE_DIR/wp-content/plugins/gravityforms
-		else
-			git clone https://github.com/wp-premium/gravityforms.git $WP_CORE_DIR/wp-content/plugins/gravityforms
-		fi
+		git clone -b master --single-branch https://$GIT_TOKEN@$GF_REPO $WP_CORE_DIR/wp-content/plugins/gravityforms
 	fi
 	echo "Cloning Gravity Forms"
 	wp plugin activate gravityforms
@@ -171,11 +165,7 @@ install_gravityforms() {
 install_gravityforms_signature() {
 	if [ ! -d $WP_CORE_DIR/wp-content/plugins/gravityformssignature ]; then
 		echo "Cloning Gravity Forms Signature"
-			if [ -n "$GIT_USER" ] && [ -n "$GIT_TOKEN" ] && [ -n "$GF_SIGNATURE_REPO" ]; then
-		git clone https://$GIT_USER:$GIT_TOKEN@$GF_SIGNATURE_REPO $WP_CORE_DIR/wp-content/plugins/gravityformssignature
-		else
-			git clone https://github.com/wp-premium/gravityformssignature.git $WP_CORE_DIR/wp-content/plugins/gravityformssignature
-		fi
+		git -b master --single-branch clone https://$GIT_TOKEN@$GF_SIGNATURE_REPO $WP_CORE_DIR/wp-content/plugins/gravityformssignature
 	fi
 	wp plugin activate gravityformssignature
 }
@@ -183,11 +173,7 @@ install_gravityforms_signature() {
 install_gravityforms_chainedselects() {
 	if [ ! -d $WP_CORE_DIR/wp-content/plugins/gravityformschainedselects ]; then
 		echo "Cloning Gravity Forms Chained Selects"
-			if [ -n "$GIT_USER" ] && [ -n "$GIT_TOKEN" ] && [ -n "$GF_CHAINEDSELECTS_REPO" ]; then
-		git clone https://$GIT_USER:$GIT_TOKEN@$GF_CHAINEDSELECTS_REPO $WP_CORE_DIR/wp-content/plugins/gravityformschainedselects
-		else
-			echo "To test Chained Selects, please manually install the plugin in your dev environment."
-		fi
+		git clone -b master --single-branch https://$GIT_TOKEN@$GF_CHAINEDSELECTS_REPO $WP_CORE_DIR/wp-content/plugins/gravityformschainedselects
 	fi
 	wp plugin activate gravityformschainedselects
 }
@@ -195,11 +181,7 @@ install_gravityforms_chainedselects() {
 install_gravityforms_quiz() {
 	if [ ! -d $WP_CORE_DIR/wp-content/plugins/gravityformsquiz ]; then
 		echo "Cloning Gravity Forms Quiz"
-			if [ -n "$GIT_USER" ] && [ -n "$GIT_TOKEN" ] && [ -n "$GF_CHAINEDSELECTS_REPO" ]; then
-		git clone https://$GIT_USER:$GIT_TOKEN@$GF_QUIZ_REPO $WP_CORE_DIR/wp-content/plugins/gravityformsquiz
-		else
-			echo "To test Chained Selects, please manually install the plugin in your dev environment."
-		fi
+			git clone -b master --single-branch https://$GIT_TOKEN@$GF_QUIZ_REPO $WP_CORE_DIR/wp-content/plugins/gravityformsquiz
 	fi
 	wp plugin activate gravityformsquiz
 }
@@ -208,7 +190,7 @@ install_gravityforms_quiz() {
 install_wpgraphql_upload() {
 	if [ ! -d $WP_CORE_DIR/wp-content/plugins/wp-graphql-upload ]; then
 		echo "Cloning WP GraphQL Upload"
-		git clone https://github.com/dre1080/wp-graphql-upload.git $WP_CORE_DIR/wp-content/plugins/wp-graphql-upload
+		git clone -b main --single-branch https://github.com/dre1080/wp-graphql-upload.git $WP_CORE_DIR/wp-content/plugins/wp-graphql-upload
 	fi
 	wp plugin activate wp-graphql-upload
 }

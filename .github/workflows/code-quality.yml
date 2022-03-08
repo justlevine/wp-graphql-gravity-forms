@@ -51,7 +51,10 @@ jobs:
         run: composer install --no-progress
 
       - name: Setup WordPress
+        env:
+          GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
         run: |
+          composer global require wp-cli/wp-cli-bundle:*
           composer run install-test-env
 
       - name: Run PHPStan
