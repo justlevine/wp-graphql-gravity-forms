@@ -53,6 +53,7 @@ jobs:
       - name: Setup WordPress
         env:
           GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
+          GIT_USER: ${{ secrets.GIT_USER }}
         run: |
           composer run install-test-env
 
