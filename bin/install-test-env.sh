@@ -147,6 +147,8 @@ install_db() {
 }
 
 configure_wordpress() {
+		composer require --dev -W wp-cli/wp-cli-bundle:*
+
 		cd $WP_CORE_DIR
 		wp config create --dbname="$DB_NAME" --dbuser="$DB_USER" --dbpass="$DB_PASS" --dbhost="$DB_HOST" --skip-check --force=true
 		wp core install --url=$WP_DOMAIN --title=GFTests --admin_user=$ADMIN_USERNAME --admin_password=$ADMIN_PASSWORD --admin_email=$ADMIN_EMAIL
@@ -224,7 +226,6 @@ setup_plugin() {
 	cd $PLUGIN_DIR
 
 	composer install
-	composer require --dev -W wp-cli/wp-cli-bundle:*
 
 	cd $WP_CORE_DIR
 
