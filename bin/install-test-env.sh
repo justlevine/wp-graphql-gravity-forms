@@ -156,7 +156,7 @@ configure_wordpress() {
 install_gravityforms() {
 	if [ ! -d $WP_CORE_DIR/wp-content/plugins/gravityforms ]; then
 		echo "Cloning Gravity Forms"
-		git clone -b master --single-branch https://$GIT_USER:GIT_TOKEN@$GF_REPO $WP_CORE_DIR/wp-content/plugins/gravityforms
+		git clone -b master --single-branch https://$GIT_USER:$GIT_TOKEN@$GF_REPO $WP_CORE_DIR/wp-content/plugins/gravityforms
 	fi
 	echo "Cloning Gravity Forms"
 	wp plugin activate gravityforms
@@ -165,7 +165,7 @@ install_gravityforms() {
 install_gravityforms_signature() {
 	if [ ! -d $WP_CORE_DIR/wp-content/plugins/gravityformssignature ]; then
 		echo "Cloning Gravity Forms Signature"
-		git clone -b master --single-branch clone https://$GIT_USER:GIT_TOKEN@$GF_SIGNATURE_REPO $WP_CORE_DIR/wp-content/plugins/gravityformssignature
+		git clone -b master --single-branch clone https://$GIT_USER:$GIT_TOKEN@$GF_SIGNATURE_REPO $WP_CORE_DIR/wp-content/plugins/gravityformssignature
 	fi
 	wp plugin activate gravityformssignature
 }
@@ -173,7 +173,7 @@ install_gravityforms_signature() {
 install_gravityforms_chainedselects() {
 	if [ ! -d $WP_CORE_DIR/wp-content/plugins/gravityformschainedselects ]; then
 		echo "Cloning Gravity Forms Chained Selects"
-		git clone -b master --single-branch https://$GIT_USER:GIT_TOKEN@$GF_CHAINEDSELECTS_REPO $WP_CORE_DIR/wp-content/plugins/gravityformschainedselects
+		git clone -b master --single-branch https://$GIT_USER:$GIT_TOKEN@$GF_CHAINEDSELECTS_REPO $WP_CORE_DIR/wp-content/plugins/gravityformschainedselects
 	fi
 	wp plugin activate gravityformschainedselects
 }
@@ -181,7 +181,7 @@ install_gravityforms_chainedselects() {
 install_gravityforms_quiz() {
 	if [ ! -d $WP_CORE_DIR/wp-content/plugins/gravityformsquiz ]; then
 		echo "Cloning Gravity Forms Quiz"
-			git clone -b master --single-branch https://$GIT_USER:GIT_TOKEN@$GF_QUIZ_REPO $WP_CORE_DIR/wp-content/plugins/gravityformsquiz
+			git clone -b master --single-branch https://$GIT_USER:$GIT_TOKEN@$GF_QUIZ_REPO $WP_CORE_DIR/wp-content/plugins/gravityformsquiz
 	fi
 	wp plugin activate gravityformsquiz
 }
