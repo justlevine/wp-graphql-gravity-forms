@@ -58,6 +58,4 @@ jobs:
           composer run install-test-env
 
       - name: Run PHPStan
-        run: |
-          cd /tmp/wordpress/plugins/wp-graphql-gravity-forms
-          composer run-script phpstan
+        run: composer run-script phpstan
