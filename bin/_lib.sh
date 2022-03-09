@@ -142,7 +142,7 @@ install_plugins() {
 
 	# Install WPGraphQL and Activate
 	wp plugin install wp-graphql --allow-root
-	wp plugin activate wp-graphql -allow-root
+	wp plugin activate wp-graphql --allow-root
 
 	# Install WPGatsby and Activate
 	wp plugin install wp-gatsby --allow-root
