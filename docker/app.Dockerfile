@@ -77,7 +77,6 @@ ENV USING_XDEBUG=0
 
 # Set environment variables for plugin install:
 ENV WP_CORE_DIR="${WP_ROOT_FOLDER}"
-ENV TMPDIR="${TMPDIR-/tmp}"
 
 # Set up entrypoint
 WORKDIR    /var/www/html
