@@ -13,7 +13,10 @@ wp rewrite structure '/%year%/%monthnum%/%postname%/' --allow-root
 wp db export "${DATA_DUMP_DIR}/dump.sql" --allow-root
 
 # If maintenance mode is active, de-activate it
-if $( wp maintenance-mode is-active --allow-root ); then
-  echo "Deactivating maintenance mode"
-  wp maintenance-mode deactivate --allow-root
+if $(wp maintenance-mode is-active --allow-root); then
+	echo "Deactivating maintenance mode"
+	wp maintenance-mode deactivate --allow-root
 fi
+
+chown -R www-data:www-data "${WP_ROOT_FOLDER}"
+chmod -R 755 "${WP_ROOT_FOLDER}"
