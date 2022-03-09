@@ -59,6 +59,7 @@
 	},
 	"scripts": {
 		"install-test-env": "bash bin/install-test-env.sh",
+		"install-stan-env": "bash bin/install-stan-env.sh",
 		"docker-build": "bash bin/run-docker.sh build",
 		"docker-run": "bash bin/run-docker.sh run",
 		"docker-destroy": "docker-compose down",

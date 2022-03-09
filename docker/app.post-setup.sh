@@ -17,6 +17,3 @@ if $(wp maintenance-mode is-active --allow-root); then
 	echo "Deactivating maintenance mode"
 	wp maintenance-mode deactivate --allow-root
 fi
-
-find "${WP_ROOT_FOLDER}" -type d -exec chmod 0777 {} \;
-find "${WP_ROOT_FOLDER}" -type f -exec chmod 0666 {} \;
