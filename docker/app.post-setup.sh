@@ -18,5 +18,5 @@ if $(wp maintenance-mode is-active --allow-root); then
 	wp maintenance-mode deactivate --allow-root
 fi
 
-find "${WP_ROOT_FOLDER}" -type d -exec chmod 0775 {} \;
-find "${WP_ROOT_FOLDER}" -type f -exec chmod 0664 {} \;
+find "${WP_ROOT_FOLDER}" -type d -exec chmod 0777 {} \;
+find "${WP_ROOT_FOLDER}" -type f -exec chmod 0666 {} \;
