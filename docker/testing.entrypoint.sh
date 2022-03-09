@@ -89,14 +89,6 @@ COMPOSER_MEMORY_LIMIT=-1 composer update
 echo "Running composer install"
 COMPOSER_MEMORY_LIMIT=-1 composer install --no-interaction
 
-## Install JavaScript Dependencies
-echo "Running npm install"
-npm ci
-
-## Build the JavaScript app
-echo "Building the JavaScript app"
-npm build
-
 # Install pcov/clobber if PHP7.1+
 if version_gt $PHP_VERSION 7.0 && [[ -n "$COVERAGE" ]] && [[ -z "$USING_XDEBUG" ]]; then
     echo "Using pcov/clobber for codecoverage"

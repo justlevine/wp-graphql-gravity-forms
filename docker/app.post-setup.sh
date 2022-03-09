@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # Activate wp-graphql
-source ../bin/_lib.sh
+
+source _lib.sh
 
 install_gravityforms
 install_gravityforms_signature

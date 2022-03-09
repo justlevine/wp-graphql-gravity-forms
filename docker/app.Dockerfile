@@ -80,7 +80,7 @@ WORKDIR    /var/www/html
 COPY       docker/app.setup.sh /usr/local/bin/app-setup.sh
 COPY       docker/app.post-setup.sh /usr/local/bin/app-post-setup.sh
 COPY       docker/app.entrypoint.sh /usr/local/bin/app-entrypoint.sh
-COPY       bin/_lib.sh /usr/local/bin/bin/_lib.sh
+COPY       bin/_lib.sh /usr/local/bin/_lib.sh
 RUN        chmod 755 /usr/local/bin/app-entrypoint.sh
 ENTRYPOINT ["app-entrypoint.sh"]
 CMD ["apache2-foreground"]
