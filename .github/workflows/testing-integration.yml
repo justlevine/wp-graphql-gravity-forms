@@ -61,13 +61,26 @@ jobs:
           WP_VERSION: ${{ matrix.wordpress }}
         run: composer build-test
 
-      - name: Run Functional Tests w/ Docker.
+      - name: Run Unit Tests w/ Docker.
         env:
           COVERAGE: ${{ matrix.coverage }}
           USING_XDEBUG: ${{ matrix.coverage }}
           DEBUG: ${{ matrix.debug }}
           SKIP_TESTS_CLEANUP: ${{ matrix.coverage }}
-          SUITES: functional
+          SUITES: unit
+          PHP_VERSION: ${{ matrix.php }}
+          WP_VERSION: ${{ matrix.wordpress }}
+          GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
+          GIT_USER: ${{ secrets.GIT_USER }}
+        run: composer run-test
+
+      - name: Run Acceptance Tests w/ Docker.
+        env:
+          COVERAGE: ${{ matrix.coverage }}
+          USING_XDEBUG: ${{ matrix.coverage }}
+          DEBUG: ${{ matrix.debug }}
+          SKIP_TESTS_CLEANUP: ${{ matrix.coverage }}
+          SUITES: acceptance
           PHP_VERSION: ${{ matrix.php }}
           WP_VERSION: ${{ matrix.wordpress }}
           GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
