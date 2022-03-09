@@ -18,6 +18,6 @@ if $(wp maintenance-mode is-active --allow-root); then
 	wp maintenance-mode deactivate --allow-root
 fi
 
-chown -R www-data:www-data "${WP_ROOT_FOLDER}"
 find "${WP_ROOT_FOLDER}" -type d -exec chmod 0775 {} \;
 find "${WP_ROOT_FOLDER}" -type f -exec chmod 0664 {} \;
+ls -l "${WP_ROOT_FOLDER"
