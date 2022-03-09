@@ -130,7 +130,7 @@ install_gravityforms_quiz() {
 install_plugins() {
 	cd $WP_CORE_DIR
 
-	wp plugin list
+	wp plugin list --allow-root
 	install_gravityforms
 	install_gravityforms_signature
 	install_gravityforms_chainedselects
