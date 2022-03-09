@@ -4,11 +4,9 @@
 
 source _lib.sh
 
-install_gravityforms
-install_gravityforms_signature
-install_gravityforms_chainedselects
-install_gravityforms_quiz
-setup_plugin
+install_plugins
+post_setup
+wp plugin activate wp-graphql-gravity-forms --allow-root
 
 # If maintenance mode is active, de-activate it
 if $( wp maintenance-mode is-active --allow-root ); then

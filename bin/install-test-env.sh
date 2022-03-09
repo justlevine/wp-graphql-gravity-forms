@@ -15,8 +15,6 @@ source ${BASEDIR}/_lib.sh
 install_wordpress
 install_db
 configure_wordpress
-install_gravityforms
-install_gravityforms_signature
-install_gravityforms_chainedselects
-install_gravityforms_quiz
+install_plugins
 setup_plugin
+post_setup

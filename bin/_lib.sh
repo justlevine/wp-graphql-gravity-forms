@@ -127,27 +127,14 @@ install_gravityforms_quiz() {
 	wp plugin activate gravityformsquiz --allow-root
 }
 
-setup_plugin() {
-	if [ "${SKIP_WP_SETUP}" = "true" ]; then
-		echo "Skipping WPGraphQL for GF installation..."
-		return 0
-	fi
-
-	# Add this repo as a plugin to the repo
-	if [ ! -d $WP_CORE_DIR/wp-content/plugins/wp-graphql-gravity-forms ]; then
-		ln -s $PLUGIN_DIR $WP_CORE_DIR/wp-content/plugins/wp-graphql-gravity-forms
-		cd $WP_CORE_DIR/wp-content/plugins
-		pwd
-		ls
-	fi
-
-	cd $PLUGIN_DIR
-
-	composer install
-
+install_plugins() {
 	cd $WP_CORE_DIR
 
 	wp plugin list
+	install_gravityforms
+	install_gravityforms_signature
+	install_gravityforms_chainedselects
+	install_gravityforms_quiz
 
 	# Install WPGraphQL Upload and Activate
 	wp plugin install https://github.com/dre1080/wp-graphql-upload/archive/refs/heads/master.zip --allow-root
@@ -167,7 +154,30 @@ setup_plugin() {
 
 	# activate the plugin
 	wp plugin activate wp-graphql-gravity-forms --allow-root
+}
 
+setup_plugin() {
+	if [ "${SKIP_WP_SETUP}" = "true" ]; then
+		echo "Skipping WPGraphQL for GF installation..."
+		return 0
+	fi
+
+	# Add this repo as a plugin to the repo
+	if [ ! -d $WP_CORE_DIR/wp-content/plugins/wp-graphql-gravity-forms ]; then
+		ln -s $PLUGIN_DIR $WP_CORE_DIR/wp-content/plugins/wp-graphql-gravity-forms
+		cd $WP_CORE_DIR/wp-content/plugins
+		pwd
+		ls
+	fi
+
+	cd $PLUGIN_DIR
+
+	composer install
+	
+}
+
+post_setup() {
+	cd $WP_CORE_DIR
 	# Flush the permalinks
 	wp rewrite flush --allow-root
 
