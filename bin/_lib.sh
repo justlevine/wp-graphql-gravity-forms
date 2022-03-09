@@ -100,7 +100,7 @@ install_gravityforms() {
 		git clone -b master --single-branch https://$GIT_USER:$GIT_TOKEN@$GF_REPO $WP_CORE_DIR/wp-content/plugins/gravityforms
 	fi
 	echo "Cloning Gravity Forms"
-	wp plugin activate gravityforms
+	wp plugin activate gravityforms --allow-root
 }
 
 install_gravityforms_signature() {
@@ -108,7 +108,7 @@ install_gravityforms_signature() {
 		echo "Cloning Gravity Forms Signature"
 		git clone -b master --single-branch https://$GIT_USER:$GIT_TOKEN@$GF_SIGNATURE_REPO $WP_CORE_DIR/wp-content/plugins/gravityformssignature
 	fi
-	wp plugin activate gravityformssignature
+	wp plugin activate gravityformssignature --allow-root
 }
 
 install_gravityforms_chainedselects() {
@@ -116,7 +116,7 @@ install_gravityforms_chainedselects() {
 		echo "Cloning Gravity Forms Chained Selects"
 		git clone -b master --single-branch https://$GIT_USER:$GIT_TOKEN@$GF_CHAINEDSELECTS_REPO $WP_CORE_DIR/wp-content/plugins/gravityformschainedselects
 	fi
-	wp plugin activate gravityformschainedselects
+	wp plugin activate gravityformschainedselects --allow-root
 }
 
 install_gravityforms_quiz() {
@@ -124,7 +124,7 @@ install_gravityforms_quiz() {
 		echo "Cloning Gravity Forms Quiz"
 		git clone -b master --single-branch https://$GIT_USER:$GIT_TOKEN@$GF_QUIZ_REPO $WP_CORE_DIR/wp-content/plugins/gravityformsquiz
 	fi
-	wp plugin activate gravityformsquiz
+	wp plugin activate gravityformsquiz --allow-root
 }
 
 setup_plugin() {
@@ -150,27 +150,27 @@ setup_plugin() {
 	wp plugin list
 
 	# Install WPGraphQL Upload and Activate
-	wp plugin install https://github.com/dre1080/wp-graphql-upload/archive/refs/heads/master.zip
-	wp plugin activate wp-graphql-upload
+	wp plugin install https://github.com/dre1080/wp-graphql-upload/archive/refs/heads/master.zip --allow-root
+	wp plugin activate wp-graphql-upload --allow-root
 
 	# Install WPGraphQL and Activate
-	wp plugin install wp-graphql
-	wp plugin activate wp-graphql
+	wp plugin install wp-graphql --allow-root
+	wp plugin activate wp-graphql -allow-root
 
 	# Install WPGatsby and Activate
-	wp plugin install wp-gatsby
-	wp plugin activate wp-gatsby
+	wp plugin install wp-gatsby --allow-root
+	wp plugin activate wp-gatsby --allow-root
 
 	# Install WPJamstack Deployments and Activate
-	wp plugin install wp-jamstack-deployments
-	wp plugin activate wp-jamstack-deployments
+	wp plugin install wp-jamstack-deployments --allow-root
+	wp plugin activate wp-jamstack-deployments --allow-root
 
 	# activate the plugin
-	wp plugin activate wp-graphql-gravity-forms
+	wp plugin activate wp-graphql-gravity-forms --allow-root
 
 	# Flush the permalinks
-	wp rewrite flush
+	wp rewrite flush --allow-root
 
 	# Export the db for codeception to use
-	wp db export $PLUGIN_DIR/tests/_data/dump.sql
+	wp db export $PLUGIN_DIR/tests/_data/dump.sql --allow-root
 }
