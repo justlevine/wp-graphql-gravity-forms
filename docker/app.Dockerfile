@@ -86,5 +86,6 @@ COPY       docker/app.post-setup.sh /usr/local/bin/app-post-setup.sh
 COPY       docker/app.entrypoint.sh /usr/local/bin/app-entrypoint.sh
 COPY       bin/_lib.sh /usr/local/bin/_lib.sh
 RUN        chmod 755 /usr/local/bin/app-entrypoint.sh
+RUN        chown -R www-data:www-data /var/www/html/wp-content
 ENTRYPOINT ["app-entrypoint.sh"]
 CMD ["apache2-foreground"]
