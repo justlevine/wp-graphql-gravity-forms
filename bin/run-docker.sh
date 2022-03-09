@@ -51,20 +51,20 @@ case "$subcommand" in
                     ;;
                 a )
                 docker build $BUILD_NO_CACHE -f docker/app.Dockerfile \
-                    -t wp-graphql:${TAG}-wp${WP_VERSION}-php${PHP_VERSION} \
+                    -t wp-graphql-gf:${TAG}-wp${WP_VERSION}-php${PHP_VERSION} \
                     --build-arg WP_VERSION=${WP_VERSION} \
                     --build-arg PHP_VERSION=${PHP_VERSION} \
                     .
                     ;;
                 t )
                 docker build $BUILD_NO_CACHE -f docker/app.Dockerfile \
-                    -t wp-graphql:${TAG}-wp${WP_VERSION}-php${PHP_VERSION} \
+                    -t wp-graphql-gf:${TAG}-wp${WP_VERSION}-php${PHP_VERSION} \
                     --build-arg WP_VERSION=${WP_VERSION} \
                     --build-arg PHP_VERSION=${PHP_VERSION} \
                     .
 
                 docker build $BUILD_NO_CACHE -f docker/testing.Dockerfile \
-                    -t wp-graphql-testing:${TAG}-wp${WP_VERSION}-php${PHP_VERSION} \
+                    -t wp-graphql-gf-testing:${TAG}-wp${WP_VERSION}-php${PHP_VERSION} \
                     --build-arg WP_VERSION=${WP_VERSION} \
                     --build-arg PHP_VERSION=${PHP_VERSION} \
                     .
