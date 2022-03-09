@@ -39,6 +39,9 @@ if [[ ! -f ".env" ]]; then
   echo "Open the .env file and enter values to match your local environment"
   cp .env.dist .env
 fi
+echo GIT_TOKEN=${GIT_TOKEN} >> .env
+echo GIT_USER=${GIT_USER} >> .env
+
 
 subcommand=$1; shift
 case "$subcommand" in
