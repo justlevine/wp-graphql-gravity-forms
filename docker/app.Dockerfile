@@ -46,9 +46,8 @@ RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli
 
 # Set project environmental variables
 ENV WP_ROOT_FOLDER="/var/www/html"
-ENV WP_CORE_DIR="/var/www/html"
-ENV PLUGINS_DIR="${WP_ROOT_FOLDER}/wp-content/plugins"
-ENV PROJECT_DIR="${PLUGINS_DIR}/wp-graphql-gravity-forms"
+ENV PLUGIN_DIR="${WP_ROOT_FOLDER}/wp-content/plugins"
+ENV PROJECT_DIR="${PLUGIN_DIR}/wp-graphql-gravity-forms"
 ENV DATA_DUMP_DIR="${PROJECT_DIR}/tests/_data"
 
 # Remove exec statement from base entrypoint script.
@@ -75,6 +74,10 @@ RUN echo "Installing XDebug 3 (in disabled state)" \
 
 # Set xdebug configuration off by default. See the entrypoint.sh.
 ENV USING_XDEBUG=0
+
+# Set environment variables for plugin install:
+ENV WP_CORE_DIR="${WP_ROOT_FOLDER}"
+ENV TMPDIR="${TMPDIR-/tmp}"
 
 # Set up entrypoint
 WORKDIR    /var/www/html
