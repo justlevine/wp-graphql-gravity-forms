@@ -4,9 +4,8 @@
 
 ARG WP_VERSION
 ARG PHP_VERSION
-ARG DOCKER_REGISTRY
 
-FROM ${DOCKER_REGISTRY:-}wp-graphql-gf:latest-wp${WP_VERSION}-php${PHP_VERSION}
+FROM wp-graphql-gf:latest-wp${WP_VERSION}-php${PHP_VERSION}
 
 LABEL author=justlevine
 LABEL author_uri=https://github.com/justlevine
