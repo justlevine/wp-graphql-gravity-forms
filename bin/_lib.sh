@@ -183,4 +183,7 @@ post_setup() {
 
 	# Export the db for codeception to use
 	wp db export $PLUGIN_DIR/tests/_data/dump.sql --allow-root
+
+	echo "Installed plugins"
+	wp plugin list --allow-root
 }
