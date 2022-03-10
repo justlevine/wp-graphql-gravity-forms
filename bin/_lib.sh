@@ -151,9 +151,6 @@ install_plugins() {
 	# Install WPJamstack Deployments and Activate
 	wp plugin install wp-jamstack-deployments --allow-root
 	wp plugin activate wp-jamstack-deployments --allow-root
-
-	# activate the plugin
-	wp plugin activate wp-graphql-gravity-forms --allow-root
 }
 
 setup_plugin() {
@@ -178,6 +175,10 @@ setup_plugin() {
 
 post_setup() {
 	cd $WP_CORE_DIR
+	
+	# activate the plugin
+	wp plugin activate wp-graphql-gravity-forms --allow-root
+
 	# Flush the permalinks
 	wp rewrite flush --allow-root
 
