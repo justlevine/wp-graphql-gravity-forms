@@ -43,5 +43,3 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: /tmp/schema.graphql
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
